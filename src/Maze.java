@@ -4,7 +4,6 @@ public class Maze {
 	final int height = 13; 
 	
 	String stringRep = "";
-	
 	MazeObject[][] grid = new MazeObject[width][height];
 	
 	public Maze() {
