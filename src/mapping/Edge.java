@@ -7,11 +7,11 @@ public class Edge extends MazeObject {
 	
 	EdgeType type;
 	
-	public Edge(int x, int y, EdgeType type) {
-		super(x, y);
+	public Edge(Coordinate pos, EdgeType type) {
+		super(pos);
 		traversible = false;
 		this.type = type;
-		stringRep += type.toString().charAt(0);
+		stringRep = Character.toString(type.toString().charAt(0));
 	}
 	
 }

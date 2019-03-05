@@ -2,38 +2,47 @@ package mapping;
 public abstract class MazeObject {
 	
 	private MazeObject[] neighbours = new MazeObject[4];
-	final static int NORTH = 0;
-	final static int EAST = 1;
-	final static int SOUTH = 2;
-	final static int WEST = 3;
-	// might delete this later
+	private boolean isWall;
+	protected boolean traversible;
+	protected boolean visited;
+	protected Coordinate position;
+	protected String stringRep;
 	
-	boolean traversible = true;
-	boolean visited = false;
-	int xPos;
-	int yPos;
-	String stringRep = "";
-	
-	public MazeObject(int x, int y) {
-		xPos = x;
-		yPos = y;
+	public MazeObject(Coordinate position) {
+        traversible = true;
+	    visited = false;
+		this.position = position;
+		stringRep = "";
 	}
-	
-	public void setNeighbours(MazeObject[] neighbours) {
-		this.neighbours = neighbours;
-	}
-	
+
 	public MazeObject[] getNeighbours() {
 		return this.neighbours;
 	}
+
+    public void setNeighbour(MazeObject neighbour, Bearing direction) {
+        neighbours[direction.getIntRep()] = neighbour;
+    }
 	
-	@Override 
-	public String toString() {
-		return stringRep;
+	public Coordinate getPosition() {
+		return position;
 	}
-	
-	public int[] getPos() {
-		int[] coords = {xPos, yPos};
-		return coords;
-	}
+
+	public MazeObject getAdjacent(Bearing direction){
+	    return neighbours[direction.getIntRep()];
+    }
+
+    public void setBoundaryWall() {
+	    isWall = true;
+    }
+
+    public boolean isBoundaryWall() {
+	    traversible = false;
+	    visited = true;
+	    return isWall;
+    }
+
+    @Override
+    public String toString() {
+        return stringRep;
+    }
 }
