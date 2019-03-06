@@ -14,8 +14,11 @@ public class TestMaze {
 		Coordinate testCoordinate = testMaze.getCoordinate(yPos, xPos);
 		MazeObject testObject = testMaze.getMazeObject(testCoordinate);
 		System.out.println(testMaze);
-		if (testObject.isBoundaryWall()) {
-		    System.out.println("The MazeObject " + testObject.toString() + " at " + testCoordinate.toString() + " is a Boundary Wall");
+		Class testObjectClass = testObject.getClass();
+		if (testObjectClass.getName().equals("Edge")) {
+            if (((Edge) testObject).isBoundaryWall()) {
+                System.out.println("The MazeObject " + testObject.toString() + " at " + testCoordinate.toString() + " is a Boundary Wall");
+            }
         }
 		System.out.println("The neighbours of " + testObject.toString() + " at " + testCoordinate.toString() + " are: ");
 		for (MazeObject neighbour : testObject.getNeighbours()) {

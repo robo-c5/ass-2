@@ -2,24 +2,18 @@ package mapping;
 public abstract class MazeObject {
 	
 	protected MazeObject[] neighbours = new MazeObject[4];
-	protected boolean isWall;
-	protected boolean traversable;
 	protected boolean visited;
 	protected Coordinate position;
-	protected String stringRep;
+    protected boolean traversable;
 
-	//test field
-	protected boolean isBoundary;
+    //test field
+	protected String stringRep;
 	
 	public MazeObject(Coordinate position) {
         traversable = true;
 	    visited = false;
-	    isWall = false;
 		this.position = position;
 		stringRep = "";
-
-		//test field
-        isBoundary = true;
     }
 
 	public MazeObject[] getNeighbours() {
@@ -34,24 +28,20 @@ public abstract class MazeObject {
 		return position;
 	}
 
-	public MazeObject getAdjacent(Bearing direction){
+	public MazeObject getAdjacent(Bearing direction) {
 	    return neighbours[direction.getIntRep()];
     }
 
-    public void setWall() {
-		traversable = false;
-		visited = true;
-	    isWall = true;
-    }
+    public boolean isTraversable() {
+		return traversable;
+	}
 
-    //testing method
-    public void setBoundary() {
-	    isBoundary = true;
-    }
+	public boolean isVisited() {
+		return visited;
+	}
 
-    //testing method
-    public boolean isBoundaryWall() {
-	    return isBoundary;
+    public void setNonTraversable() {
+        traversable = false;
     }
 
     //testing method

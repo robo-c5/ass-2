@@ -2,6 +2,7 @@ package mapping;
 
 import mapping.Edge.EdgeType;
 import java.lang.Math;
+import java.util.Arrays;
 
 public class Maze {
     private static final Bearing NORTH = new Bearing(0);
@@ -72,28 +73,32 @@ public class Maze {
 
     private void declareBoundaryWalls() {
         for (MazeObject outer : getRow(0)) {
-            outer.setWall();
+            Edge edge = (Edge) outer;
+            //edge.setWall();
 
             //test method
-            outer.setBoundary();
+            edge.setBoundary();
         }
         for (MazeObject outer : getRow(HEIGHT-1)) {
-            outer.setWall();
+            Edge edge = (Edge) outer;
+            //edge.setWall();
 
             //test method
-            outer.setBoundary();
+            edge.setBoundary();
         }
         for (MazeObject outer : getColumn(0)) {
-            outer.setWall();
+            Edge edge = (Edge) outer;
+            //edge.setWall();
 
             //test method
-            outer.setBoundary();
+            edge.setBoundary();
         }
         for (MazeObject outer : getColumn(WIDTH-1)) {
-            outer.setWall();
+            Edge edge = (Edge) outer;
+            //edge.setWall();
 
             //test method
-            outer.setBoundary();
+            edge.setBoundary();
         }
     }
 
@@ -139,8 +144,31 @@ public class Maze {
         return coordinateGrid[y][x];
     }
 
+    public MazeObject getNearestTile(Tile origin, Bearing direction) {
+	    return origin.getAdjacent(direction).getAdjacent(direction);
+    }
+
+    public boolean isPathBetweenBlocked (Tile origin, Tile destination, Bearing direction) throws Exception {
+	    Edge sharedEdge1 = (Edge) origin.getAdjacent(direction);
+	    Edge sharedEdge2 = (Edge) destination.getAdjacent(getOpposite(direction));
+	    if (sharedEdge1 != sharedEdge2) {
+	        throw new Exception("Origin and Destination Tiles do not share a neighbouring Edge");
+        }
+	    return sharedEdge1.isTraversable();
+    }
+
     public static Bearing[] getCARDINALS() {
         return CARDINALS;
+    }
+
+    public Bearing getOpposite(Bearing direction) throws Exception{
+	    for (int i = 0; i < CARDINALS.length; i++) {
+	        if (direction == CARDINALS[i]) {
+                return CARDINALS[(i + CARDINALS.length / 2) % 4];
+            }
+        }
+        throw new Exception("Bearing not found in list of Cardinal directions");
+
     }
 
     public Coordinate[][] getCoordinateGrid() {

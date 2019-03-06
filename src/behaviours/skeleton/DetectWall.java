@@ -3,6 +3,7 @@ package behaviours.skeleton;
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
 
+//in terms of priority, MoveToNextTile > DetectWall > CheckNeighbours
 public class DetectWall implements Behavior {
     boolean supressed = false;
 
