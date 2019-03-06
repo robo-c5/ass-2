@@ -1,19 +1,26 @@
 package mapping;
 public abstract class MazeObject {
 	
-	private MazeObject[] neighbours = new MazeObject[4];
-	private boolean isWall;
-	protected boolean traversible;
+	protected MazeObject[] neighbours = new MazeObject[4];
+	protected boolean isWall;
+	protected boolean traversable;
 	protected boolean visited;
 	protected Coordinate position;
 	protected String stringRep;
+
+	//test field
+	protected boolean isBoundary;
 	
 	public MazeObject(Coordinate position) {
-        traversible = true;
+        traversable = true;
 	    visited = false;
+	    isWall = false;
 		this.position = position;
 		stringRep = "";
-	}
+
+		//test field
+        isBoundary = true;
+    }
 
 	public MazeObject[] getNeighbours() {
 		return this.neighbours;
@@ -23,7 +30,7 @@ public abstract class MazeObject {
         neighbours[direction.getIntRep()] = neighbour;
     }
 	
-	public Coordinate getPosition() {
+	public Coordinate getCoordinates() {
 		return position;
 	}
 
@@ -31,16 +38,23 @@ public abstract class MazeObject {
 	    return neighbours[direction.getIntRep()];
     }
 
-    public void setBoundaryWall() {
+    public void setWall() {
+		traversable = false;
+		visited = true;
 	    isWall = true;
     }
 
-    public boolean isBoundaryWall() {
-	    traversible = false;
-	    visited = true;
-	    return isWall;
+    //testing method
+    public void setBoundary() {
+	    isBoundary = true;
     }
 
+    //testing method
+    public boolean isBoundaryWall() {
+	    return isBoundary;
+    }
+
+    //testing method
     @Override
     public String toString() {
         return stringRep;

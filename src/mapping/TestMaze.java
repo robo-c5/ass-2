@@ -17,11 +17,10 @@ public class TestMaze {
 		if (testObject.isBoundaryWall()) {
 		    System.out.println("The MazeObject " + testObject.toString() + " at " + testCoordinate.toString() + " is a Boundary Wall");
         }
-
 		System.out.println("The neighbours of " + testObject.toString() + " at " + testCoordinate.toString() + " are: ");
 		for (MazeObject neighbour : testObject.getNeighbours()) {
 			if (neighbour != null)
-			System.out.println(neighbour.toString() + " at position" + neighbour.getPosition().toString());
+			System.out.println(neighbour.toString() + " at position" + neighbour.getCoordinates().toString());
 		}
 
 

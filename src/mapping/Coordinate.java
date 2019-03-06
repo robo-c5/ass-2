@@ -2,6 +2,8 @@ package mapping;
 
 public class Coordinate {
     private int[] coords = new int[2];
+
+    //test field
     private String stringRep;
 
     public Coordinate(int y, int x){
@@ -18,6 +20,7 @@ public class Coordinate {
         return coords[1];
     }
 
+    //test method
     @Override
     public String toString() {
         return stringRep;
