@@ -1,18 +1,21 @@
 package mapping;
 
+import org.freedesktop.dbus.test.test;
+
 import lejos.hardware.lcd.*;
+import lejos.utility.Delay;
 
 public class DrawMaze {
-	private static final int CM_PER_PIXEL = 10;
+	private static final int CM_PER_PIXEL = 5;
 	
 	public static void drawMaze (Maze grid) {
-		int currentPixelY = 178;
-		int currentPixelX = 0;
+		int currentPixelY = 150;
+		int currentPixelX = 5;
 		int pixelWidth;
 		int pixelHeight = 0;
 		int colour = 0;
 		
-		LCD.clear();		
+		LCD.clear();	
 		for (int y = 0; y < grid.getHEIGHT(); y++) {
 			for (MazeObject testObject : grid.getRow(y)) {
 				if (testObject.isTraversable()) {
@@ -20,8 +23,9 @@ public class DrawMaze {
 				} else {
 					colour = 0;
 				}
+				
 				pixelHeight = testObject.getHeight() / CM_PER_PIXEL;
-				pixelWidth = testObject.getWidth() / CM_PER_PIXEL;
+				pixelWidth = testObject.getWidth() / CM_PER_PIXEL;				
 				drawObject(currentPixelY, currentPixelX, pixelHeight, pixelWidth, colour);
 				currentPixelX += pixelWidth;
 			}
@@ -35,6 +39,10 @@ public class DrawMaze {
 				LCD.setPixel(startX+i, startY-j, colour);
 			}
 		}
+	}
+	
+	public static int getCmPerPixel() {
+		return CM_PER_PIXEL;
 	}
 
 }

@@ -120,7 +120,6 @@ public class Maze {
                         MazeObject newNeighbour = getMazeObject(travelByBearing(getCoordinate(y,x), direction));
                         objectGrid[y][x].setNeighbour(newNeighbour, direction);
                     } catch (Exception e) {
-                        break;
                     }
                 }
             }
