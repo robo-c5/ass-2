@@ -1,5 +1,4 @@
 
-
 import java.util.Arrays;
 
 import lejos.hardware.BrickFinder;
@@ -13,6 +12,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
+import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
@@ -25,94 +25,86 @@ import lejos.utility.Delay;
 public class EV3Setup {
 
 	private static MovePilot pilot;
-	
+
 	private static EV3ColorSensor cs;
-	
+
 	private static EV3IRSensor ir;
 
 	public static void main(String[] args) {
 		// Brick setup
 		EV3 ev3brick = (EV3) BrickFinder.getLocal();
-
-		// Pilot initialisation
-		setPilot(pilotInit());
-		irSensorInit();
-		colourSensorInit();
 		// Wait for input
 		waitForAnyPress(ev3brick.getKeys());
-		// setup arbitratorInit and then start it
-		arbitratorInit();
-		
-		while(ev3brick.getKeys().getButtons() != Keys.ID_ESCAPE)
-		{
-			LCD.clear();
+		while (ev3brick.getKeys().getButtons() != Keys.ID_ESCAPE) {
 			float[] colourSampleRaw = getColourSample();
+
 			float[] irSampleRaw = getIRSample();
 			String[] colourSample = new String[colourSampleRaw.length];
 			String[] irSample = new String[irSampleRaw.length];
-			
-			for (int i = 0; i < colourSampleRaw.length; i++)
-			{
+
+			for (int i = 0; i < colourSampleRaw.length; i++) {
 				colourSample[i] = String.valueOf(colourSampleRaw[i]);
 			}
-			for (int i = 0; i < irSampleRaw.length; i++)
-			{
+			for (int i = 0; i < irSampleRaw.length; i++) {
 				irSample[i] = String.valueOf(irSampleRaw[i]);
 			}
-			
-			LCD.drawString(Arrays.deepToString(colourSample), 0, 7);
-			LCD.drawString(Arrays.deepToString(irSample), 0, 8);
-			Delay.msDelay(10);
+			LCD.drawString(Arrays.deepToString(colourSample), 0, 0);
+			LCD.drawString(Arrays.deepToString(irSample), 0, 1);
+			Delay.msDelay(1000);
 		}
+		// setup arbitratorInit and then start it
+		arbitratorInit();
 	}
-	
-	private static void setPilot(MovePilot givenPilot)
-	{
+
+	private static void setPilot(MovePilot givenPilot) {
 		pilot = givenPilot;
 	}
-	
-	public static MovePilot getPilot()
-	{
+
+	public static MovePilot getPilot() {
 		if (pilot == null)
-			return pilotInit();
+			setPilot(pilotInit());
 		return pilot;
 	}
-	
-	private static void setColourSensor(EV3ColorSensor givencs)
-	{
+
+	// colour sensor getter and setter
+	private static void setColourSensor(EV3ColorSensor givencs) {
 		cs = givencs;
 	}
-	
-	public static EV3ColorSensor getColourSensor()
-	{
+
+	public static EV3ColorSensor getColourSensor() {
 		if (cs == null)
-			return colourSensorInit();
+			setColourSensor(colourSensorInit());
 		return cs;
 	}
-	
-	public static float[] getColourSample()
-	{
-		SensorMode sm = getColourSensor().getRGBMode();
-		float[] sample = new float[getColourSensor().sampleSize()];	
-		sm.fetchSample(sample, 0);
-		return sample;
+	//
+
+	// ir sensor getter and setter
+	private static void setIRSensor(EV3IRSensor givenir) {
+		ir = givenir;
 	}
-	
-	public static EV3IRSensor getIRSensor()
-	{
+
+	public static EV3IRSensor getIRSensor() {
 		if (ir == null)
-			return irSensorInit();
+			setIRSensor(irSensorInit());
 		return ir;
 	}
-	
-	public static float[] getIRSample()
-	{
-		SensorMode sm = getIRSensor().getDistanceMode();
-		float[] sample = new float[getIRSensor().sampleSize()];	
+	//
+
+	// get colour and ir samples
+	public static float[] getColourSample() {
+		SensorMode sm = getColourSensor().getRGBMode();
+		float[] sample = new float[sm.sampleSize()];
 		sm.fetchSample(sample, 0);
 		return sample;
 	}
 
+	public static float[] getIRSample() {
+		SensorMode sm = getIRSensor().getDistanceMode();
+		float[] sample = new float[sm.sampleSize()];
+		sm.fetchSample(sample, 0);
+		return sample;
+	}
+	//
 
 	private static void waitForAnyPress(Keys keys) {
 		LCD.clear();
@@ -121,14 +113,15 @@ public class EV3Setup {
 		LCD.clear();
 	}
 
+	// init
 	private static EV3IRSensor irSensorInit() {
 		EV3IRSensor irSensor;
-		irSensor = new EV3IRSensor(SensorPort.S2);
+		irSensor = new EV3IRSensor(SensorPort.S1);
 		return irSensor;
 	}
-	
+
 	private static EV3ColorSensor colourSensorInit() {
-		return new EV3ColorSensor(SensorPort.S4);
+		return new EV3ColorSensor(SensorPort.S2);
 	}
 
 	private static void arbitratorInit() {
@@ -159,5 +152,5 @@ public class EV3Setup {
 
 		return pilot;
 	}
-
+	//
 }
