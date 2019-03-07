@@ -14,8 +14,7 @@ public class TestMaze {
 		Coordinate testCoordinate = testMaze.getCoordinate(yPos, xPos);
 		MazeObject testObject = testMaze.getMazeObject(testCoordinate);
 		System.out.println(testMaze);
-		Class testObjectClass = testObject.getClass();
-		if (testObjectClass.getName().equals("Edge")) {
+		if (testObject instanceof Edge) {
             if (((Edge) testObject).isBoundaryWall()) {
                 System.out.println("The MazeObject " + testObject.toString() + " at " + testCoordinate.toString() + " is a Boundary Wall");
             }

@@ -24,7 +24,7 @@ public class MoveToNextTile implements Behavior {
     /*
     Get the position of the robot.
     Get its Bearing
-    Get the nearest Tile in the given direction. Move there if it is traversible
+    Get the nearest Tile in the given direction. Move there if it is traversable
     */
 
     @Override

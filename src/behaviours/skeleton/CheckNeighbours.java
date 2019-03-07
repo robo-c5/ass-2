@@ -1,5 +1,4 @@
 package behaviours.skeleton;
-
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
 

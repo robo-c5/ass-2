@@ -143,7 +143,8 @@ public class Maze {
     public Coordinate getCoordinate(int y, int x) {
         return coordinateGrid[y][x];
     }
-
+    
+    //check if can do some casting so return type is Tile
     public MazeObject getNearestTile(Tile origin, Bearing direction) {
 	    return origin.getAdjacent(direction).getAdjacent(direction);
     }
