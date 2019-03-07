@@ -1,43 +1,40 @@
 package mapping;
 
-import lejos.hardware.BrickFinder;
-import lejos.hardware.ev3.*;
 import lejos.hardware.lcd.*;
 
 public class DrawMaze {
-	private static final int RESOLUTION = 10;
-	private static GraphicsLCD screen;
-	
-	
-	public DrawMaze() {
-		screen = BrickFinder.getDefault().getGraphicsLCD();		
-	}
+	private static final int CM_PER_PIXEL = 10;
 	
 	public static void drawMaze (Maze grid) {
-		int currentPixelY = screen.getHeight();
+		int currentPixelY = 178;
 		int currentPixelX = 0;
-		int adjustY = 0;
+		int pixelWidth;
+		int pixelHeight = 0;
+		int colour = 0;
+		
+		LCD.clear();		
 		for (int y = 0; y < grid.getHEIGHT(); y++) {
 			for (MazeObject testObject : grid.getRow(y)) {
 				if (testObject.isTraversable()) {
-					screen.setColor(0,0,0);
+					colour = 1;
 				} else {
-					screen.setColor(255,255,255);
+					colour = 0;
 				}
-				drawObject(currentPixelY, currentPixelX, testObject);
-				currentPixelX += testObject.getWidth();
-				adjustY = testObject.getWidth() / RESOLUTION;
+				pixelHeight = testObject.getHeight() / CM_PER_PIXEL;
+				pixelWidth = testObject.getWidth() / CM_PER_PIXEL;
+				drawObject(currentPixelY, currentPixelX, pixelHeight, pixelWidth, colour);
+				currentPixelX += pixelWidth;
 			}
-			currentPixelY -= adjustY;
+			currentPixelY -= pixelHeight;
 		}
 	}
 		
-	public static void drawObject(int y, int x,  MazeObject wall) {
-		screen.fillRect(x, y, wall.getWidth(), wall.getHeight());
-	}
-	
-	public GraphicsLCD getScreen() {
-		return screen;
+	public static void drawObject(int startY, int startX, int height, int width, int colour) {
+		for (int j = 0; j < height; j ++) {
+			for (int i = 0; i < width ; i++) {
+				LCD.setPixel(startX+i, startY-j, colour);
+			}
+		}
 	}
 
 }
