@@ -11,7 +11,9 @@ public class Tile extends MazeObject {
 		super(pos);
 		colour = Colour.Unknown;
 		traversable = true;
-
+		height = 30;
+		width = height;
+		
 		//test field
 		stringRep = "T";
 	}
