@@ -1,32 +1,29 @@
 package mapping;
-public class Edge extends MazeObject {
-	
-	enum EdgeType {
-		Vertical, Horizontal, Intersection
-    }
+public abstract class Edge extends MazeObject {
 
-	private boolean isWall;
-	private EdgeType type;
+	protected boolean isWall;
 
     //test field
     protected boolean isBoundary;
 
 	
-	public Edge(Coordinate pos, EdgeType type) {
+	public Edge(Coordinate pos) {
 		super(pos);
-		traversable = false;
+		traversable = true;
 		isWall = false;
-		this.type = type;
 
         //test field
-		stringRep = Character.toString(type.toString().charAt(0));
-        isBoundary = true;
+        isBoundary = false;
 	}
 
     public void setWall() {
         traversable = false;
         visited = true;
         isWall = true;
+    }
+    
+    public boolean isWall() {
+    	return isWall;
     }
 
     //testing method

@@ -5,6 +5,8 @@ public abstract class MazeObject {
 	protected boolean visited;
 	protected Coordinate position;
     protected boolean traversable;
+    protected int width;
+	protected int height;
 
     //test field
 	protected String stringRep;
@@ -35,14 +37,26 @@ public abstract class MazeObject {
     public boolean isTraversable() {
 		return traversable;
 	}
+    
+    public void setNonTraversable() {
+        traversable = false;
+    }
 
 	public boolean isVisited() {
 		return visited;
 	}
-
-    public void setNonTraversable() {
-        traversable = false;
-    }
+	
+	public void setVisited() {
+		visited = true;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
 
     //testing method
     @Override

@@ -1,8 +1,6 @@
 package mapping;
 
-import mapping.Edge.EdgeType;
 import java.lang.Math;
-import java.util.Arrays;
 
 public class Maze {
     private static final Bearing NORTH = new Bearing(0);
@@ -41,11 +39,11 @@ public class Maze {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
                 if (isIntersection(coordinateGrid[y][x]))
-                    objectGrid[y][x] = new Edge(coordinateGrid[y][x], EdgeType.Intersection);
+                    objectGrid[y][x] = new Intersection(coordinateGrid[y][x]);
                 else if (isHorizontalEdge(coordinateGrid[y][x]))
-                    objectGrid[y][x] = new Edge(coordinateGrid[y][x], EdgeType.Horizontal);
+                    objectGrid[y][x] = new Horizontal(coordinateGrid[y][x]);
                 else if (isVerticalEdge(coordinateGrid[y][x]))
-                    objectGrid[y][x] = new Edge(coordinateGrid[y][x], EdgeType.Vertical);
+                    objectGrid[y][x] = new Vertical(coordinateGrid[y][x]);
                 else if (isTile(coordinateGrid[y][x]))
                     objectGrid[y][x] = new Tile(coordinateGrid[y][x]);
                 tempStringRep.append(objectGrid[y][x].toString());
@@ -158,7 +156,7 @@ public class Maze {
 	    return sharedEdge1.isTraversable();
     }
 
-    public static Bearing[] getCARDINALS() {
+    public Bearing[] getCARDINALS() {
         return CARDINALS;
     }
 
@@ -180,11 +178,11 @@ public class Maze {
         return objectGrid;
     }
 
-    public static int getWIDTH() {
+    public int getWIDTH() {
         return WIDTH;
     }
 
-    public static int getHEIGHT() {
+    public int getHEIGHT() {
         return HEIGHT;
     }
 
