@@ -7,8 +7,8 @@ public abstract class Edge extends MazeObject {
     protected boolean isBoundary;
 
 	
-	public Edge(Coordinate pos) {
-		super(pos);
+	public Edge (Coordinate topoPos, Coordinate metricPos) {
+        super(topoPos, metricPos);
 		traversable = true;
 		isWall = false;
 

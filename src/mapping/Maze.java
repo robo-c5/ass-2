@@ -12,7 +12,7 @@ public class Maze {
 	private static final int HEIGHT = 13;
 
 	//(0,0) is the South-Western corner of the grid, and (18,12) its North-Eastern
-    private Coordinate[][] coordinateGrid = new Coordinate[HEIGHT][WIDTH];
+    private Coordinate[][] topoCoordGrid = new Coordinate[HEIGHT][WIDTH];
     private MazeObject[][] objectGrid = new MazeObject[HEIGHT][WIDTH];
 
     //test field
@@ -29,28 +29,40 @@ public class Maze {
 	private void initialiseCoordinateGrid() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                coordinateGrid[y][x] = new Coordinate(y,x);
+                topoCoordGrid[y][x] = new Coordinate(y,x);
             }
         }
     }
 
     private void initialiseMazeObjectGrid() {
+        int currentX = 0;
+        int currentY = 0;
+
         StringBuilder tempStringRep = new StringBuilder();
+
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                if (isIntersection(coordinateGrid[y][x]))
-                    objectGrid[y][x] = new Intersection(coordinateGrid[y][x]);
-                else if (isHorizontalEdge(coordinateGrid[y][x]))
-                    objectGrid[y][x] = new Horizontal(coordinateGrid[y][x]);
-                else if (isVerticalEdge(coordinateGrid[y][x]))
-                    objectGrid[y][x] = new Vertical(coordinateGrid[y][x]);
-                else if (isTile(coordinateGrid[y][x]))
-                    objectGrid[y][x] = new Tile(coordinateGrid[y][x]);
+                Coordinate metricPos = new Coordinate(currentY, currentX);
+                if (isIntersection(topoCoordGrid[y][x]))
+                    objectGrid[y][x] = new Intersection(topoCoordGrid[y][x], metricPos);
+                else if (isHorizontalEdge(topoCoordGrid[y][x]))
+                    objectGrid[y][x] = new Horizontal(topoCoordGrid[y][x], metricPos);
+                else if (isVerticalEdge(topoCoordGrid[y][x]))
+                    objectGrid[y][x] = new Vertical(topoCoordGrid[y][x], metricPos);
+                else if (isTile(topoCoordGrid[y][x]))
+                    objectGrid[y][x] = new Tile(topoCoordGrid[y][x], metricPos);
+                currentX += objectGrid[y][x].getWidth();
+
                 tempStringRep.append(objectGrid[y][x].toString());
+
             }
+            currentY += objectGrid[y][0].getHeight();
+
             tempStringRep.append("\n");
         }
+
         stringRep = tempStringRep.toString();
+
     }
 
     public boolean isIntersection(Coordinate pos) {
@@ -138,12 +150,11 @@ public class Maze {
     }
 
     public Coordinate getCoordinate(int y, int x) {
-        return coordinateGrid[y][x];
+        return topoCoordGrid[y][x];
     }
-    
-    //check if can do some casting so return type is Tile
-    public MazeObject getNearestTile(Tile origin, Bearing direction) {
-	    return origin.getAdjacent(direction).getAdjacent(direction);
+
+    public Tile getNearestTile(Tile origin, Bearing direction) {
+	    return (Tile) (origin.getAdjacent(direction).getAdjacent(direction));
     }
 
     public boolean isPathBetweenBlocked (Tile origin, Tile destination, Bearing direction) throws Exception {
@@ -170,7 +181,7 @@ public class Maze {
     }
 
     public Coordinate[][] getCoordinateGrid() {
-        return coordinateGrid;
+        return topoCoordGrid;
     }
 
     public MazeObject[][] getObjectGrid() {

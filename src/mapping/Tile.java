@@ -7,8 +7,8 @@ public class Tile extends MazeObject {
 
 	Colour colour;
 	
-	public Tile(Coordinate pos) {
-		super(pos);
+	public Tile (Coordinate topoPos, Coordinate metricPos) {
+		super(topoPos, metricPos);
 		colour = Colour.Unknown;
 		traversable = true;
 		height = 30;

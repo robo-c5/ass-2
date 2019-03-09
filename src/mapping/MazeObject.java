@@ -3,7 +3,10 @@ public abstract class MazeObject {
 	
 	protected MazeObject[] neighbours = new MazeObject[4];
 	protected boolean visited;
-	protected Coordinate position;
+	protected Coordinate topoPos;
+	//South-Western corner
+	protected Coordinate metricPos;
+	protected Coordinate centre;
     protected boolean traversable;
     protected int width;
 	protected int height;
@@ -11,10 +14,15 @@ public abstract class MazeObject {
     //test field
 	protected String stringRep;
 	
-	public MazeObject(Coordinate position) {
+	public MazeObject(Coordinate topologicalPosition, Coordinate metricPos) {
         traversable = true;
 	    visited = false;
-		this.position = position;
+		this.topoPos = topologicalPosition;
+		this.metricPos = metricPos;
+		int centreY = metricPos.getY() + height/2;
+		int centreX = metricPos.getX() + width/2;
+		centre = new Coordinate(centreY, centreX);
+
 		stringRep = "";
     }
 
@@ -26,8 +34,16 @@ public abstract class MazeObject {
         neighbours[direction.getIntRep()] = neighbour;
     }
 	
-	public Coordinate getCoordinates() {
-		return position;
+	public Coordinate getTopologicalPosition() {
+		return topoPos;
+	}
+
+	public Coordinate getMetricPos() {
+		return metricPos;
+	}
+
+	public Coordinate getCentre() {
+		return centre;
 	}
 
 	public MazeObject getAdjacent(Bearing direction) {
