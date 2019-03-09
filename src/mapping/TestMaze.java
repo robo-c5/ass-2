@@ -53,7 +53,7 @@ public class TestMaze {
         System.out.println("Here is the stringRep of that column");
 
 
-        for (MazeObject mO : testMaze.getColumn(yPos)) {
+        for (MazeObject mO : testMaze.getColumn(xPos)) {
             System.out.print(mO.toString());
         }
 

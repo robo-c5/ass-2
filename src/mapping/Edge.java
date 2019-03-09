@@ -1,7 +1,7 @@
 package mapping;
 public abstract class Edge extends MazeObject {
 
-	protected boolean isWall;
+	protected boolean wall;
 
     //test field
     protected boolean isBoundary;
@@ -10,7 +10,7 @@ public abstract class Edge extends MazeObject {
 	public Edge (Coordinate topoPos, Coordinate metricPos) {
         super(topoPos, metricPos);
 		traversable = true;
-		isWall = false;
+		wall = false;
 
         //test field
         isBoundary = false;
@@ -19,11 +19,11 @@ public abstract class Edge extends MazeObject {
     public void setWall() {
         traversable = false;
         visited = true;
-        isWall = true;
+        wall = true;
     }
     
     public boolean isWall() {
-    	return isWall;
+    	return wall;
     }
 
     //testing method

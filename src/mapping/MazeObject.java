@@ -11,6 +11,7 @@ public abstract class MazeObject {
     protected int width;
     protected int height;
 
+
     //test field
     protected String stringRep;
 

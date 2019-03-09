@@ -1,9 +1,5 @@
-TestDrawMaze properly creates a Maze Object, and has correct height, width etc for all MazeObjects
-However while drawing a 10x10 square by individual pixels works,
-the drawObject method in DrawMaze Class doesn't draw anything.
+Check whether TestDrawMaze functions correctly, and if not check TestDrawObject and stuff
 
-Whatever error is also encountered when trying to draw on lcd screen using GraphicLCD class (which think does work - use fillRec method)
-So see if can figure out why.
+Since at home can't really check if anything using leJOS classes is done properly
 
-Also implement a method that given a MazeObject will draw it onto the lcd screen
-- probably requires making a metric coordinate system
+Also confer with my dudes to ask about spacing object drawings so don't overwrite each other a bit

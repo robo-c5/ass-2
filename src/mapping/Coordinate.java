@@ -9,6 +9,7 @@ public class Coordinate {
     public Coordinate(int y, int x){
         coords[0] = y;
         coords[1] = x;
+
         stringRep = "(" + y + ", " + x + ")";
     }
 

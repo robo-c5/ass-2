@@ -1,6 +1,7 @@
 package mapping;
 
 import java.lang.Math;
+import java.util.Stack;
 
 public class Maze {
     private static final Bearing NORTH = new Bearing(0);
@@ -38,7 +39,8 @@ public class Maze {
         int currentX = 0;
         int currentY = 0;
 
-        StringBuilder tempStringRep = new StringBuilder();
+        Stack<StringBuilder> mazeRows = new Stack<StringBuilder>();
+        StringBuilder rowRep = new StringBuilder();
 
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
@@ -51,17 +53,25 @@ public class Maze {
                     objectGrid[y][x] = new Vertical(topoCoordGrid[y][x], metricPos);
                 else if (isTile(topoCoordGrid[y][x]))
                     objectGrid[y][x] = new Tile(topoCoordGrid[y][x], metricPos);
-                currentX += objectGrid[y][x].getWidth();
+                currentX += objectGrid[y][x].getWidth()+1;
 
-                tempStringRep.append(objectGrid[y][x].toString());
+                rowRep.append(objectGrid[y][x].toString());
 
             }
-            currentY += objectGrid[y][0].getHeight();
+            currentY += objectGrid[y][0].getHeight()+1;
+            currentX = 0;
 
-            tempStringRep.append("\n");
+            mazeRows.push(rowRep);
+            rowRep = new StringBuilder();
+
         }
 
-        stringRep = tempStringRep.toString();
+        StringBuilder reversedLineOrder = new StringBuilder();
+        while (!mazeRows.isEmpty()) {
+            reversedLineOrder .append(mazeRows.pop());
+            reversedLineOrder .append("\n");
+        }
+        stringRep = reversedLineOrder.toString();
 
     }
 
@@ -163,7 +173,7 @@ public class Maze {
 	    if (sharedEdge1 != sharedEdge2) {
 	        throw new Exception("Origin and Destination Tiles do not share a neighbouring Edge");
         }
-	    return sharedEdge1.isTraversable();
+	    return sharedEdge1.isWall();
     }
 
     public Bearing[] getCARDINALS() {
