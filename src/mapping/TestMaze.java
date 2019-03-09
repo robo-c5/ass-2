@@ -17,12 +17,12 @@ public class TestMaze {
         MazeObject testObject = testMaze.getMazeObject(testCoordinate);
         if (testObject instanceof Edge) {
             if (((Edge) testObject).isBoundaryWall()) {
-                System.out.println("The MazeObject " + testObject.toString() + " at " + testCoordinate.toString() + " is a Boundary Wall");
+                System.out.println("The MazeObject " + testObject.toString() + " at (topo) " + testCoordinate.toString() + " is a Boundary Wall");
                 System.out.println();
             }
         }
 
-        System.out.println(testObject.toString() + " at " + testCoordinate.toString() + " is " + testObject.getHeight() +  " cm or "
+        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " is " + testObject.getHeight() +  " cm or "
                 + testObject.getHeight()/CM_PER_PIXEL + " Pixels high and " + testObject.getWidth() +
                 " cm or " + testObject.getWidth()/CM_PER_PIXEL + " Pixels Wide");
 
@@ -30,15 +30,15 @@ public class TestMaze {
         int maxY = objectSW.getY() + testObject.getHeight();
         int maxX = objectSW.getX() + testObject.getWidth();
         Coordinate objectNE = new Coordinate(maxY, maxX);
-        System.out.println(testObject.toString() + " at " + testCoordinate.toString() + " has a South-Western corner at "
-                + objectSW.toString() + " and a North-Eastern Corner at " + objectNE.toString() + " and its centre is at "
+        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " has a South-Western corner at (metric) "
+                + objectSW.toString() + " and a North-Eastern Corner at (metric) " + objectNE.toString() + " and its centre is at (metric) "
                 + testObject.getCentre().toString());
 
         System.out.println();
-        System.out.println("The neighbours of " + testObject.toString() + " at " + testCoordinate.toString() + " are: ");
+        System.out.println("The neighbours of " + testObject.toString() + " at (topo) " + testCoordinate.toString() + " are: ");
         for (MazeObject neighbour : testObject.getNeighbours()) {
             if (neighbour != null)
-                System.out.println(neighbour.toString() + " at position" + neighbour.getTopologicalPosition().toString());
+                System.out.println(neighbour.toString() + " at position (topo) " + neighbour.getTopologicalPosition().toString());
         }
 
         System.out.println();

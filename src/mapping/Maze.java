@@ -4,6 +4,7 @@ import java.lang.Math;
 import java.util.Stack;
 
 public class Maze {
+    //move cardinals + getter to somewhere a bit more global so can use in
     private static final Bearing NORTH = new Bearing(0);
     private static final Bearing EAST = new Bearing(1);
     private static final Bearing SOUTH = new Bearing(2);
@@ -53,12 +54,12 @@ public class Maze {
                     objectGrid[y][x] = new Vertical(topoCoordGrid[y][x], metricPos);
                 else if (isTile(topoCoordGrid[y][x]))
                     objectGrid[y][x] = new Tile(topoCoordGrid[y][x], metricPos);
-                currentX += objectGrid[y][x].getWidth()+1;
+                currentX += objectGrid[y][x].getWidth();
 
                 rowRep.append(objectGrid[y][x].toString());
 
             }
-            currentY += objectGrid[y][0].getHeight()+1;
+            currentY += objectGrid[y][0].getHeight();
             currentX = 0;
 
             mazeRows.push(rowRep);
@@ -176,7 +177,7 @@ public class Maze {
 	    return sharedEdge1.isWall();
     }
 
-    public Bearing[] getCARDINALS() {
+    public static Bearing[] getCARDINALS() {
         return CARDINALS;
     }
 
