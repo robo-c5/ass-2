@@ -1,6 +1,6 @@
+package setup;
 
-import java.util.Arrays;
-
+import behaviours.*;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Keys;
 import lejos.hardware.ev3.EV3;
@@ -10,17 +10,13 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3IRSensor;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
-import lejos.robotics.Color;
-import lejos.robotics.SampleProvider;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
-import lejos.utility.Delay;
 
 public class EV3Setup {
 
@@ -30,30 +26,19 @@ public class EV3Setup {
 
 	private static EV3IRSensor ir;
 
-	public static void main(String[] args) {
+	private static EV3 ev3Brick;
+
+	public EV3Setup() {
 		// Brick setup
-		EV3 ev3brick = (EV3) BrickFinder.getLocal();
+		ev3Brick = (EV3) BrickFinder.getLocal();
 		// Wait for input
-		waitForAnyPress(ev3brick.getKeys());
-		while (ev3brick.getKeys().getButtons() != Keys.ID_ESCAPE) {
-			float[] colourSampleRaw = getColourSample();
-
-			float[] irSampleRaw = getIRSample();
-			String[] colourSample = new String[colourSampleRaw.length];
-			String[] irSample = new String[irSampleRaw.length];
-
-			for (int i = 0; i < colourSampleRaw.length; i++) {
-				colourSample[i] = String.valueOf(colourSampleRaw[i]);
-			}
-			for (int i = 0; i < irSampleRaw.length; i++) {
-				irSample[i] = String.valueOf(irSampleRaw[i]);
-			}
-			LCD.drawString(Arrays.deepToString(colourSample), 0, 0);
-			LCD.drawString(Arrays.deepToString(irSample), 0, 1);
-			Delay.msDelay(1000);
-		}
+		waitForAnyPress(ev3Brick.getKeys());
 		// setup arbitratorInit and then start it
 		arbitratorInit();
+	}
+
+	public static boolean escapePressed() {
+		return ev3Brick.getKeys().getButtons() == Keys.ID_ESCAPE;
 	}
 
 	private static void setPilot(MovePilot givenPilot) {
@@ -71,7 +56,7 @@ public class EV3Setup {
 		cs = givencs;
 	}
 
-	public static EV3ColorSensor getColourSensor() {
+	private static EV3ColorSensor getColourSensor() {
 		if (cs == null)
 			setColourSensor(colourSensorInit());
 		return cs;
@@ -83,7 +68,7 @@ public class EV3Setup {
 		ir = givenir;
 	}
 
-	public static EV3IRSensor getIRSensor() {
+	private static EV3IRSensor getIRSensor() {
 		if (ir == null)
 			setIRSensor(irSensorInit());
 		return ir;
@@ -108,7 +93,8 @@ public class EV3Setup {
 
 	private static void waitForAnyPress(Keys keys) {
 		LCD.clear();
-		LCD.drawString("Press any key...", 5, 0);
+		LCD.drawString("EV3Setup.java-", 0, 5);
+		LCD.drawString("Press any key...", 0, 6);
 		keys.waitForAnyPress();
 		LCD.clear();
 	}
@@ -126,10 +112,12 @@ public class EV3Setup {
 
 	private static void arbitratorInit() {
 		// Start Arbitrator
-		new Arbitrator(new Behavior[] {}).go();
+		new Arbitrator(new Behavior[] { new MoveToNextTile(), new DetectWall(), new CheckNeighbours(),
+				 new EndArbitrator() }).go();
+		// ^ new OutsideMaze(),
 	}
 
-	public static MovePilot pilotInit() {
+	private static MovePilot pilotInit() {
 		// Motor setup
 		EV3LargeRegulatedMotor motor1 = new EV3LargeRegulatedMotor(MotorPort.A);
 		EV3LargeRegulatedMotor motor2 = new EV3LargeRegulatedMotor(MotorPort.B);

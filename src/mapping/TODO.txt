@@ -1,5 +1,0 @@
-Check whether TestDrawMaze functions correctly, and if not check TestDrawObject and stuff
-
-Since at home can't really check if anything using leJOS classes is done properly
-
-Also confer with my dudes to ask about spacing object drawings so don't overwrite each other a bit

@@ -1,10 +1,11 @@
-package behaviours.skeleton;
+package behaviours;
 
 import lejos.robotics.subsumption.Behavior;
 //import lejos Sound;
 //import lejos LCD;
 //import lejos keys
 import mapping.*;
+import setup.MazeSolvingRobot;
 
 //Highest priority besides one that finds finish?
 public class OutsideMaze implements Behavior {
@@ -12,7 +13,7 @@ public class OutsideMaze implements Behavior {
 
     @Override
     public boolean takeControl() {
-        return isOutsideMaze(chungus.getCoordinates());
+        return isOutsideMaze(MazeSolvingRobot.getPosition());
     }
 
     //non-suppressable
@@ -33,7 +34,7 @@ public class OutsideMaze implements Behavior {
     }
 
     private boolean isOutsideMaze(Coordinate currentPosition) {
-        return (currentPosition.getX() < 0 || currentPosition.getX() >= grid.getWIDTH()
-                || currentPosition.getY() < 0 || currentPosition .getY() >= grid.getHEIGHT());
+        return (currentPosition.getX() < 0 || currentPosition.getX() >= MazeSolvingRobot.getMaze().getWIDTH()
+                || currentPosition.getY() < 0 || currentPosition .getY() >= MazeSolvingRobot.getMaze().getHEIGHT());
     }
 }

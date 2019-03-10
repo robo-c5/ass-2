@@ -1,16 +1,20 @@
-package behaviours.skeleton;
+package behaviours;
 
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
+import setup.EV3Setup;
+import setup.MazeSolvingRobot;
 
 //in terms of priority, MoveToNextTile > DetectWall > CheckNeighbours
 public class DetectWall implements Behavior {
+	
     boolean supressed = false;
 
+    private final int DETECT_WALL_DISTANCE = 20;
+    
     @Override
     public boolean takeControl() {
-        //if IR? sensor returns less than 20cm from something, we detected a wall
-        return false;
+    	 return (EV3Setup.getIRSample()[0] < DETECT_WALL_DISTANCE);
     }
 
     @Override
@@ -30,9 +34,10 @@ public class DetectWall implements Behavior {
     @Override
     public void action() {
         while (!supressed) {
-            Coordinate currentPosition = chungus.getCoordinates();
-            Bearing currentDirection = chungus.getBearing();
-            MazeObject observedObject = grid.getMazeObject(Maze.travelByBearing(currentPosition, currentDirection));
+            Coordinate currentPosition = MazeSolvingRobot.getPosition();
+            Bearing currentDirection = MazeSolvingRobot.getBearing();
+            Maze maze = MazeSolvingRobot.getMaze();
+            Edge observedObject = (Edge) MazeSolvingRobot.getMaze().getMazeObject(maze.travelByBearing(currentPosition, currentDirection));
             observedObject.setWall();
         }
     }
