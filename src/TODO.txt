@@ -5,3 +5,6 @@ T- might be good idea to detect when you've crossed double black, and then trave
 T - couple of behaviours causing errors with null pointers, will debug next time
 T - think need to add git ignore to RunMazeSolver.jar but too scared
 T - replace EV3 references with MazeSolvingRobot references
+
+
+J - maybe remove redunant classes like coordinate and use lejos ones instead?
