@@ -2,7 +2,7 @@ package mapping;
 import java.util.Scanner;
 
 public class TestMaze {
-    private final static int CM_PER_PIXEL = 5;
+   private static final int CM_PER_PIXEL = DrawMaze.getCmPerPixel();
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -25,6 +25,9 @@ public class TestMaze {
         System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " is " + testObject.getHeight() +  " cm or "
                 + testObject.getHeight()/CM_PER_PIXEL + " Pixels high and " + testObject.getWidth() +
                 " cm or " + testObject.getWidth()/CM_PER_PIXEL + " Pixels Wide");
+        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " traversable: " + testObject.isTraversable());
+        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " visited: " + testObject.isVisited());
+      
 
         Coordinate objectSW = testObject.getMetricPos();
         int maxY = objectSW.getY() + testObject.getHeight();

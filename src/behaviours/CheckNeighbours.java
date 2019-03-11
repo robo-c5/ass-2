@@ -1,9 +1,19 @@
 package behaviours;
 
+import lejos.hardware.ev3.EV3;
 import lejos.robotics.subsumption.Behavior;
+import mapping.Bearing;
+import mapping.Coordinate;
+import mapping.Edge;
+import mapping.Maze;
+import mapping.MazeObject;
+import mapping.Tile;
+import setup.EV3Setup;
+import setup.MazeSolvingRobot;
 
 //in terms of priority, MoveToNextTile > DetectWall > CheckNeighbours
 public class CheckNeighbours implements Behavior {
+	
 	boolean supressed = false;
 
 	@Override
@@ -24,7 +34,21 @@ public class CheckNeighbours implements Behavior {
 
 	@Override
 	public void action() {
-		while (!supressed) {
+		Coordinate currentPosition = MazeSolvingRobot.getPosition();
+		Bearing currentDirection = MazeSolvingRobot.getBearing();
+		Maze maze = MazeSolvingRobot.getMaze();
+		Tile currentTile = (Tile)maze.getMazeObject(currentPosition);
+		for (MazeObject adjacent : currentTile.getNeighbours())
+		{
+			if (!adjacent.isVisited())
+			{
+				try {
+					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
+	
 }

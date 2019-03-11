@@ -1,13 +1,7 @@
-Check whether TestDrawMaze functions correctly, and if not check TestDrawObject and stuff
-
-Since at home can't really check if anything using leJOS classes is done properly
-
-Also confer with my dudes to ask about spacing object drawings so don't overwrite each other a bit
-
-Rmeinder for Jon- add pixel coordinates field to MazeObjects
-Also
+Maze make some methods static
 
 T- Get robot moving and detecting walls using behaviours
-T- might be good idea to detect when you've crossed double black, and then travel half tile, then it won't get out of synch?|
+T- might be good idea to detect when you've crossed double black, and then travel half tile, then it won't get out of synch?
 T - couple of behaviours causing errors with null pointers, will debug next time
-T - think need to add git ignore to RunMazeSolver.java but too scared
+T - think need to add git ignore to RunMazeSolver.jar but too scared
+T - replace EV3 references with MazeSolvingRobot references

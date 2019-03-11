@@ -3,13 +3,10 @@ package mapping;
 import java.lang.Math;
 import java.util.Stack;
 
+import setup.MazeSolvingRobot;
+
 public class Maze {
-    //move cardinals + getter to somewhere a bit more global so can use in
-    private static final Bearing NORTH = new Bearing(0);
-    private static final Bearing EAST = new Bearing(1);
-    private static final Bearing SOUTH = new Bearing(2);
-    private static final Bearing WEST = new Bearing(3);
-    private static final Bearing[] CARDINALS = {NORTH, EAST, SOUTH, WEST};
+
 	private static final int WIDTH = 19;
 	private static final int HEIGHT = 13;
 
@@ -55,7 +52,7 @@ public class Maze {
                 else if (isTile(topoCoordGrid[y][x]))
                     objectGrid[y][x] = new Tile(topoCoordGrid[y][x], metricPos);
                 currentX += objectGrid[y][x].getWidth();
-
+                
                 rowRep.append(objectGrid[y][x].toString());
 
             }
@@ -138,7 +135,7 @@ public class Maze {
 	private void associateNeighbours() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                for (Bearing direction : CARDINALS) {
+                for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
                     try {
                         MazeObject newNeighbour = getMazeObject(travelByBearing(getCoordinate(y,x), direction));
                         objectGrid[y][x].setNeighbour(newNeighbour, direction);
@@ -177,14 +174,10 @@ public class Maze {
 	    return sharedEdge1.isWall();
     }
 
-    public static Bearing[] getCARDINALS() {
-        return CARDINALS;
-    }
-
     public Bearing getOpposite(Bearing direction) throws Exception{
-	    for (int i = 0; i < CARDINALS.length; i++) {
-	        if (direction == CARDINALS[i]) {
-                return CARDINALS[(i + CARDINALS.length / 2) % 4];
+	    for (int i = 0; i < MazeSolvingRobot.getCARDINALS().length; i++) {
+	        if (direction == MazeSolvingRobot.getCARDINALS()[i]) {
+                return MazeSolvingRobot.getCARDINALS()[(i + MazeSolvingRobot.getCARDINALS().length / 2) % 4];
             }
         }
         throw new Exception("Bearing not found in list of Cardinal directions");
@@ -199,12 +192,20 @@ public class Maze {
         return objectGrid;
     }
 
-    public int getWIDTH() {
+    public static int getWIDTH() {
         return WIDTH;
     }
 
-    public int getHEIGHT() {
+    public static int getHEIGHT() {
         return HEIGHT;
+    }
+    
+    public static Bearing getBearing(MazeObject origin, MazeObject destination) throws Exception{    	
+    	for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
+    		if (origin.getAdjacent(direction).equals(destination))
+    			return direction;
+    	}
+    	throw new Exception ("Angle between objects is not a Cardinal Direction");
     }
 
     //test method

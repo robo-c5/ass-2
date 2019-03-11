@@ -111,10 +111,11 @@ public class EV3Setup {
 	}
 
 	private static void arbitratorInit() {
-		// Start Arbitrator
-		new Arbitrator(new Behavior[] { new MoveToNextTile(), new DetectWall(), new CheckNeighbours(),
-				 new EndArbitrator() }).go();
-		// ^ new OutsideMaze(),
+		// add behaviours to, and then start, Arbitrator
+		//new Arbitrator(new Behavior[] { new MoveToNextTile(), new DetectWall(), new CheckNeighbours(),
+		//		new OutsideMaze(), new EndArbitrator() }).go();
+		
+		new Arbitrator(new Behavior[] {new DetectWall(), new EndArbitrator()}).go();
 	}
 
 	private static MovePilot pilotInit() {

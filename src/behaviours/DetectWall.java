@@ -7,38 +7,34 @@ import setup.MazeSolvingRobot;
 
 //in terms of priority, MoveToNextTile > DetectWall > CheckNeighbours
 public class DetectWall implements Behavior {
-	
-    boolean supressed = false;
 
-    private final int DETECT_WALL_DISTANCE = 20;
-    
-    @Override
-    public boolean takeControl() {
-    	 return (EV3Setup.getIRSample()[0] < DETECT_WALL_DISTANCE);
-    }
+	private final int DETECT_WALL_DISTANCE = 20;
 
-    @Override
-    public void suppress() {
-        supressed = true;
-    }
+	@Override
+	public boolean takeControl() {
+		return (EV3Setup.getIRSample()[0] < DETECT_WALL_DISTANCE);
+	}
 
-    /*
-    Upon detecting a wall, we should:
-    Get the position of the robot.
-    Get its Bearing
-    Use these to find out the position of the detected Wall
-    Set that Wall as non-traversible, then ensure it is also set as visited (probably done outside this class.
-    We expect to go back to checking the neighbours at the current location
-    */
+	@Override
+	public void suppress() {
+	}
 
-    @Override
-    public void action() {
-        while (!supressed) {
-            Coordinate currentPosition = MazeSolvingRobot.getPosition();
-            Bearing currentDirection = MazeSolvingRobot.getBearing();
-            Maze maze = MazeSolvingRobot.getMaze();
-            Edge observedObject = (Edge) MazeSolvingRobot.getMaze().getMazeObject(maze.travelByBearing(currentPosition, currentDirection));
-            observedObject.setWall();
-        }
-    }
+	/*
+	 * Upon detecting a wall, we should: Get the position of the robot. Get its
+	 * Bearing Use these to find out the position of the detected Wall Set that Wall
+	 * as non-traversible, then ensure it is also set as visited (probably done
+	 * outside this class. We expect to go back to checking the neighbours at the
+	 * current location
+	 */
+
+	@Override
+	public void action() {
+		Coordinate currentPosition = MazeSolvingRobot.getPosition();
+		Bearing currentDirection = MazeSolvingRobot.getBearing();
+		Maze maze = MazeSolvingRobot.getMaze();
+		// better if travelByBearing could be static, then wouldn't need another ref to maze
+		Edge observedObject = (Edge) maze.getMazeObject(maze.travelByBearing(currentPosition, currentDirection));
+		observedObject.setWall();
+	}
+
 }
