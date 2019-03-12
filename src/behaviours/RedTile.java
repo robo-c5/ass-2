@@ -30,7 +30,7 @@ public class RedTile implements Behavior {
 		float x = currentMetricPos.getX();
 		float y = currentMetricPos.getY();
 		Pose start = new Pose(x, y, MazeSolvingRobot.getBearing().getAngle());
-		Waypoint goal = new Waypoint (0,0);
+		Waypoint goal = new Waypoint(0,0);
 		
 		try {
 			Path toStart = npf.findRoute(start, goal);
@@ -64,7 +64,13 @@ public class RedTile implements Behavior {
 					Node newNode = ((Tile) tile).getNode();
 					fWGM.addNode(newNode, 0);
 					for (Tile neighbour : mazeMap.getAdjacentTiles((Tile) tile)) {
-						fWGM.connect(newNode, neighbour.getNode());
+						try {
+							if (!mazeMap.isPathBetweenBlocked((Tile) tile, neighbour))
+							fWGM.connect(newNode, neighbour.getNode());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}				
 			}

@@ -28,8 +28,8 @@ public class Tile extends MazeObject {
     }
     
     public Node getNode() {
-    	float adjustedX = metricPos.getX() - MazeSolvingRobot.getOrigin().getX();
-		float adjustedY = metricPos.getY() - MazeSolvingRobot.getOrigin().getY();
+    	float adjustedX = centre.getX() - MazeSolvingRobot.getOrigin().getX();
+		float adjustedY = centre.getY() - MazeSolvingRobot.getOrigin().getY();
 		return new Node(adjustedX, adjustedY);
     }
 }
