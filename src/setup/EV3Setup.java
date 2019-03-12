@@ -36,8 +36,6 @@ public class EV3Setup {
 		ev3Brick = (EV3) BrickFinder.getLocal();
 		// Wait for input
 		waitForAnyPress(ev3Brick.getKeys());
-		// setup arbitratorInit and then start it
-		arbitratorInit();
 	}
 
 	public static boolean escapePressed() {
@@ -122,7 +120,7 @@ public class EV3Setup {
 		return new EV3ColorSensor(SensorPort.S2);
 	}
 
-	private static void arbitratorInit() {
+	public static void startArbitrator() {
 		// add behaviours to, and then start, Arbitrator
 		new Arbitrator(new Behavior[] {new CheckNeighbours(),
 				new EndArbitrator() }).go();

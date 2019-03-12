@@ -2,8 +2,6 @@ package setup;
 
 import java.util.Arrays;
 import java.util.Stack;
-
-import lejos.hardware.Sound;
 import mapping.*;
 
 public class MazeSolvingRobot extends EV3Setup {
@@ -27,10 +25,10 @@ public class MazeSolvingRobot extends EV3Setup {
 	private static Stack<Tile> navPath; // a list of the visited tiles, in order, get popped off during backtracking
 
 	public MazeSolvingRobot(int startY, int startX, int bearingIndex) {
-		createEV3();
 		setMaze();
 		setPosition(getMaze().getCoordinate(startY, startX));
 		setBearing(bearingIndex);
+		startArbitrator();
 	}
 	
 	public static Stack<Tile> getNavPath()
@@ -102,10 +100,6 @@ public class MazeSolvingRobot extends EV3Setup {
 	private static void setDestination(Coordinate givenDestination)
 	{
 		destination = givenDestination;
-	}
-	
-	private static void createEV3() {
-		new EV3Setup();
 	}
 
 	// returns an array of 2 ints, y-pos then x-pos
