@@ -1,6 +1,5 @@
 package behaviours;
 
-import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import mapping.*;
@@ -32,19 +31,10 @@ public class CheckNeighbours implements Behavior {
 	 * if wall their or not, then turn to check all non visited neighbours similarly
 	 * going clockwise
 	 */
-	boolean once = false;
 
 	@Override
 	public void action() {
 		Maze maze = MazeSolvingRobot.getMaze();
-
-		if (!once) {
-			LCD.drawString(Integer.toString(MazeSolvingRobot.getPosition().getX()), 5, 5);
-			once = true;
-		}
-		
-		if (true) 
-			return;
 		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getPosition());
 		checkAdjacentEdges(currentTile);
 		boolean shouldBackTrack = true;
