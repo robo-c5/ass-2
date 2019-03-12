@@ -12,6 +12,7 @@ public class MazeSolvingRobot extends EV3Setup {
 	private static final Bearing SOUTH = new Bearing(2);
 	private static final Bearing WEST = new Bearing(3);
 	private static final Bearing[] CARDINALS = { NORTH, EAST, SOUTH, WEST };
+	private static final Coordinate initialOrigin = getMaze().getMazeObject(getMaze().getCoordinate(1, 1)).getMetricPos();
 
 	private static Bearing bearing;
 
@@ -82,7 +83,9 @@ public class MazeSolvingRobot extends EV3Setup {
 	}
 	
 	public static void moveTo(Coordinate destination) {
-		EV3Setup.getNav().goTo(destination.getX(), destination.getY());
+		int adjustedX = destination.getX() - initialOrigin.getX();
+		int adjustedY = destination.getY() - initialOrigin.getY();
+		EV3Setup.getNav().goTo(adjustedX, adjustedY);
 		setPosition(destination);
 	}
 }
