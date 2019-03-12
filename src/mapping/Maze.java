@@ -184,21 +184,11 @@ public class Maze {
 	public boolean isPathBetweenBlocked(Tile origin, Tile destination) throws Exception {
 		Bearing direction = getBearing(origin, destination);
 		Edge sharedEdge1 = (Edge) origin.getAdjacent(direction);
-		Edge sharedEdge2 = (Edge) destination.getAdjacent(getOpposite(direction));
+		Edge sharedEdge2 = (Edge) destination.getAdjacent(MazeSolvingRobot.getOpposite(direction));
 		if (sharedEdge1 != sharedEdge2) {
 			throw new Exception("Origin and Destination Tiles do not share a neighbouring Edge");
 		}
 		return sharedEdge1.isTraversable();
-	}
-
-	public Bearing getOpposite(Bearing direction) throws Exception {
-		for (int i = 0; i < MazeSolvingRobot.getCARDINALS().length; i++) {
-			if (direction == MazeSolvingRobot.getCARDINALS()[i]) {
-				return MazeSolvingRobot.getCARDINALS()[(i + MazeSolvingRobot.getCARDINALS().length / 2) % 4];
-			}
-		}
-		throw new Exception("Bearing not found in list of Cardinal directions");
-
 	}
 
 	public Coordinate[][] getCoordinateGrid() {

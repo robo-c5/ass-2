@@ -20,9 +20,15 @@ public class RedTile implements Behavior {
 		suppressed = true;
 	}
 	
+	//general procedure once detect Red: turn around (wide eyes), return to previous position. Then find shortest path back then take it.
 	@Override
 	public void action() {
-		//go back to previous tile centre
+		try {
+			MazeSolvingRobot.rotateTo(MazeSolvingRobot.getOpposite(MazeSolvingRobot.getBearing()));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}		
+		MazeSolvingRobot.moveTo(MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getPosition()).getCentre());
 		AstarSearchAlgorithm searchAlg = new AstarSearchAlgorithm();
 		FourWayGridMesh gridMesh = convertMaze();
 		NodePathFinder npf = new NodePathFinder (searchAlg, gridMesh);

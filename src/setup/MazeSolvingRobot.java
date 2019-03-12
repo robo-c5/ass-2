@@ -117,6 +117,15 @@ public class MazeSolvingRobot extends EV3Setup {
 	public static void setPosition(Coordinate location) {
 		position = getMaze().getCoordinate(location.getY(), location.getX());
 	}
+	
+	public static Bearing getOpposite(Bearing direction) throws Exception {
+		for (int i = 0; i < MazeSolvingRobot.getCARDINALS().length; i++) {
+			if (direction == MazeSolvingRobot.getCARDINALS()[i]) {
+				return MazeSolvingRobot.getCARDINALS()[(i + MazeSolvingRobot.getCARDINALS().length / 2) % 4];
+			}
+		}
+		throw new Exception("Bearing not found in list of Cardinal directions");
+	}
 
 	public static void rotateTo(Bearing target) {
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
