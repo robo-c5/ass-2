@@ -84,7 +84,7 @@ public class RedTile implements Behavior {
 		return fWGM;
 	}
 	
-	private static Coordinate adjustForOrigin(Coordinate metricCentre) {
+	public static Coordinate adjustForOrigin(Coordinate metricCentre) {
 		int adjustedX = metricCentre.getX() - MazeSolvingRobot.getOrigin().getX();
 		int adjustedY = metricCentre.getY() - MazeSolvingRobot.getOrigin().getY();
 		return new Coordinate(adjustedY, adjustedX);

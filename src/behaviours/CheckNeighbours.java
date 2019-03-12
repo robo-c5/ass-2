@@ -1,9 +1,10 @@
 package behaviours;
 
 import lejos.robotics.subsumption.Behavior;
+import setup.*;
 import lejos.utility.Delay;
 import mapping.*;
-import setup.MazeSolvingRobot;
+import lejos.robotics.geometry.*;
 
 //in terms of priority, MoveToNextTile > CheckNeighbours
 public class CheckNeighbours implements Behavior {
