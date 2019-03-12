@@ -1,11 +1,10 @@
 Maze make some methods static
 
-T- Get robot moving and detecting walls using behaviours
-T- might be good idea to detect when you've crossed double black, and then travel half tile, then it won't get out of synch?
+T - might be good idea to detect when you've crossed double black, and then travel half tile, then it won't get out of synch?
 T - couple of behaviours causing errors with null pointers, will debug next time
 T - think need to add git ignore to RunMazeSolver.jar but too scared
-T - replace EV3 references with MazeSolvingRobot references
-
+T - close sensors in end arby
+T - make sure tiles are marked as visited when the robot has stepped on the tile, and also add this tile to the navpath at same time
 
 J - maybe remove redundant classes like coordinate and use lejos ones instead?
 J - discuss behavior design - possibly remove DetectWall?
