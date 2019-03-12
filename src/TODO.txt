@@ -5,6 +5,7 @@ T - couple of behaviours causing errors with null pointers, will debug next time
 T - think need to add git ignore to RunMazeSolver.jar but too scared
 T - close sensors in end arby
 T - make sure tiles are marked as visited when the robot has stepped on the tile, and also add this tile to the navpath at same time
+T - metric pos not beeing set in maze object
 
 J - maybe remove redundant classes like coordinate and use lejos ones instead?
 J - discuss behavior design - possibly remove DetectWall?
