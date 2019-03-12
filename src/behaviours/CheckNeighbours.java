@@ -1,26 +1,30 @@
 package behaviours;
 
-import lejos.hardware.ev3.EV3;
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
-import setup.EV3Setup;
 import setup.MazeSolvingRobot;
 
-//in terms of priority, MoveToNextTile > DetectWall > CheckNeighbours
+//in terms of priority, MoveToNextTile > CheckNeighbours
 public class CheckNeighbours implements Behavior {
+
+	private boolean suppressed = false;
 	
-	boolean supressed = false;
+	private final int DETECT_WALL_DISTANCE = 20;
 
 	@Override
 	public boolean takeControl() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public void suppress() {
-		supressed = true;
+		suppressed = true;
 	}
 
+	private boolean detectWall() {
+		return (MazeSolvingRobot.getIRSample()[0] < DETECT_WALL_DISTANCE);
+	}
+	
 	/*
 	 * Get the position of the robot. Get its Bearing Wait e.g. 1 sec to make sure
 	 * if wall their or not, then turn to check all non visited neighbours similarly
@@ -33,13 +37,16 @@ public class CheckNeighbours implements Behavior {
 		Bearing currentDirection = MazeSolvingRobot.getBearing();
 		Maze maze = MazeSolvingRobot.getMaze();
 		Tile currentTile = (Tile) maze.getMazeObject(currentPosition);
-		for (MazeObject adjacent : currentTile.getNeighbours())
-		{
-			if (!adjacent.isVisited())
-			{
+		for (MazeObject adjacent : currentTile.getNeighbours()) {
+			if (!adjacent.isVisited()) {
 				try {
 					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent));
-					//may want to just do wall checking here instead of having another behaviour for it
+					if (!detectWall()) { // if no wall is detected
+						while (!suppressed)
+							moveTo(currentPosition, currentDirection, currentTile, maze);
+					}
+					// may want to just do wall checking here instead of having another behaviour
+					// for it
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,4 +54,17 @@ public class CheckNeighbours implements Behavior {
 		}
 	}
 	
+	private void moveTo (Coordinate currentPosition, Bearing currentDirection, Tile currentTile, Maze maze)
+	{
+		Tile destinationTile = maze.getNearestTile(currentTile, currentDirection);
+		try {
+			if (!maze.isPathBetweenBlocked(currentTile, destinationTile)) {
+				MazeSolvingRobot.moveTo(destinationTile.getCentre());
+				currentTile.setVisited();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
