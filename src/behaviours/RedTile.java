@@ -44,8 +44,8 @@ public class RedTile implements Behavior {
 				if (tile instanceof Tile) {
 					Node newNode = ((Tile) tile).getNode();
 					fWGM.addNode(newNode, 0);
-					for (MazeObject neighbour : tile.getNeighbours()) {
-						fWGM.connect(newNode, );
+					for (MazeObject neighbour : mazeMap.getAdjacentTiles((Tile) tile)) {
+						fWGM.connect(newNode, (neighbour.getNode());
 					}		
 				}
 				
