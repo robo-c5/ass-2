@@ -78,7 +78,7 @@ public class MazeSolvingRobot extends EV3Setup {
 
 	public static void rotateTo(Bearing target) {
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
-		EV3Setup.getPilot().rotate(angleDifference);
+		EV3Setup.getPilot().rotate(angleDifference, true);
 		setBearing(target);
 	}
 	
