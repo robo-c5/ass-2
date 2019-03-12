@@ -1,4 +1,8 @@
 package mapping;
+
+import lejos.robotics.pathfinding.Node;
+import setup.MazeSolvingRobot;
+
 public class Tile extends MazeObject {
 
     enum Colour { //eventually move this somewhere else?
@@ -21,5 +25,11 @@ public class Tile extends MazeObject {
 
     public void setColour(Colour newColour) {
         colour = newColour;
+    }
+    
+    public Node getNode() {
+    	float adjustedX = metricPos.getX() - MazeSolvingRobot.getOrigin().getX();
+		float adjustedY = metricPos.getY() - MazeSolvingRobot.getOrigin().getY();
+		return new Node(adjustedX, adjustedY);
     }
 }
