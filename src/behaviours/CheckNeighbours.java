@@ -44,7 +44,7 @@ public class CheckNeighbours implements Behavior {
 					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent));
 					Delay.msDelay(500);
 					if (detectWall()) {
-						((Edge) adjacent).setWall();
+						((Edge) adjacent).setNoGo();
 					}
 					if (!detectWall()) { // if no wall is detected
 						while (!suppressed)

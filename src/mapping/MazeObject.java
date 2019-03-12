@@ -58,10 +58,6 @@ public abstract class MazeObject {
         return traversable;
     }
 
-    public void setNonTraversable() {
-        traversable = false;
-    }
-
     public boolean isVisited() {
         return visited;
     }
@@ -76,6 +72,11 @@ public abstract class MazeObject {
 
     public int getWidth() {
         return width;
+    }
+    
+    public void setNoGo() {
+    	traversable = false;
+    	visited = true;
     }
 
     //testing method

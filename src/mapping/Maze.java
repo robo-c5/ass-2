@@ -92,28 +92,28 @@ public class Maze {
     private void declareBoundaryWalls() {
         for (MazeObject outer : getRow(0)) {
             Edge edge = (Edge) outer;
-            //edge.setWall();
+            //edge.setNoGo();
 
             //test method
             edge.setBoundary();
         }
         for (MazeObject outer : getRow(HEIGHT-1)) {
             Edge edge = (Edge) outer;
-            //edge.setWall();
+            //edge.setNoGo();
 
             //test method
             edge.setBoundary();
         }
         for (MazeObject outer : getColumn(0)) {
             Edge edge = (Edge) outer;
-            //edge.setWall();
+            //edge.setNoGo();
 
             //test method
             edge.setBoundary();
         }
         for (MazeObject outer : getColumn(WIDTH-1)) {
             Edge edge = (Edge) outer;
-            //edge.setWall();
+            //edge.setNoGo();
 
             //test method
             edge.setBoundary();
@@ -172,7 +172,7 @@ public class Maze {
 	    if (sharedEdge1 != sharedEdge2) {
 	        throw new Exception("Origin and Destination Tiles do not share a neighbouring Edge");
         }
-	    return sharedEdge1.isWall();
+	    return sharedEdge1.isTraversable();
     }
 
     public Bearing getOpposite(Bearing direction) throws Exception{
