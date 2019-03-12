@@ -95,11 +95,11 @@ public class EV3Setup {
 		return sample;
 	}
 
-	public static float[] getIRSample() {
+	public static float getIRSample() {
 		SensorMode sm = getIRSensor().getDistanceMode();
 		float[] sample = new float[sm.sampleSize()];
 		sm.fetchSample(sample, 0);
-		return sample;
+		return sample[0];
 	}
 	//
 
