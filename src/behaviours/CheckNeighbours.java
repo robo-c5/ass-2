@@ -1,7 +1,5 @@
 package behaviours;
 
-import jdk.nashorn.internal.runtime.regexp.joni.constants.Traverse;
-import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
