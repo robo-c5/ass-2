@@ -1,6 +1,7 @@
 package behaviours;
 
 import lejos.robotics.subsumption.Behavior;
+import lejos.utility.Delay;
 import mapping.*;
 import setup.MazeSolvingRobot;
 
@@ -41,6 +42,10 @@ public class CheckNeighbours implements Behavior {
 			if (!adjacent.isVisited()) {
 				try {
 					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent));
+					Delay.msDelay(500);
+					if (detectWall()) {
+						((Edge) adjacent).setWall();
+					}
 					if (!detectWall()) { // if no wall is detected
 						while (!suppressed)
 							moveTo(currentPosition, currentDirection, currentTile, maze);
