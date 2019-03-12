@@ -1,6 +1,8 @@
 package behaviours;
 
 import jdk.nashorn.internal.runtime.regexp.joni.constants.Traverse;
+import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import mapping.*;
@@ -32,12 +34,20 @@ public class CheckNeighbours implements Behavior {
 	 * if wall their or not, then turn to check all non visited neighbours similarly
 	 * going clockwise
 	 */
+	boolean once = false;
 
 	@Override
 	public void action() {
-		Coordinate currentPosition = MazeSolvingRobot.getPosition();
 		Maze maze = MazeSolvingRobot.getMaze();
-		Tile currentTile = (Tile) maze.getMazeObject(currentPosition);
+
+		if (!once) {
+			LCD.drawString(Integer.toString(MazeSolvingRobot.getPosition().getX()), 5, 5);
+			once = true;
+		}
+		
+		if (true) 
+			return;
+		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getPosition());
 		checkAdjacentEdges(currentTile);
 		boolean shouldBackTrack = true;
 		Tile targetMazeTile = new Tile(null, null); // the maze object the robot will move towards
@@ -57,8 +67,7 @@ public class CheckNeighbours implements Behavior {
 		}
 	}
 
-	private void checkAdjacentEdges(Tile currentTile)
-	{
+	private void checkAdjacentEdges(Tile currentTile) {
 		for (MazeObject adjacent : currentTile.getNeighbours()) {
 			if (!adjacent.isVisited()) {
 				try {
@@ -77,7 +86,7 @@ public class CheckNeighbours implements Behavior {
 			}
 		}
 	}
-	
+
 	private void checkAdjacentTiles(Tile[] adjacentTiles, boolean shouldBackTrack, Tile targetMazeTile) {
 		for (Tile adjacent : adjacentTiles) {
 			if (!adjacent.isTraversable() && !adjacent.isVisited()) // if the neighbour is unvisited and not a wall

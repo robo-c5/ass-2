@@ -6,7 +6,7 @@ import setup.MazeSolvingRobot;
 public class RunMazeSolver {
 
 	public static void main(String[] args) {
-		new MazeSolvingRobot(0, 0, 0);
+		new MazeSolvingRobot(1, 1, 1);
 	}
 
 }
