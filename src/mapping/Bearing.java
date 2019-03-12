@@ -9,7 +9,7 @@ public class Bearing {
 
     public Bearing(int index) {
         intRep = index;
-        angle = minimiseAngle(ANGULAR_OFFSET*index);
+        angle = minimiseAngle(ANGULAR_OFFSET*(index-1));
     }
 
     //no point turning 270 degrees where we could turn -90. Probably not necessary thanks to navigation but may be handy
