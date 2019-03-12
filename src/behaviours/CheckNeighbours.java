@@ -35,10 +35,30 @@ public class CheckNeighbours implements Behavior {
 
 	@Override
 	public void action() {
-		Bearing startDirection = MazeSolvingRobot.getBearing();
 		Coordinate currentPosition = MazeSolvingRobot.getPosition();
 		Maze maze = MazeSolvingRobot.getMaze();
 		Tile currentTile = (Tile) maze.getMazeObject(currentPosition);
+		checkAdjacentEdges(currentTile);
+		boolean shouldBackTrack = true;
+		Tile targetMazeTile = new Tile(null, null); // the maze object the robot will move towards
+		checkAdjacentTiles(getAdjacentTiles(currentTile, maze), shouldBackTrack, targetMazeTile);
+		if (shouldBackTrack) // no unvisited tiles remain so backtrack
+		{
+			backTrack(targetMazeTile);
+		}
+		rotateTo(currentTile, targetMazeTile);
+	}
+
+	private void rotateTo(Tile currentTile, Tile targetMazeTile) {
+		try {
+			MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, targetMazeTile));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void checkAdjacentEdges(Tile currentTile)
+	{
 		for (MazeObject adjacent : currentTile.getNeighbours()) {
 			if (!adjacent.isVisited()) {
 				try {
@@ -56,23 +76,9 @@ public class CheckNeighbours implements Behavior {
 				}
 			}
 		}
-		boolean shouldBackTrack = true;
-		Tile targetMazeTile = new Tile(null, null); // the maze object the robot will move towards
-		checkAdjacentTiles(getAdjacentTiles(currentTile, maze), shouldBackTrack, targetMazeTile);
-		if (shouldBackTrack) // no unvisited tiles remain so backtrack
-		{
-			backTrack(targetMazeTile);
-		}
-
-		try {
-			MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, targetMazeTile));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
-	private void checkAdjacentTiles(Tile[] adjacentTiles, boolean shouldBackTrack, Tile targetMazeTile)
-	{
+	private void checkAdjacentTiles(Tile[] adjacentTiles, boolean shouldBackTrack, Tile targetMazeTile) {
 		for (Tile adjacent : adjacentTiles) {
 			if (!adjacent.isTraversable() && !adjacent.isVisited()) // if the neighbour is unvisited and not a wall
 			{
@@ -82,17 +88,16 @@ public class CheckNeighbours implements Behavior {
 			}
 		}
 	}
-	
-	private void backTrack(Tile targetMazeTile)
-	{
+
+	private void backTrack(Tile targetMazeTile) {
 		MazeSolvingRobot.popFromNavPath(); // pop the top element from the navpath stack
 		if (MazeSolvingRobot.getNavPath().size() > 0) {
 			targetMazeTile = MazeSolvingRobot.pollNavPath(); // then set the new targetTile as the top element of
 																// the navPath
-		}
-		else // if the navpath is empty at this point, this means you have got back to the start of the maze without reaching the destination point
+		} else // if the navpath is empty at this point, this means you have got back to the
+				// start of the maze without reaching the destination point
 		{
-			
+
 		}
 	}
 
