@@ -1,6 +1,5 @@
 package behaviours;
 
-import jdk.nashorn.internal.runtime.regexp.joni.constants.Traverse;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import mapping.*;
