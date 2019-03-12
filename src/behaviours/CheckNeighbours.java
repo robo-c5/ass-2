@@ -2,12 +2,7 @@ package behaviours;
 
 import lejos.hardware.ev3.EV3;
 import lejos.robotics.subsumption.Behavior;
-import mapping.Bearing;
-import mapping.Coordinate;
-import mapping.Edge;
-import mapping.Maze;
-import mapping.MazeObject;
-import mapping.Tile;
+import mapping.*;
 import setup.EV3Setup;
 import setup.MazeSolvingRobot;
 
@@ -37,13 +32,14 @@ public class CheckNeighbours implements Behavior {
 		Coordinate currentPosition = MazeSolvingRobot.getPosition();
 		Bearing currentDirection = MazeSolvingRobot.getBearing();
 		Maze maze = MazeSolvingRobot.getMaze();
-		Tile currentTile = (Tile)maze.getMazeObject(currentPosition);
+		Tile currentTile = (Tile) maze.getMazeObject(currentPosition);
 		for (MazeObject adjacent : currentTile.getNeighbours())
 		{
 			if (!adjacent.isVisited())
 			{
 				try {
 					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent));
+					//may want to just do wall checking here instead of having another behaviour for it
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

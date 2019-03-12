@@ -165,7 +165,8 @@ public class Maze {
 	    return (Tile) (origin.getAdjacent(direction).getAdjacent(direction));
     }
 
-    public boolean isPathBetweenBlocked (Tile origin, Tile destination, Bearing direction) throws Exception {
+    public boolean isPathBetweenBlocked (Tile origin, Tile destination) throws Exception {
+    	Bearing direction = getBearing(origin, destination);
 	    Edge sharedEdge1 = (Edge) origin.getAdjacent(direction);
 	    Edge sharedEdge2 = (Edge) destination.getAdjacent(getOpposite(direction));
 	    if (sharedEdge1 != sharedEdge2) {

@@ -61,10 +61,6 @@ public abstract class MazeObject {
     public void setNonTraversable() {
         traversable = false;
     }
-    
-    public void setTraversableTrue() {
-    	traversable = true;
-    }
 
     public boolean isVisited() {
         return visited;

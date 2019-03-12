@@ -1,5 +1,7 @@
 package setup;
 
+import java.util.Arrays;
+
 import mapping.*;
 
 public class MazeSolvingRobot extends EV3Setup {
@@ -17,10 +19,11 @@ public class MazeSolvingRobot extends EV3Setup {
 
 	private static Maze maze;
 
-	public MazeSolvingRobot(int y, int x, int bearingIndex) {
-		setPosition(y, x);
-		setBearing(bearingIndex);
+	public MazeSolvingRobot(int startY, int startX, int bearingIndex) {
 		createEV3();
+		setMaze();
+		setPosition(getMaze().getCoordinate(startY, startX));
+		setBearing(bearingIndex);
 	}
 
 	public static Maze getMaze() {
@@ -49,6 +52,12 @@ public class MazeSolvingRobot extends EV3Setup {
 		if (index >= 0 && index < CARDINALS.length)
 			bearing = CARDINALS[index];
 	}
+	
+	private static void setBearing(Bearing direction) {
+		if (Arrays.asList(CARDINALS).contains(direction)) {
+			bearing = direction;
+		}
+	}
 
 	private static void createEV3() {
 		new EV3Setup();
@@ -57,18 +66,23 @@ public class MazeSolvingRobot extends EV3Setup {
 	// returns an array of 2 ints, y-pos then x-pos
 	public static Coordinate getPosition() {
 		if (position == null) {
-			setPosition(0, 0); // probably should throw some kind of error here as position should not be null
+			setPosition(getMaze().getCoordinate(0, 0)); // probably should throw some kind of error here as position should not be null
 		}
 		return position;
 	}
 
-	public static void setPosition(int y, int x) {
-		position = new Coordinate(y, x);
+	public static void setPosition(Coordinate location) {
+		position = getMaze().getCoordinate(location.getY(), location.getX());
 	}
 
 	public static void rotateTo(Bearing target) {
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
 		EV3Setup.getPilot().rotate(angleDifference);
-		setBearing(target.getAngle());
+		setBearing(target);
+	}
+	
+	public static void moveTo(Coordinate destination) {
+		EV3Setup.getNav().goTo(destination.getX(), destination.getY());
+		setPosition(destination);
 	}
 }

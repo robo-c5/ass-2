@@ -15,12 +15,15 @@ import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
+import lejos.robotics.navigation.Navigator;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
 public class EV3Setup {
 
 	private static MovePilot pilot;
+	
+	private static Navigator navPilot;
 
 	private static EV3ColorSensor cs;
 
@@ -49,6 +52,15 @@ public class EV3Setup {
 		if (pilot == null)
 			setPilot(pilotInit());
 		return pilot;
+	}
+	public static Navigator getNav() {
+		if (navPilot == null)
+			setNav(pilot);
+		return navPilot;
+	}
+	
+	public static void setNav(MovePilot pilot) {
+		navPilot = new Navigator(pilot);
 	}
 
 	// colour sensor getter and setter

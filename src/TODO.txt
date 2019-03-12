@@ -7,4 +7,5 @@ T - think need to add git ignore to RunMazeSolver.jar but too scared
 T - replace EV3 references with MazeSolvingRobot references
 
 
-J - maybe remove redunant classes like coordinate and use lejos ones instead?
+J - maybe remove redundant classes like coordinate and use lejos ones instead?
+J - discuss behavior design - possibly remove DetectWall?

@@ -1,7 +1,9 @@
 package behaviours;
 
 import lejos.robotics.subsumption.Behavior;
+import mapping.*;
 import setup.EV3Setup;
+import setup.MazeSolvingRobot;
 
 //in terms of priority, MoveToNextTile > DetectWall > CheckNeighbours
 public class MoveToNextTile implements Behavior {
@@ -29,8 +31,28 @@ public class MoveToNextTile implements Behavior {
 	public void action() {
 		//while (!supressed) { // if this is done is a loop, then it can be interrupted, which is good, but
 								// this means we have to keep track of how far the robot has moved
-			EV3Setup.getPilot().travel(travelUnit);
+			
 			//Thread.yield();
 		//}
+		//something like?
+		Coordinate currentPosition = MazeSolvingRobot.getPosition();
+		Bearing currentDirection = MazeSolvingRobot.getBearing();
+		Maze maze = MazeSolvingRobot.getMaze();
+		Tile currentTile = (Tile) maze.getMazeObject(currentPosition);
+		Tile destinationTile = maze.getNearestTile(currentTile, currentDirection);
+		try
+		{
+			if (!maze.isPathBetweenBlocked(currentTile, destinationTile)) {
+				MazeSolvingRobot.moveTo(destinationTile.getCentre());
+			}
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		
+		
 	}
 }
