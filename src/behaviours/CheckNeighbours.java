@@ -1,5 +1,6 @@
 package behaviours;
 
+import jdk.nashorn.internal.runtime.regexp.joni.constants.Traverse;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import mapping.*;
@@ -23,7 +24,7 @@ public class CheckNeighbours implements Behavior {
 	}
 
 	private boolean detectWall() {
-		return (MazeSolvingRobot.getIRSample()[0] < DETECT_WALL_DISTANCE);
+		return (MazeSolvingRobot.getIRSample() < DETECT_WALL_DISTANCE);
 	}
 
 	/*
@@ -34,8 +35,8 @@ public class CheckNeighbours implements Behavior {
 
 	@Override
 	public void action() {
+		Bearing startDirection = MazeSolvingRobot.getBearing();
 		Coordinate currentPosition = MazeSolvingRobot.getPosition();
-		Bearing currentDirection = MazeSolvingRobot.getBearing();
 		Maze maze = MazeSolvingRobot.getMaze();
 		Tile currentTile = (Tile) maze.getMazeObject(currentPosition);
 		for (MazeObject adjacent : currentTile.getNeighbours()) {
@@ -44,7 +45,9 @@ public class CheckNeighbours implements Behavior {
 					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent)); // rotate to face the edge
 					Delay.msDelay(500);
 					if (detectWall()) {
-						((Edge) adjacent).setNoGo();
+						adjacent.setNoGo();
+					} else {
+						adjacent.setVisited();
 					}
 					// may want to just do wall checking here instead of having another behaviour
 					// for it
@@ -53,21 +56,53 @@ public class CheckNeighbours implements Behavior {
 				}
 			}
 		}
-		for (MazeObject adjacent : currentTile.getNeighbours()) {
-			if (!(((Edge) adjacent).isTraversable()) && !(adjacent.isVisited())) // if the neighbour is unvisited and not a wall
+		boolean shouldBackTrack = true;
+		Tile targetMazeTile = new Tile(null, null); // the maze object the robot will move towards
+		checkAdjacentTiles(getAdjacentTiles(currentTile, maze), shouldBackTrack, targetMazeTile);
+		if (shouldBackTrack) // no unvisited tiles remain so backtrack
+		{
+			backTrack(targetMazeTile);
+		}
+
+		try {
+			MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, targetMazeTile));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void checkAdjacentTiles(Tile[] adjacentTiles, boolean shouldBackTrack, Tile targetMazeTile)
+	{
+		for (Tile adjacent : adjacentTiles) {
+			if (!adjacent.isTraversable() && !adjacent.isVisited()) // if the neighbour is unvisited and not a wall
 			{
-				try {
-					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
+				targetMazeTile = (Tile) adjacent;
+				shouldBackTrack = false;
+				return;
 			}
 		}
-		if (!detectWall()) { // if no wall is detected
-			while (!suppressed)
-				moveTo(currentPosition, currentDirection, currentTile, maze);
+	}
+	
+	private void backTrack(Tile targetMazeTile)
+	{
+		MazeSolvingRobot.popFromNavPath(); // pop the top element from the navpath stack
+		if (MazeSolvingRobot.getNavPath().size() > 0) {
+			targetMazeTile = MazeSolvingRobot.pollNavPath(); // then set the new targetTile as the top element of
+																// the navPath
 		}
+		else // if the navpath is empty at this point, this means you have got back to the start of the maze without reaching the destination point
+		{
+			
+		}
+	}
+
+	private Tile[] getAdjacentTiles(Tile currentTile, Maze maze) {
+		try {
+			return (maze.getAdjacentTiles(currentTile));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return null;
 	}
 
 	private void moveTo(Coordinate currentPosition, Bearing currentDirection, Tile currentTile, Maze maze) {

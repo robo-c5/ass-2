@@ -1,6 +1,7 @@
 package setup;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 import mapping.*;
 
@@ -19,6 +20,10 @@ public class MazeSolvingRobot extends EV3Setup {
 	private static Coordinate position;
 
 	private static Maze maze;
+	
+	private static Coordinate destination;
+	
+	private static Stack<Tile> navPath; // a list of the visited tiles, in order, get popped off during backtracking
 
 	public MazeSolvingRobot(int startY, int startX, int bearingIndex) {
 		createEV3();
@@ -26,7 +31,31 @@ public class MazeSolvingRobot extends EV3Setup {
 		setPosition(getMaze().getCoordinate(startY, startX));
 		setBearing(bearingIndex);
 	}
+	
+	public static Stack<Tile> getNavPath()
+	{
+		if (navPath == null)
+		{
+			navPath = new Stack<Tile>();
+		}
+		return navPath;
+	}
+	
+	public static void addToNavPath(Tile tile)
+	{
+		getNavPath().push(tile);
+	}
 
+	public static void popFromNavPath()
+	{
+		getNavPath().pop();
+	}
+	
+	public static Tile pollNavPath()
+	{
+		return getNavPath().peek();
+	}
+	
 	public static Maze getMaze() {
 		if (maze == null) {
 			setMaze();
@@ -60,6 +89,20 @@ public class MazeSolvingRobot extends EV3Setup {
 		}
 	}
 
+	public static Coordinate getDestination()
+	{
+		if (destination == null)
+		{
+			destination = new Coordinate(0, 0); // just prevents a null destination being returned
+		}
+		return destination;
+	}
+	
+	private static void setDestination(Coordinate givenDestination)
+	{
+		destination = givenDestination;
+	}
+	
 	private static void createEV3() {
 		new EV3Setup();
 	}
@@ -83,9 +126,10 @@ public class MazeSolvingRobot extends EV3Setup {
 	}
 	
 	public static void moveTo(Coordinate destination) {
+		setDestination(destination);
 		int adjustedX = destination.getX() - initialOrigin.getX();
 		int adjustedY = destination.getY() - initialOrigin.getY();
-		EV3Setup.getNav().goTo(adjustedX, adjustedY);
+		getNav().goTo(adjustedX, adjustedY);
 		setPosition(destination);
 	}
 
