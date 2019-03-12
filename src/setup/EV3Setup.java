@@ -125,7 +125,8 @@ public class EV3Setup {
 	private static void arbitratorInit() {
 		// add behaviours to, and then start, Arbitrator
 		new Arbitrator(new Behavior[] {new CheckNeighbours(),
-				new OutsideMaze(), new EndArbitrator() }).go();
+				new EndArbitrator() }).go();
+		//   ^new OutsideMaze(), 
 	}
 
 	private static MovePilot pilotInit() {

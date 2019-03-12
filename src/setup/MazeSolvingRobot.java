@@ -3,6 +3,7 @@ package setup;
 import java.util.Arrays;
 import java.util.Stack;
 
+import lejos.hardware.Sound;
 import mapping.*;
 
 public class MazeSolvingRobot extends EV3Setup {
