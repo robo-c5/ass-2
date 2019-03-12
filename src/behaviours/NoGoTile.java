@@ -1,8 +1,6 @@
 package behaviours;
 import lejos.robotics.subsumption.Behavior;
-import mapping.Coordinate;
-import mapping.Maze;
-import mapping.Tile;
+import mapping.*;
 import setup.MazeSolvingRobot;
 
 public class NoGoTile implements Behavior {

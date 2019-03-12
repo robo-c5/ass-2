@@ -1,4 +1,8 @@
 package mapping;
+
+import lejos.robotics.pathfinding.Node;
+import setup.MazeSolvingRobot;
+
 public abstract class MazeObject {
 
     protected MazeObject[] neighbours = new MazeObject[4];
