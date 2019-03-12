@@ -150,12 +150,17 @@ public class Maze {
 		return objectGrid[pos.getY()][pos.getX()];
 	}
 
-	public Tile[] getAdjacentTiles(Tile currentTile) throws Exception {
+	public Tile[] getAdjacentTiles(Tile currentTile) {
 		ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
 		for (Bearing dir : MazeSolvingRobot.getCARDINALS()) { 		// loop through north east south west
 			Tile nearestTile = getNearestTile(currentTile, dir); // get the closest tile to the current tile, in that direction
-			if (!isPathBetweenBlocked(currentTile, nearestTile)) { // if there is nothing blocking the two tiles, add it to the array
-				adjacentTiles.add(nearestTile);
+			try {
+				if (!isPathBetweenBlocked(currentTile, nearestTile)) { // if there is nothing blocking the two tiles, add it to the array
+					adjacentTiles.add(nearestTile);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return (Tile[])adjacentTiles.toArray();

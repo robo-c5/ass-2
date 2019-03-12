@@ -1,6 +1,7 @@
 package behaviours;
 import lejos.robotics.pathfinding.*;
 import lejos.robotics.mapping.*;
+import lejos.robotics.navigation.*;
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
 import setup.MazeSolvingRobot;
@@ -21,6 +22,24 @@ public class RedTile implements Behavior {
 	
 	@Override
 	public void action() {
+		//go back to previous tile centre
+		AstarSearchAlgorithm searchAlg = new AstarSearchAlgorithm();
+		FourWayGridMesh gridMesh = convertMaze();
+		NodePathFinder npf = new NodePathFinder (searchAlg, gridMesh);
+		Coordinate currentMetricPos = adjustForOrigin(MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getPosition()).getCentre());
+		float x = currentMetricPos.getX();
+		float y = currentMetricPos.getY();
+		Pose start = new Pose(x, y, MazeSolvingRobot.getBearing().getAngle());
+		Waypoint goal = new Waypoint (0,0);
+		
+		try {
+			Path toStart = npf.findRoute(start, goal);
+			MazeSolvingRobot.getNav().followPath(toStart);
+		} catch (DestinationUnreachableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		//convert current Maze object to a NavMesh
 	}
 	
@@ -44,14 +63,19 @@ public class RedTile implements Behavior {
 				if (tile instanceof Tile) {
 					Node newNode = ((Tile) tile).getNode();
 					fWGM.addNode(newNode, 0);
-					for (MazeObject neighbour : mazeMap.getAdjacentTiles((Tile) tile)) {
-						fWGM.connect(newNode, (neighbour.getNode());
-					}		
-				}
-				
+					for (Tile neighbour : mazeMap.getAdjacentTiles((Tile) tile)) {
+						fWGM.connect(newNode, neighbour.getNode());
+					}
+				}				
 			}
 		}
 		return fWGM;
+	}
+	
+	private static Coordinate adjustForOrigin(Coordinate metricCentre) {
+		int adjustedX = metricCentre.getX() - MazeSolvingRobot.getOrigin().getX();
+		int adjustedY = metricCentre.getY() - MazeSolvingRobot.getOrigin().getY();
+		return new Coordinate(adjustedY, adjustedX);
 	}
 
 }
