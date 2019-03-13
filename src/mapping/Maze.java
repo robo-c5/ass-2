@@ -154,23 +154,17 @@ public class Maze {
 	}
 
 	public Tile[] getAdjacentTiles(Tile currentTile) {
-		ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
-		for (Bearing dir : MazeSolvingRobot.getCARDINALS()) { // loop through north east south west
-			Tile nearestTile = getNearestTile(currentTile, dir); // get the closest tile to the current tile, in that
-																	// direction
-			if (nearestTile != null) { // if next to a boundary, at least 1 tile will be null, possibly two
-				try {
-					if (!isPathBetweenBlocked(currentTile, nearestTile)) { // if there is nothing blocking the two
-																			// tiles, add it to the array
-						adjacentTiles.add(nearestTile);
+		Tile[] adjacentTiles = new Tile[4];
+		for (Bearing dir : MazeSolvingRobot.getCARDINALS()) {
+			Tile nearestTile = getNearestTile(currentTile, dir);
+			try {
+					if (!isPathBetweenBlocked(currentTile, nearestTile) && nearestTile.isTraversable()) {
+						adjacentTiles[dir.getIntRep()] = nearestTile;
 					}
-				} catch (Exception e) { 
-				}
+				} catch (Exception e) {
 			}
-
 		}
-		return new Tile[0];
-		// return (Tile[]) adjacentTiles.toArray();
+		return adjacentTiles;
 	}
 
 	public Coordinate travelByBearing(Coordinate origin, Bearing direction) {
@@ -185,7 +179,11 @@ public class Maze {
 	}
 
 	public Tile getNearestTile(Tile origin, Bearing direction) {
-		return (Tile) (origin.getAdjacent(direction).getAdjacent(direction));
+		try {
+			return (Tile) (origin.getAdjacent(direction).getAdjacent(direction));
+		} catch (NullPointerException npe) {
+			return null;
+		}
 	}
 
 	public boolean isPathBetweenBlocked(Tile origin, Tile destination) throws Exception {

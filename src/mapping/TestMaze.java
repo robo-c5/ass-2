@@ -1,6 +1,8 @@
 package mapping;
 import java.util.Scanner;
 
+import setup.MazeSolvingRobot;
+
 public class TestMaze {
    private static final int CM_PER_PIXEL = DrawMaze.getCmPerPixel();
 
@@ -42,6 +44,17 @@ public class TestMaze {
         for (MazeObject neighbour : testObject.getNeighbours()) {
             if (neighbour != null)
                 System.out.println(neighbour.toString() + " at position (topo) " + neighbour.getTopologicalPosition().toString());
+        }
+        
+        if (testObject instanceof Tile) {
+        	System.out.println("The nearest Tiles to " + testObject.toString() + " at (topo) " + testCoordinate.toString() + " are: ");
+        	Tile neighbouringTile;
+		    for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
+		    	neighbouringTile =  testMaze.getNearestTile((Tile) testObject, direction);
+		    	if (neighbouringTile != null) {
+		    		System.out.println(neighbouringTile.toString() + " at position (topo) " + neighbouringTile.getTopologicalPosition().toString());
+		    	}
+		    }
         }
 
         System.out.println();
