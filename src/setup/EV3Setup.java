@@ -14,6 +14,7 @@ import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
+import lejos.robotics.localization.*;
 import lejos.robotics.navigation.MovePilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.subsumption.Arbitrator;
@@ -22,6 +23,8 @@ import lejos.robotics.subsumption.Behavior;
 public class EV3Setup {
 
 	private static MovePilot pilot;
+	
+	private static PoseProvider poseP;
 	
 	private static Navigator navPilot;
 
@@ -58,7 +61,8 @@ public class EV3Setup {
 	}
 	
 	public static void setNav(MovePilot pilot) {
-		navPilot = new Navigator(pilot);
+		poseP = new OdometryPoseProvider(pilot);
+		navPilot = new Navigator(pilot, poseP);
 	}
 
 	// colour sensor getter and setter
