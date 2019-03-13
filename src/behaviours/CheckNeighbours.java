@@ -4,6 +4,8 @@ import lejos.robotics.subsumption.Behavior;
 import setup.*;
 import lejos.utility.Delay;
 import mapping.*;
+import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
 import lejos.robotics.geometry.*;
 
 //in terms of priority, MoveToNextTile > CheckNeighbours
@@ -32,19 +34,46 @@ public class CheckNeighbours implements Behavior {
 	 * if wall their or not, then turn to check all non visited neighbours similarly
 	 * going clockwise
 	 */
+	boolean doOnce = false;
 
 	@Override
 	public void action() {
+		// if (doOnce)
+		// return;
+		// doOnce = true;
 		Maze maze = MazeSolvingRobot.getMaze();
 		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getPosition());
-		checkAdjacentEdges(currentTile);
-		boolean shouldBackTrack = true;
-		Tile targetMazeTile = new Tile(null, null); // the maze object the robot will move towards
-		checkAdjacentTiles(getAdjacentTiles(currentTile, maze), shouldBackTrack, targetMazeTile);
-		if (shouldBackTrack) // no unvisited tiles remain so backtrack
+
+		//
+		LCD.clear();
+		Delay.msDelay(1000);
+		int count = 0;
+		for (Tile tile : getAdjacentTiles(currentTile, maze))
 		{
+			count++;
+			LCD.drawString(Integer.toString(tile.getCentre().getY()) + ", " + Integer.toString(tile.getCentre().getX()), 0, 1+count);
+		}
+		
+		if (true)
+			return;
+		//
+
+		try {
+			checkAdjacentEdges(currentTile);
+		} catch (Exception e) {
+		}
+
+		boolean shouldBackTrack = true;
+		Tile targetMazeTile = currentTile; // the maze object the robot will
+		// move towards, by default assume
+		// you can go forward
+		checkAdjacentTiles(getAdjacentTiles(currentTile, maze), shouldBackTrack, targetMazeTile);
+
+		if (shouldBackTrack) {// no unvisited tiles remain so backtrack
 			backTrack(targetMazeTile);
 		}
+		LCD.drawString("Chose tile: " + Integer.toString(targetMazeTile.getCentre().getX()) + ", "
+				+ Integer.toString(targetMazeTile.getCentre().getY()), 0, 4);
 		rotateTo(currentTile, targetMazeTile);
 	}
 
@@ -56,21 +85,15 @@ public class CheckNeighbours implements Behavior {
 		}
 	}
 
-	private void checkAdjacentEdges(Tile currentTile) {
+	private void checkAdjacentEdges(Tile currentTile) throws Exception {
 		for (MazeObject adjacent : currentTile.getNeighbours()) {
 			if (!adjacent.isVisited()) {
-				try {
-					MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent)); // rotate to face the edge
-					Delay.msDelay(500);
-					if (detectWall()) {
-						adjacent.setNoGo();
-					} else {
-						adjacent.setVisited();
-					}
-					// may want to just do wall checking here instead of having another behaviour
-					// for it
-				} catch (Exception e) {
-					e.printStackTrace();
+				MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent)); // rotateto face the edge
+				Delay.msDelay(5000); // stupid delay but otherwise rotation is interrupted so fine for now
+				if (detectWall()) {
+					adjacent.setNoGo();
+				} else {
+					adjacent.setVisited();
 				}
 			}
 		}
@@ -78,8 +101,8 @@ public class CheckNeighbours implements Behavior {
 
 	private void checkAdjacentTiles(Tile[] adjacentTiles, boolean shouldBackTrack, Tile targetMazeTile) {
 		for (Tile adjacent : adjacentTiles) {
-			if (!adjacent.isTraversable() && !adjacent.isVisited()) // if the neighbour is unvisited and not a wall
-			{
+			if (!adjacent.isTraversable() && !adjacent.isVisited()) {// if the neighbour is unvisited and not a
+																		// wall/green tile
 				targetMazeTile = (Tile) adjacent;
 				shouldBackTrack = false;
 				return;
@@ -93,7 +116,8 @@ public class CheckNeighbours implements Behavior {
 			targetMazeTile = MazeSolvingRobot.pollNavPath(); // then set the new targetTile as the top element of
 																// the navPath
 		} else // if the navpath is empty at this point, this means you have got back to the
-				// start of the maze without reaching the destination point
+				// start of the maze without reaching the destination point, so not sure what
+				// should happen here
 		{
 
 		}

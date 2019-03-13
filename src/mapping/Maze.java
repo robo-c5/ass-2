@@ -4,6 +4,9 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
+import lejos.utility.Delay;
 import setup.MazeSolvingRobot;
 
 public class Maze {
@@ -152,18 +155,22 @@ public class Maze {
 
 	public Tile[] getAdjacentTiles(Tile currentTile) {
 		ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
-		for (Bearing dir : MazeSolvingRobot.getCARDINALS()) { 		// loop through north east south west
-			Tile nearestTile = getNearestTile(currentTile, dir); // get the closest tile to the current tile, in that direction
-			try {
-				if (!isPathBetweenBlocked(currentTile, nearestTile)) { // if there is nothing blocking the two tiles, add it to the array
-					adjacentTiles.add(nearestTile);
+		for (Bearing dir : MazeSolvingRobot.getCARDINALS()) { // loop through north east south west
+			Tile nearestTile = getNearestTile(currentTile, dir); // get the closest tile to the current tile, in that
+																	// direction
+			if (nearestTile != null) { // if next to a boundary, at least 1 tile will be null, possibly two
+				try {
+					if (!isPathBetweenBlocked(currentTile, nearestTile)) { // if there is nothing blocking the two
+																			// tiles, add it to the array
+						adjacentTiles.add(nearestTile);
+					}
+				} catch (Exception e) { 
 				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+
 		}
-		return (Tile[])adjacentTiles.toArray();
+		return new Tile[0];
+		// return (Tile[]) adjacentTiles.toArray();
 	}
 
 	public Coordinate travelByBearing(Coordinate origin, Bearing direction) {
@@ -184,8 +191,11 @@ public class Maze {
 	public boolean isPathBetweenBlocked(Tile origin, Tile destination) throws Exception {
 		Bearing direction = getBearing(origin, destination);
 		Edge sharedEdge1 = (Edge) origin.getAdjacent(direction);
+
 		Edge sharedEdge2 = (Edge) destination.getAdjacent(MazeSolvingRobot.getOpposite(direction));
+	
 		if (sharedEdge1 != sharedEdge2) {
+
 			throw new Exception("Origin and Destination Tiles do not share a neighbouring Edge");
 		}
 		return sharedEdge1.isTraversable();
@@ -208,6 +218,12 @@ public class Maze {
 	}
 
 	public static Bearing getBearing(MazeObject origin, MazeObject destination) throws Exception {
+	
+		LCD.drawString("Current: " + Integer.toString(origin.getCentre().getY()) + ", " + Integer.toString(origin.getCentre().getX()), 0, 6);
+		LCD.drawString("dest: " + Integer.toString(destination.getCentre().getY()) + ", " + Integer.toString(destination.getCentre().getX()), 0, 7);
+		Delay.msDelay(10000);
+		LCD.clear();
+		
 		for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
 			if (origin.getAdjacent(direction).equals(destination))
 				return direction;
