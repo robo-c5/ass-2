@@ -8,4 +8,5 @@ T - make sure tiles are marked as visited when the robot has stepped on the tile
 T - metric pos not beeing set in maze object
 
 J - maybe remove redundant classes like coordinate and use lejos ones instead?
-J - discuss behavior design - possibly remove DetectWall?
+Calibrate wheelbase - have it draw squares, then if turns too much decrease wheelbase, if too little increase (by about 5% a time)
+See how NavMesh works with different size 

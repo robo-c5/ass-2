@@ -6,3 +6,4 @@ ass-2.iml
 bin/
 out/
 .out/
+*.jar

@@ -63,7 +63,7 @@ public class RedTile implements Behavior {
 	private static FourWayGridMesh convertMaze() {
 		Maze mazeMap = MazeSolvingRobot.getMaze();
 		LineMap lineMap = new LineMap();
-		FourWayGridMesh fWGM = new FourWayGridMesh(lineMap, 0.0f, 0.0f);
+		FourWayGridMesh fWGM = new FourWayGridMesh(lineMap, 30.0f, 5.0f);
 		for (int y = 0; y < Maze.getHEIGHT(); y++) {
 			for (MazeObject tile : mazeMap.getRow(y)) {
 				if (tile instanceof Tile) {
