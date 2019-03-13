@@ -1,5 +1,6 @@
 package behaviours;
 import lejos.robotics.pathfinding.*;
+import lejos.robotics.geometry.*;
 import lejos.robotics.mapping.*;
 import lejos.robotics.navigation.*;
 import lejos.robotics.subsumption.Behavior;
@@ -62,8 +63,10 @@ public class RedTile implements Behavior {
 	
 	private static FourWayGridMesh convertMaze() {
 		Maze mazeMap = MazeSolvingRobot.getMaze();
-		LineMap lineMap = new LineMap();
-		FourWayGridMesh fWGM = new FourWayGridMesh(lineMap, 30.0f, 5.0f);
+		Line[] lines = new Line[1];
+		Rectangle boundary = new Rectangle(0, 0, 370 , 250);
+		LineMap lineMap = new LineMap(lines, boundary);
+		FourWayGridMesh fWGM = new FourWayGridMesh(lineMap, 30, 5);
 		for (int y = 0; y < Maze.getHEIGHT(); y++) {
 			for (MazeObject tile : mazeMap.getRow(y)) {
 				if (tile instanceof Tile) {
