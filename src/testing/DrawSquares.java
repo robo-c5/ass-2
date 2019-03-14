@@ -20,8 +20,8 @@ public class DrawSquares {
 		EV3LargeRegulatedMotor motor2 = new EV3LargeRegulatedMotor(MotorPort.B);
 
 		// Wheel setup
-		Wheel wheel1 = WheeledChassis.modelWheel(motor1, 5.6).offset(-5.65);
-		Wheel wheel2 = WheeledChassis.modelWheel(motor2, 5.6).offset(5.65);
+		Wheel wheel1 = WheeledChassis.modelWheel(motor1, 5.6f).offset(-6.0f);
+		Wheel wheel2 = WheeledChassis.modelWheel(motor2, 5.6f).offset(6.0f);
 
 		// Chassis setup
 		Chassis chassis = new WheeledChassis(new Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -36,11 +36,19 @@ public class DrawSquares {
 		pilot.setAngularAcceleration(20f);
 		
 		keys.waitForAnyPress();
-		while(keys.getButtons()!=(Keys.ID_ESCAPE)) {
-			pilot.travel(50, false);
-			pilot.rotate(90, false);
+		while(keys.getButtons() != Keys.ID_ESCAPE) {
+			pilot.travel(40);
+			
+			if(keys.getButtons() == Keys.ID_ESCAPE) {
+				break;
+			}
+			
+			pilot.rotate(90);
+			
+			if(keys.getButtons() == Keys.ID_ESCAPE) {
+				break;
+			}			
 		}
 		pilot.stop();
-
 	}
 }

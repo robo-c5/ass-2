@@ -34,6 +34,8 @@ public class TestMaze {
         System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " is " + testObject.getHeight() +  " cm or "
                 + testObject.getHeight()/CM_PER_PIXEL + " Pixels high and " + testObject.getWidth() +
                 " cm or " + testObject.getWidth()/CM_PER_PIXEL + " Pixels Wide");
+        
+        System.out.println();
         System.out.println("Traversable: " + testObject.isTraversable());
         System.out.println("Visited: " + testObject.isVisited());
         
@@ -49,7 +51,7 @@ public class TestMaze {
         System.out.println("The neighbours of " + testObject.toString() + " at (topo) " + testCoordinate.toString() + " are: ");
         for (MazeObject neighbour : testObject.getNeighbours()) {
             if (neighbour != null)
-                System.out.println(neighbour.toString() + " at position (topo) " + neighbour.getTopologicalPosition().toString());
+                System.out.println(neighbour.toString() + " at position (topo) " + neighbour.getTopologicalPosition().toString() + " traversable: " + neighbour.isTraversable());
         }
         
         if (testObject instanceof Tile) {
@@ -60,12 +62,15 @@ public class TestMaze {
 		    	neighbouringTile =  testMaze.getNearestTile((Tile) testObject, direction);
 		    	if (neighbouringTile != null) {
 		    		System.out.println(neighbouringTile.toString() + " at position (topo) " + neighbouringTile.getTopologicalPosition().toString());
-		    	}
+					System.out.println("Shared Edge is at " + testMaze.sharedNeighbour((Tile) testObject, neighbouringTile).getTopologicalPosition().toString());
+					System.out.println("Shared Edge traversable: " + testMaze.sharedNeighbour((Tile) testObject, neighbouringTile).isTraversable());
+					System.out.println("Reachable: " + !testMaze.isPathBetweenBlocked((Tile) testObject, neighbouringTile));
+		    	}		
 		    }
         }
 
         System.out.println();
-        System.out.println("Here is the stringRep of that row");
+        System.out.println("Here is the stringRep row " + testObject.getTopologicalPosition().getY() + ":");
 
 
         for (MazeObject mO : testMaze.getRow(yPos)) {
@@ -73,7 +78,7 @@ public class TestMaze {
         }
 
         System.out.println();
-        System.out.println("Here is the stringRep of that column");
+        System.out.println("Here is the stringRep column " + testObject.getTopologicalPosition().getY() + ":");
 
 
         for (MazeObject mO : testMaze.getColumn(xPos)) {

@@ -193,17 +193,21 @@ public class Maze {
 		}
 	}
 
-	public boolean isPathBetweenBlocked(Tile origin, Tile destination) throws Exception {
-		Bearing direction = getBearing(origin, destination);
-		Edge sharedEdge1 = (Edge) origin.getAdjacent(direction);
-
-		Edge sharedEdge2 = (Edge) destination.getAdjacent(MazeSolvingRobot.getOpposite(direction));
+	public boolean isPathBetweenBlocked(Tile origin, Tile destination) {
+		Edge sharedEdge = sharedNeighbour(origin, destination);
+		return !sharedEdge.isTraversable();
+	}
 	
-		if (sharedEdge1 != sharedEdge2) {
-
-			throw new Exception("Origin and Destination Tiles do not share a neighbouring Edge");
+	public Edge sharedNeighbour(Tile origin, Tile destination) {
+		for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
+			try {
+				if (origin.getAdjacent(direction) == destination.getAdjacent(MazeSolvingRobot.getOpposite(direction))) {
+					return (Edge) origin.getAdjacent(direction);
+				}
+			} catch (Exception e) {
+			}
 		}
-		return sharedEdge1.isTraversable();
+		return null;
 	}
 
 	public Coordinate[][] getCoordinateGrid() {
@@ -222,18 +226,18 @@ public class Maze {
 		return HEIGHT;
 	}
 
-	public static Bearing getBearing(MazeObject origin, MazeObject destination) throws Exception {
+	public static Bearing getBearing(MazeObject origin, MazeObject destination) {
 	
-		LCD.drawString("Current: " + Integer.toString(origin.getCentre().getY()) + ", " + Integer.toString(origin.getCentre().getX()), 0, 6);
-		LCD.drawString("dest: " + Integer.toString(destination.getCentre().getY()) + ", " + Integer.toString(destination.getCentre().getX()), 0, 7);
-		Delay.msDelay(10000);
-		LCD.clear();
+		//LCD.drawString("Current: " + Integer.toString(origin.getCentre().getY()) + ", " + Integer.toString(origin.getCentre().getX()), 0, 6);
+		//LCD.drawString("dest: " + Integer.toString(destination.getCentre().getY()) + ", " + Integer.toString(destination.getCentre().getX()), 0, 7);
+		//Delay.msDelay(10000);
+		//LCD.clear();
 		
 		for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
-			if (origin.getAdjacent(direction).equals(destination))
+			if (origin.getAdjacent(direction) == destination)
 				return direction;
 		}
-		throw new Exception("Angle between objects is not a Cardinal Direction");
+		return null;
 	}
 
 	// test method
