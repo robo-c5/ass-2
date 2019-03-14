@@ -1,4 +1,4 @@
-package setup;
+package testing;
 
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.port.SensorPort;

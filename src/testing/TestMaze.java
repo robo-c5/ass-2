@@ -1,6 +1,13 @@
-package mapping;
+package testing;
 import java.util.Scanner;
 
+import mapping.Bearing;
+import mapping.Coordinate;
+import mapping.DrawMaze;
+import mapping.Edge;
+import mapping.Maze;
+import mapping.MazeObject;
+import mapping.Tile;
 import setup.MazeSolvingRobot;
 
 public class TestMaze {
