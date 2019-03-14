@@ -1,15 +1,10 @@
 package mapping;
 
-import lejos.robotics.pathfinding.Node;
-import setup.MazeSolvingRobot;
-
 public abstract class MazeObject {
 
     protected MazeObject[] neighbours = new MazeObject[4];
     protected boolean visited;
     protected Coordinate topoPos;
-    //South-Western corner
-    protected Coordinate metricPos;
     protected Coordinate centre;
     protected boolean traversable;
     protected int width;
@@ -19,12 +14,12 @@ public abstract class MazeObject {
     //test field
     protected String stringRep;
 
-    public MazeObject(Coordinate topologicalPosition, Coordinate metricPos) {
+    public MazeObject(Coordinate topologicalPosition, Coordinate metricCentre) {
         traversable = true;
         visited = false;
         this.topoPos = topologicalPosition;
-        this.metricPos = metricPos;
-
+        centre = metricCentre;
+        
         stringRep = "";
     }
 
@@ -40,18 +35,22 @@ public abstract class MazeObject {
         return topoPos;
     }
 
-    public Coordinate getMetricPos() {
-        return metricPos;
-    }
-
-    protected void initialiseCentre() {
-        int centreY = metricPos.getY() + height/2;
-        int centreX = metricPos.getX() + width/2;
-        centre = new Coordinate(centreY, centreX);
-    }
-
     public Coordinate getCentre() {
         return centre;
+    }
+   
+    //ordered with respect to initial bearing (x-axis +ve direction) and direction of postive turn
+    public Coordinate[] getCorners() {
+    	int startX = centre.getX() - width/2;
+    	int startY = centre.getY() - height/2;
+    	int endX = centre.getX() + height/2;
+    	int endY = centre.getX() + height/2;
+    	Coordinate NECorner = new Coordinate(endY, endX);
+    	Coordinate NWCorner = new Coordinate(endY, startX);
+    	Coordinate SWCorner = new Coordinate(startY, startX);
+    	Coordinate SECorner = new Coordinate(startY, endX);    	
+    	Coordinate[] corners = {NECorner, NWCorner, SWCorner, SECorner};
+    	return corners;
     }
 
     public MazeObject getAdjacent(Bearing direction) {

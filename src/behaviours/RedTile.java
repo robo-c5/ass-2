@@ -1,5 +1,8 @@
 package behaviours;
 import lejos.robotics.pathfinding.*;
+
+import java.util.ArrayList;
+
 import lejos.robotics.geometry.*;
 import lejos.robotics.mapping.*;
 import lejos.robotics.navigation.*;
@@ -29,16 +32,15 @@ public class RedTile implements Behavior {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}		
-		MazeSolvingRobot.moveTo(MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getPosition()).getCentre());
+		MazeSolvingRobot.moveTo(MazeSolvingRobot.getTopoPosition());
 		AstarSearchAlgorithm searchAlg = new AstarSearchAlgorithm();
-		FourWayGridMesh gridMesh = convertMaze();
+		TileGrid gridMesh = convertMaze();
 		NodePathFinder npf = new NodePathFinder (searchAlg, gridMesh);
-		Coordinate currentMetricPos = adjustForOrigin(MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getPosition()).getCentre());
+		Coordinate currentMetricPos = MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoPosition()).getCentre();
 		float x = currentMetricPos.getX();
 		float y = currentMetricPos.getY();
 		Pose start = new Pose(x, y, MazeSolvingRobot.getBearing().getAngle());
-		Waypoint goal = new Waypoint(0,0);
-		
+		Waypoint goal = new Waypoint(0,0);		
 		try {
 			Path toStart = npf.findRoute(start, goal);
 			MazeSolvingRobot.getNav().followPath(toStart);
@@ -61,36 +63,16 @@ public class RedTile implements Behavior {
 		return false;
 	}
 	
-	private static FourWayGridMesh convertMaze() {
+	private static TileGrid convertMaze() {
 		Maze mazeMap = MazeSolvingRobot.getMaze();
-		Line[] lines = new Line[1];
-		Rectangle boundary = new Rectangle(0, 0, 370 , 250);
-		LineMap lineMap = new LineMap(lines, boundary);
-		FourWayGridMesh fWGM = new FourWayGridMesh(lineMap, 30, 5);
-		for (int y = 0; y < Maze.getHEIGHT(); y++) {
-			for (MazeObject tile : mazeMap.getRow(y)) {
-				if (tile instanceof Tile) {
-					Node newNode = ((Tile) tile).getNode();
-					fWGM.addNode(newNode, 0);
-					for (Tile neighbour : mazeMap.getAdjacentTiles((Tile) tile)) {
-						try {
-							if (!mazeMap.isPathBetweenBlocked((Tile) tile, neighbour))
-							fWGM.connect(newNode, neighbour.getNode());
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}				
+		ArrayList<Tile> tempTileSet = new ArrayList<Tile>();
+		for (int y = 1; y <= Maze.getHEIGHT()-1; y++) {
+			for (int x = 1; x < Maze.getWIDTH()-1; x++) {
+				Tile tile = (Tile) mazeMap.getMazeObject(mazeMap.getCoordinate(y, x));
+				if (tile.isTraversable()) 
+					tempTileSet.add(tile);	
 			}
-		}
-		return fWGM;
+		}		
+		return new TileGrid(tempTileSet);
 	}
-	
-	public static Coordinate adjustForOrigin(Coordinate metricCentre) {
-		int adjustedX = metricCentre.getX() - MazeSolvingRobot.getOrigin().getX();
-		int adjustedY = metricCentre.getY() - MazeSolvingRobot.getOrigin().getY();
-		return new Coordinate(adjustedY, adjustedX);
-	}
-
 }

@@ -12,22 +12,24 @@ public class MazeSolvingRobot extends EV3Setup {
 	private static final Bearing SOUTH = new Bearing(2);
 	private static final Bearing WEST = new Bearing(3);
 	private static final Bearing[] CARDINALS = { NORTH, EAST, SOUTH, WEST };
-	private static final Coordinate INITIAL_ORIGIN = getMaze().getMazeObject(getMaze().getCoordinate(1, 1)).getMetricPos();
+	private static final Coordinate INITIAL_ORIGIN = getMaze().getCoordinate(1, 1);
+	//private static final Rectangle BOUNDARIES = [-15, -15, 380, 380];
 
 	private static Bearing bearing;
 
-	private static Coordinate position;
+	private static Coordinate topoPosition;
 
 	private static Maze maze;
 	
-	private static Coordinate destination;
+	private static Coordinate topoDestination;
 	
 	private static Stack<Tile> navPath; // a list of the visited tiles, in order, get popped off during backtracking
 
-	public MazeSolvingRobot(int startY, int startX, int bearingIndex) {
+	public MazeSolvingRobot() {
 		setMaze();
-		setPosition(getMaze().getCoordinate(startY, startX));
-		setBearing(bearingIndex);
+		//starting pose should be in centre of startTile (topo (1,1)), pointing to the right (think when)
+		setTopoPosition(getMaze().getCoordinate(INITIAL_ORIGIN.getY(), INITIAL_ORIGIN.getX()));
+		setBearing(0);
 		startArbitrator();
 	}
 	
@@ -88,34 +90,33 @@ public class MazeSolvingRobot extends EV3Setup {
 		}
 	}
 
-	public static Coordinate getDestination()
+	public static Coordinate getTopoDestination()
 	{
-		if (destination == null)
+		if (topoDestination == null)
 		{
-			destination = new Coordinate(0, 0); // just prevents a null destination being returned
+			topoDestination = new Coordinate(0, 0); // just prevents a null destination being returned
 		}
-		return destination;
+		return topoDestination;
 	}
 	
-	private static void setDestination(Coordinate givenDestination)
+	private static void setTopoDestination(Coordinate givenDestination)
 	{
-		destination = givenDestination;
+		topoDestination = givenDestination;
 	}
 
-	// returns an array of 2 ints, y-pos then x-pos
-	public static Coordinate getPosition() {
-		if (position == null) {
-			setPosition(getMaze().getCoordinate(0, 0)); // probably should throw some kind of error here as position should not be null
+	public static Coordinate getTopoPosition() {
+		if (topoPosition == null) {
+			setTopoPosition(getMaze().getCoordinate(0, 0)); // probably should throw some kind of error here as position should not be null
 		}
-		return position;
+		return topoPosition;
 	}
 	
 	public static Coordinate getOrigin() {
 		return INITIAL_ORIGIN;
 	}
 
-	public static void setPosition(Coordinate location) {
-		position = getMaze().getCoordinate(location.getY(), location.getX());
+	public static void setTopoPosition(Coordinate topoLocation) {
+		topoPosition = getMaze().getCoordinate(topoLocation.getY(), topoLocation.getX());
 	}
 	
 	public static Bearing getOpposite(Bearing direction) throws Exception {
@@ -133,12 +134,11 @@ public class MazeSolvingRobot extends EV3Setup {
 		setBearing(target);
 	}
 	
-	public static void moveTo(Coordinate destination) {
-		setDestination(destination);
-		int adjustedX = destination.getX() - INITIAL_ORIGIN.getX();
-		int adjustedY = destination.getY() - INITIAL_ORIGIN.getY();
-		getNav().goTo(adjustedX, adjustedY);
-		setPosition(destination);
+	public static void moveTo(Coordinate topologicalDestination) {
+		setTopoDestination(topologicalDestination);
+		Coordinate metricDestination = getMaze().getMazeObject(topologicalDestination).getCentre();
+		getNav().goTo(metricDestination.getX(), metricDestination.getY());
+		setTopoPosition(topologicalDestination);
 	}
 
 }

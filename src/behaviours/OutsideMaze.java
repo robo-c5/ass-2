@@ -13,7 +13,7 @@ public class OutsideMaze implements Behavior {
 
     @Override
     public boolean takeControl() {
-        return isOutsideMaze(MazeSolvingRobot.getPosition());
+        return isOutsideMaze(MazeSolvingRobot.getTopoPosition());
     }
 
     //non-suppressable
@@ -34,7 +34,7 @@ public class OutsideMaze implements Behavior {
     }
 
     private boolean isOutsideMaze(Coordinate currentPosition) {
-        return (currentPosition.getX() < 0 || currentPosition.getX() >= MazeSolvingRobot.getMaze().getWIDTH()
-                || currentPosition.getY() < 0 || currentPosition .getY() >= MazeSolvingRobot.getMaze().getHEIGHT());
+        return (currentPosition.getX() < 0 || currentPosition.getX() >= Maze.getWIDTH()
+                || currentPosition.getY() < 0 || currentPosition .getY() >= Maze.getHEIGHT());
     }
 }

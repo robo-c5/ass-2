@@ -1,10 +1,7 @@
 package mapping;
 
 import java.lang.Math;
-import java.util.ArrayList;
 import java.util.Stack;
-
-import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import setup.MazeSolvingRobot;
@@ -37,23 +34,23 @@ public class Maze {
 	}
 
 	private void initialiseMazeObjectGrid() {
-		int currentX = 0;
-		int currentY = 0;
+		int currentX = -15;
+		int currentY = -15;
 
 		Stack<StringBuilder> mazeRows = new Stack<StringBuilder>();
 		StringBuilder rowRep = new StringBuilder();
 
 		for (int y = 0; y < HEIGHT; y++) {
 			for (int x = 0; x < WIDTH; x++) {
-				Coordinate metricPos = new Coordinate(currentY, currentX);
+				Coordinate metricCentre = new Coordinate(currentY, currentX);
 				if (isIntersection(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Intersection(topoCoordGrid[y][x], metricPos);
+					objectGrid[y][x] = new Intersection(topoCoordGrid[y][x], metricCentre);
 				else if (isHorizontalEdge(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Horizontal(topoCoordGrid[y][x], metricPos);
+					objectGrid[y][x] = new Horizontal(topoCoordGrid[y][x], metricCentre);
 				else if (isVerticalEdge(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Vertical(topoCoordGrid[y][x], metricPos);
+					objectGrid[y][x] = new Vertical(topoCoordGrid[y][x], metricCentre);
 				else if (isTile(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Tile(topoCoordGrid[y][x], metricPos);
+					objectGrid[y][x] = new Tile(topoCoordGrid[y][x], metricCentre);
 				currentX += objectGrid[y][x].getWidth();
 
 				rowRep.append(objectGrid[y][x].toString());

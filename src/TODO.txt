@@ -2,15 +2,18 @@ Maze make some methods static
 
 T - might be good idea to detect when you've crossed double black, and then travel half tile, then it won't get out of synch?
 T - couple of behaviours causing errors with null pointers, will debug next time
-T - think need to add git ignore to RunMazeSolver.jar but too scared
-T - close sensors in end arby
 T - make sure tiles are marked as visited when the robot has stepped on the tile, and also add this tile to the navpath at same time
-T - metric pos not beeing set in maze object
 
-J - maybe remove redundant classes like coordinate and use lejos ones instead?
 Calibrate wheelbase - have it draw squares, then if turns too much decrease wheelbase, if too little increase (by about 5% a time)
-See how NavMesh works with different size 
+
 
 
 Issue in Maze - when looking for tiles adjacent to a given tile, returned tile is one too far over- e.g. getNearestTile returns (65, 25) instead of (45, 25), when given (25, 25)
 not sure if this is because getNearestTile has two .getAdjacent() calls on one object? Anyway calling it a day here
+
+discuss the above tomorrow - remember to use TestMaze to check anything relating to intialisation of Maze
+discuss staticness - give RunMazeSolver a static MazeSolvingRobot field + a static getRobot() method?
+check on TileGrid
+setup EV3-PC communication so can debug
+may be able to go back to turning 90 degrees if calibrate wheelbase properly
+may be able to get rid of boundary walls entirely and just use a rectangle as a bounding rectangle (many leJOS classes use this). Then 0,0 would be the starting Tile which would be nice.

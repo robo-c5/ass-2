@@ -20,12 +20,11 @@ public class NoGoTile implements Behavior {
 
 	@Override
 	public void action() {
-		Coordinate currentPosition = MazeSolvingRobot.getPosition();
+		Coordinate currentPosition = MazeSolvingRobot.getTopoPosition();
 		Maze maze = MazeSolvingRobot.getMaze();
-		//get destination tile from MazeSolving Robot destination field
-		//set that tile's colour to green
-		//set that tile as visited and non traversable
-		//go back to the previous tile (should be tile at currentposition field as hopefully not updated until move would complete)
+		Tile destinationTile = (Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoDestination());
+		destinationTile.setNoGo();
+		MazeSolvingRobot.moveTo(currentPosition);
 	}
 
 	

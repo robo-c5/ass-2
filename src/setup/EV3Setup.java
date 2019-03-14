@@ -70,7 +70,7 @@ public class EV3Setup {
 		cs = givencs;
 	}
 
-	private static EV3ColorSensor getColourSensor() {
+	public static EV3ColorSensor getColourSensor() {
 		if (cs == null)
 			setColourSensor(colourSensorInit());
 		return cs;
@@ -82,7 +82,7 @@ public class EV3Setup {
 		ir = givenir;
 	}
 
-	private static EV3IRSensor getIRSensor() {
+	public static EV3IRSensor getIRSensor() {
 		if (ir == null)
 			setIRSensor(irSensorInit());
 		return ir;

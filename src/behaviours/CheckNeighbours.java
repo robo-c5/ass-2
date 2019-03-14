@@ -42,7 +42,7 @@ public class CheckNeighbours implements Behavior {
 		// return;
 		// doOnce = true;
 		Maze maze = MazeSolvingRobot.getMaze();
-		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getPosition());
+		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
 
 		//
 		LCD.clear();
@@ -51,7 +51,7 @@ public class CheckNeighbours implements Behavior {
 		for (Tile tile : getAdjacentTiles(currentTile, maze))
 		{
 			count++;
-			LCD.drawString(Integer.toString(tile.getCentre().getY()) + ", " + Integer.toString(tile.getCentre().getX()), 0, 1+count);
+			LCD.drawString("Chose tile at (topo): " + tile.getTopologicalPosition().toString(), 0, 1+count);
 		}
 		
 		if (true)
@@ -72,8 +72,7 @@ public class CheckNeighbours implements Behavior {
 		if (shouldBackTrack) {// no unvisited tiles remain so backtrack
 			backTrack(targetMazeTile);
 		}
-		LCD.drawString("Chose tile: " + Integer.toString(targetMazeTile.getCentre().getX()) + ", "
-				+ Integer.toString(targetMazeTile.getCentre().getY()), 0, 4);
+		LCD.drawString("Chose tile at (topo): " + targetMazeTile.getTopologicalPosition().toString(), 0, 4);
 		rotateTo(currentTile, targetMazeTile);
 	}
 
@@ -136,7 +135,7 @@ public class CheckNeighbours implements Behavior {
 		Tile destinationTile = maze.getNearestTile(currentTile, currentDirection);
 		try {
 			if (!maze.isPathBetweenBlocked(currentTile, destinationTile)) {
-				MazeSolvingRobot.moveTo(destinationTile.getCentre());
+				MazeSolvingRobot.moveTo(destinationTile.getTopologicalPosition());
 				currentTile.setVisited();
 			}
 		} catch (Exception e) {

@@ -2,6 +2,7 @@ package behaviours;
 
 import lejos.robotics.subsumption.Behavior;
 import setup.EV3Setup;
+import setup.MazeSolvingRobot;
 
 // hold escape key for a few seconds to quit the program
 public class EndArbitrator implements Behavior {
@@ -18,6 +19,9 @@ public class EndArbitrator implements Behavior {
 
 	@Override
 	public void action() {
+		MazeSolvingRobot.getColourSensor().close();
+		MazeSolvingRobot.getIRSensor().close();
+		MazeSolvingRobot.getNav().stop();
 		System.exit(0);
 	}
 	

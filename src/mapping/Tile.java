@@ -5,31 +5,21 @@ import setup.MazeSolvingRobot;
 
 public class Tile extends MazeObject {
 
-    enum Colour { //eventually move this somewhere else?
-        White, Green, Red, Unknown
-    }
+    private Node node;
 
-    Colour colour;
-
-    public Tile (Coordinate topoPos, Coordinate metricPos) {
-        super(topoPos, metricPos);
-        colour = Colour.Unknown;
+    public Tile (Coordinate topoPos, Coordinate metricCentre) {
+        super(topoPos, metricCentre);
         traversable = true;
         height = 30;
         width = height;
-        initialiseCentre();
+        centre = metricCentre;
+        node = new Node(metricCentre.getX(), metricCentre.getY());
 
         //test field
         stringRep = "T";
     }
-
-    public void setColour(Colour newColour) {
-        colour = newColour;
-    }
     
     public Node getNode() {
-    	float adjustedX = centre.getX() - MazeSolvingRobot.getOrigin().getX();
-		float adjustedY = centre.getY() - MazeSolvingRobot.getOrigin().getY();
-		return new Node(adjustedX, adjustedY);
+    	return node;
     }
 }

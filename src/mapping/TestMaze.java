@@ -27,18 +27,17 @@ public class TestMaze {
         System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " is " + testObject.getHeight() +  " cm or "
                 + testObject.getHeight()/CM_PER_PIXEL + " Pixels high and " + testObject.getWidth() +
                 " cm or " + testObject.getWidth()/CM_PER_PIXEL + " Pixels Wide");
-        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " traversable: " + testObject.isTraversable());
-        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " visited: " + testObject.isVisited());
+        System.out.println("Traversable: " + testObject.isTraversable());
+        System.out.println("Visited: " + testObject.isVisited());
+        
+        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " has centre at (metric) " + 
+        testObject.getCentre().toString() );
+        System.out.println("Its four corners are: ");
+        System.out.println("NE at " + testObject.getCorners()[0].toString());
+        System.out.println("NW at " + testObject.getCorners()[1].toString());
+        System.out.println("SW at " + testObject.getCorners()[2].toString());
+        System.out.println("SE at " + testObject.getCorners()[3].toString());
       
-
-        Coordinate objectSW = testObject.getMetricPos();
-        int maxY = objectSW.getY() + testObject.getHeight();
-        int maxX = objectSW.getX() + testObject.getWidth();
-        Coordinate objectNE = new Coordinate(maxY, maxX);
-        System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " has a South-Western corner at (metric) "
-                + objectSW.toString() + " and a North-Eastern Corner at (metric) " + objectNE.toString() + " and its centre is at (metric) "
-                + testObject.getCentre().toString());
-
         System.out.println();
         System.out.println("The neighbours of " + testObject.toString() + " at (topo) " + testCoordinate.toString() + " are: ");
         for (MazeObject neighbour : testObject.getNeighbours()) {
@@ -47,6 +46,7 @@ public class TestMaze {
         }
         
         if (testObject instanceof Tile) {
+        	System.out.println();
         	System.out.println("The nearest Tiles to " + testObject.toString() + " at (topo) " + testCoordinate.toString() + " are: ");
         	Tile neighbouringTile;
 		    for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
