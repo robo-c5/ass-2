@@ -18,7 +18,7 @@ public class TestMaze {
         Maze testMaze = new Maze();
         System.out.println(testMaze);
         System.out.println("All coordinates are in the form (y,x) since that's how 2d arrays do it");
-        System.out.println("Enter y coordinate then enter then x coordinate");
+        System.out.println("Enter y coordinate then enter then x coordinate of MazeObject to test");
         int yPos = sc.nextInt();
         int xPos = sc.nextInt();
         sc.close();
@@ -30,17 +30,21 @@ public class TestMaze {
                 System.out.println();
             }
         }
-
+        
+        System.out.println();
         System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " is " + testObject.getHeight() +  " cm or "
                 + testObject.getHeight()/CM_PER_PIXEL + " Pixels high and " + testObject.getWidth() +
                 " cm or " + testObject.getWidth()/CM_PER_PIXEL + " Pixels Wide");
-        
         System.out.println();
+        
         System.out.println("Traversable: " + testObject.isTraversable());
         System.out.println("Visited: " + testObject.isVisited());
+        System.out.println();
         
         System.out.println(testObject.toString() + " at (topo) " + testCoordinate.toString() + " has centre at (metric) " + 
         testObject.getCentre().toString() );
+        System.out.println();
+        
         System.out.println("Its four corners are: ");
         System.out.println("NE at " + testObject.getCorners()[0].toString());
         System.out.println("NW at " + testObject.getCorners()[1].toString());
@@ -61,30 +65,25 @@ public class TestMaze {
 		    for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
 		    	neighbouringTile =  testMaze.getNearestTile((Tile) testObject, direction);
 		    	if (neighbouringTile != null) {
-		    		System.out.println(neighbouringTile.toString() + " at position (topo) " + neighbouringTile.getTopologicalPosition().toString());
-					System.out.println("Shared Edge is at " + testMaze.sharedNeighbour((Tile) testObject, neighbouringTile).getTopologicalPosition().toString());
-					System.out.println("Shared Edge traversable: " + testMaze.sharedNeighbour((Tile) testObject, neighbouringTile).isTraversable());
-					System.out.println("Reachable: " + !testMaze.isPathBetweenBlocked((Tile) testObject, neighbouringTile));
+		    		System.out.println(neighbouringTile.toString() + " at position (topo) " + neighbouringTile.getTopologicalPosition().toString() + ":");
+		    		Edge sharedEdge = testMaze.sharedNeighbour((Tile) testObject, neighbouringTile);
+					System.out.println("Shared Edge " + sharedEdge.toString() + " is at " + sharedEdge.getTopologicalPosition().toString());
+					System.out.println("traversable: " + testMaze.sharedNeighbour((Tile) testObject, neighbouringTile).isTraversable());
+					System.out.println("Reachable : " + !testMaze.isPathBetweenBlocked((Tile) testObject, neighbouringTile));
+					System.out.println();
 		    	}		
 		    }
         }
 
-        System.out.println();
         System.out.println("Here is the stringRep row " + testObject.getTopologicalPosition().getY() + ":");
-
-
         for (MazeObject mO : testMaze.getRow(yPos)) {
             System.out.print(mO.toString());
         }
-
         System.out.println();
+        
         System.out.println("Here is the stringRep column " + testObject.getTopologicalPosition().getY() + ":");
-
-
         for (MazeObject mO : testMaze.getColumn(xPos)) {
             System.out.print(mO.toString());
         }
-
     }
-
 }
