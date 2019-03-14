@@ -2,17 +2,12 @@ package behaviours;
 import lejos.robotics.pathfinding.*;
 
 import java.util.ArrayList;
-
-import lejos.robotics.geometry.*;
-import lejos.robotics.mapping.*;
 import lejos.robotics.navigation.*;
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
 import setup.MazeSolvingRobot;
 
 public class RedTile implements Behavior {
-	
-	private boolean suppressed = false;
 
 	@Override
 	public boolean takeControl() {
@@ -21,10 +16,10 @@ public class RedTile implements Behavior {
 
 	@Override
 	public void suppress() {
-		suppressed = true;
+		//cannot be suppressed
 	}
 	
-	//general procedure once detect Red: turn around (wide eyes), return to previous position. Then find shortest path back then take it.
+	//general procedure once detect Red: turn around (wide eyes), return to previous position. Then find shortest path back to start tile then take it.
 	@Override
 	public void action() {
 		try {

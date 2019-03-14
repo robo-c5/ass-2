@@ -1,19 +1,16 @@
 package mapping;
 
 import lejos.robotics.pathfinding.Node;
-import setup.MazeSolvingRobot;
 
 public class Tile extends MazeObject {
 
     private Node node;
 
-    public Tile (Coordinate topoPos, Coordinate metricCentre) {
-        super(topoPos, metricCentre);
+    public Tile (Coordinate topoPos) {
+        super(topoPos);
         traversable = true;
         height = 30;
         width = height;
-        centre = metricCentre;
-        node = new Node(metricCentre.getX(), metricCentre.getY());
 
         //test field
         stringRep = "T";
@@ -21,5 +18,15 @@ public class Tile extends MazeObject {
     
     public Node getNode() {
     	return node;
+    }
+    
+    @Override
+    public void setCentre(int y, int x) {
+    	centre = new Coordinate(y, x);
+    	setNode(x, y);
+    }
+    
+    private void setNode(int x, int y) {
+    	node = new Node(x, y);
     }
 }

@@ -1,14 +1,20 @@
 package mapping;
 
 public class Horizontal extends Edge{
+	
+	private static final int HEIGHT = 10;
+	private static final int WIDTH = 30;
 
-    public Horizontal (Coordinate topoPos, Coordinate metricCentre) {
-        super(topoPos, metricCentre);
-        height = 10;
-        width = 30;
-        centre = metricCentre;
+    public Horizontal (Coordinate topoPos) {
+        super(topoPos);
+        height = HEIGHT;
+        width = WIDTH;
 
         stringRep = "H";
+    }
+    
+    public static int get() {
+    	return HEIGHT;
     }
 
 }

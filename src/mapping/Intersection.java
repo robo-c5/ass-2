@@ -2,11 +2,10 @@ package mapping;
 
 public class Intersection extends Edge{
 
-    public Intersection (Coordinate topoPos, Coordinate metricCentre) {
-        super(topoPos, metricCentre);
+    public Intersection (Coordinate topoPos) {
+        super(topoPos);
         height = 10;
         width = height;
-        centre = metricCentre;
         
         stringRep = "I";
     }

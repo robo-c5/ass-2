@@ -5,8 +5,8 @@ public abstract class Edge extends MazeObject {
     protected boolean isBoundary;
 
 	
-	public Edge (Coordinate topoPos, Coordinate metricPos) {
-        super(topoPos, metricPos);
+	public Edge (Coordinate topoPos) {
+        super(topoPos);
 		traversable = true;
 
         //test field

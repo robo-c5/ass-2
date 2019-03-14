@@ -21,6 +21,7 @@ public class Maze {
 	public Maze() {
 		initialiseCoordinateGrid();
 		initialiseMazeObjectGrid();
+		initialiseObjectCentres();
 		declareBoundaryWalls();
 		associateNeighbours();
 	}
@@ -34,31 +35,24 @@ public class Maze {
 	}
 
 	private void initialiseMazeObjectGrid() {
-		int currentX = -15;
-		int currentY = -15;
-
 		Stack<StringBuilder> mazeRows = new Stack<StringBuilder>();
 		StringBuilder rowRep = new StringBuilder();
 
 		for (int y = 0; y < HEIGHT; y++) {
-			for (int x = 0; x < WIDTH; x++) {
-				Coordinate metricCentre = new Coordinate(currentY, currentX);
+			for (int x = 0; x < WIDTH; x++) {				
 				if (isIntersection(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Intersection(topoCoordGrid[y][x], metricCentre);
+					objectGrid[y][x] = new Intersection(topoCoordGrid[y][x]);
 				else if (isHorizontalEdge(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Horizontal(topoCoordGrid[y][x], metricCentre);
+					objectGrid[y][x] = new Horizontal(topoCoordGrid[y][x]);
 				else if (isVerticalEdge(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Vertical(topoCoordGrid[y][x], metricCentre);
+					objectGrid[y][x] = new Vertical(topoCoordGrid[y][x]);
 				else if (isTile(topoCoordGrid[y][x]))
-					objectGrid[y][x] = new Tile(topoCoordGrid[y][x], metricCentre);
-				currentX += objectGrid[y][x].getWidth();
+					objectGrid[y][x] = new Tile(topoCoordGrid[y][x]);
 
 				rowRep.append(objectGrid[y][x].toString());
 
 			}
-			currentY += objectGrid[y][0].getHeight();
-			currentX = 0;
-
+			
 			mazeRows.push(rowRep);
 			rowRep = new StringBuilder();
 
@@ -87,6 +81,22 @@ public class Maze {
 
 	public boolean isTile(Coordinate pos) {
 		return (pos.getY() % 2 == 1 && pos.getX() % 2 == 1);
+	}
+	
+	private void initialiseObjectCentres() {
+		int currentX = -25;
+		int currentY = -25;
+		for (int y = 0; y < HEIGHT; y ++) {
+			for (int x = 0; x < WIDTH; x++) {
+				MazeObject mO = objectGrid[y][x];
+				int centreX = currentX + mO.getWidth()/2;
+				int centreY = currentY + mO.getHeight()/2;
+				mO.setCentre(centreY, centreX);
+				currentX += mO.getWidth();
+			}
+			currentY += getRow(y)[0].getHeight();
+			currentX = -25;
+		}
 	}
 
 	private void declareBoundaryWalls() {

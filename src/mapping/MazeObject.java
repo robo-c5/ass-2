@@ -14,11 +14,10 @@ public abstract class MazeObject {
     //test field
     protected String stringRep;
 
-    public MazeObject(Coordinate topologicalPosition, Coordinate metricCentre) {
+    public MazeObject(Coordinate topologicalPosition) {
         traversable = true;
         visited = false;
         this.topoPos = topologicalPosition;
-        centre = metricCentre;
         
         stringRep = "";
     }
@@ -37,6 +36,10 @@ public abstract class MazeObject {
 
     public Coordinate getCentre() {
         return centre;
+    }
+    
+    public void setCentre(int y, int x) {
+    	centre = new Coordinate(y, x);
     }
    
     //ordered with respect to initial bearing (x-axis +ve direction) and direction of postive turn
