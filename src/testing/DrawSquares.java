@@ -1,6 +1,7 @@
 package testing;
 
 import lejos.hardware.BrickFinder;
+import lejos.hardware.Keys;
 import lejos.hardware.ev3.EV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
@@ -12,14 +13,15 @@ import lejos.robotics.navigation.MovePilot;
 public class DrawSquares {
 	
 	public static void main(String args[]) {
-		EV3 ev3brick = (EV3) BrickFinder.getLocal();
+		EV3 ev3Brick = (EV3) BrickFinder.getLocal();
+		Keys keys = ev3Brick.getKeys();
 		// Motor setup
 		EV3LargeRegulatedMotor motor1 = new EV3LargeRegulatedMotor(MotorPort.A);
 		EV3LargeRegulatedMotor motor2 = new EV3LargeRegulatedMotor(MotorPort.B);
 
 		// Wheel setup
-		Wheel wheel1 = WheeledChassis.modelWheel(motor1, 5.5).offset(-5.95);
-		Wheel wheel2 = WheeledChassis.modelWheel(motor2, 5.5).offset(5.95);
+		Wheel wheel1 = WheeledChassis.modelWheel(motor1, 5.6).offset(-5.65);
+		Wheel wheel2 = WheeledChassis.modelWheel(motor2, 5.6).offset(5.65);
 
 		// Chassis setup
 		Chassis chassis = new WheeledChassis(new Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -28,10 +30,17 @@ public class DrawSquares {
 		MovePilot pilot = new MovePilot(chassis);
 
 		// Speed setup
-		pilot.setLinearSpeed(2.5f); // 7.5 is way too fast
-		pilot.setAngularSpeed(20f);
+		pilot.setLinearSpeed(5.0f); // 7.5 is way too fast
+		pilot.setAngularSpeed(40.0f);
 		pilot.setLinearAcceleration(2.5f);
 		pilot.setAngularAcceleration(20f);
+		
+		keys.waitForAnyPress();
+		while(keys.getButtons()!=(Keys.ID_ESCAPE)) {
+			pilot.travel(50, false);
+			pilot.rotate(90, false);
+		}
+		pilot.stop();
 
 	}
 }

@@ -137,8 +137,8 @@ public class EV3Setup {
 		EV3LargeRegulatedMotor motor2 = new EV3LargeRegulatedMotor(MotorPort.B);
 
 		// Wheel setup
-		Wheel wheel1 = WheeledChassis.modelWheel(motor1, 5.5).offset(-5.95);
-		Wheel wheel2 = WheeledChassis.modelWheel(motor2, 5.5).offset(5.95);
+		Wheel wheel1 = WheeledChassis.modelWheel(motor1, 5.6).offset(-5.95);
+		Wheel wheel2 = WheeledChassis.modelWheel(motor2, 5.6).offset(5.95);
 
 		// Chassis setup
 		Chassis chassis = new WheeledChassis(new Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
