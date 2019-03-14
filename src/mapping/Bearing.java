@@ -10,7 +10,7 @@ public class Bearing {
     public Bearing(int index) {
         intRep = index;
         // e.g. north is a 90 degree turn (CCW) from x-axis
-        angle = minimiseAngle(ANGULAR_OFFSET*(index+1));
+        angle = minimiseAngle(ANGULAR_OFFSET*(index));
     }
 
     //no point turning 270 degrees where we could turn -90. Probably not necessary thanks to navigation but may be handy

@@ -7,11 +7,11 @@ import mapping.*;
 public class MazeSolvingRobot extends EV3Setup {
 
 	// move cardinals + getter to somewhere a bit more global so can use in
-	private static final Bearing NORTH = new Bearing(0);
-	private static final Bearing EAST = new Bearing(1);
-	private static final Bearing SOUTH = new Bearing(2);
-	private static final Bearing WEST = new Bearing(3);
-	private static final Bearing[] CARDINALS = { NORTH, EAST, SOUTH, WEST };
+	private static final Bearing EAST = new Bearing(0);
+	private static final Bearing NORTH = new Bearing(1);
+	private static final Bearing WEST = new Bearing(2);
+	private static final Bearing SOUTH = new Bearing(3);	
+	private static final Bearing[] CARDINALS = { EAST, NORTH, WEST, SOUTH };
 	private static final Coordinate INITIAL_ORIGIN = getMaze().getCoordinate(1, 1);
 	//private static final Rectangle BOUNDARIES = [-15, -15, 380, 380];
 

@@ -176,8 +176,8 @@ public class Maze {
 
 	public Coordinate travelByBearing(Coordinate origin, Bearing direction) {
 		double angleInRadians = Math.toRadians(direction.getAngle());
-		int newY = (int) (origin.getY() + Math.cos(angleInRadians));
-		int newX = (int) (origin.getX() + Math.sin(angleInRadians));
+		int newY = (int) (origin.getY() + Math.sin(angleInRadians));
+		int newX = (int) (origin.getX() + Math.cos(angleInRadians));
 		return getCoordinate(newY, newX);
 	}
 

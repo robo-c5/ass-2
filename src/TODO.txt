@@ -6,8 +6,6 @@ T - make sure tiles are marked as visited when the robot has stepped on the tile
 
 Calibrate wheelbase - have it draw squares, then if turns too much decrease wheelbase, if too little increase (by about 5% a time)
 
-
-
 Issue in Maze - when looking for tiles adjacent to a given tile, returned tile is one too far over- e.g. getNearestTile returns (65, 25) instead of (45, 25), when given (25, 25)
 not sure if this is because getNearestTile has two .getAdjacent() calls on one object? Anyway calling it a day here
 
