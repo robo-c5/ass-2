@@ -17,3 +17,5 @@ check on TileGrid
 setup EV3-PC communication so can debug
 may be able to go back to turning 90 degrees if calibrate wheelbase properly
 may be able to get rid of boundary walls entirely and just use a rectangle as a bounding rectangle (many leJOS classes use this). Then 0,0 would be the starting Tile which would be nice.
+
+perhaps add a visitable flag to Tiles so that don't have to check every tile in case where Tile is entirely enclosed by walls.
