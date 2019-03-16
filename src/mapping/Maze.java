@@ -2,6 +2,8 @@ package mapping;
 
 import java.lang.Math;
 import java.util.Stack;
+
+import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import setup.MazeSolvingRobot;
@@ -226,15 +228,9 @@ public class Maze {
 		return HEIGHT;
 	}
 
-	public static Bearing getBearing(MazeObject origin, MazeObject destination) {
-	
-		//LCD.drawString("Current: " + Integer.toString(origin.getCentre().getY()) + ", " + Integer.toString(origin.getCentre().getX()), 0, 6);
-		//LCD.drawString("dest: " + Integer.toString(destination.getCentre().getY()) + ", " + Integer.toString(destination.getCentre().getX()), 0, 7);
-		//Delay.msDelay(10000);
-		//LCD.clear();
-		
+	public static Bearing getBearing(MazeObject origin, MazeObject neighbour) {	
 		for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
-			if (origin.getAdjacent(direction) == destination)
+			if (origin.getAdjacent(direction) == neighbour)
 				return direction;
 		}
 		return null;

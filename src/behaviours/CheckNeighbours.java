@@ -26,11 +26,7 @@ public class CheckNeighbours implements Behavior {
 	}
 
 	private boolean detectWall() {
-		// LCD.clear();
-		// Delay.msDelay(5000);
-		double x = MazeSolvingRobot.getIRSample();
-		// LCD.drawString(Double.toString(x), 0, 5);
-		return (x < DETECT_WALL_DISTANCE);
+		return (MazeSolvingRobot.getIRSample() < DETECT_WALL_DISTANCE);
 	}
 
 	/*
@@ -47,6 +43,19 @@ public class CheckNeighbours implements Behavior {
 		doOnce = true;
 		Maze maze = MazeSolvingRobot.getMaze();
 		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
+		Tile x = (Tile) maze.getMazeObject(maze.getCoordinate(1, 3));
+		rotateTo(currentTile, x);
+		moveTo(x);
+		
+		
+		if (true)
+			return;
+		/*
+		if (doOnce)
+			return;
+		doOnce = true;
+		Maze maze = MazeSolvingRobot.getMaze();
+		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
 
 		try {
 			checkAdjacentEdges(currentTile);
@@ -55,6 +64,7 @@ public class CheckNeighbours implements Behavior {
 		Tile targetMazeTile = findNextMove(getAdjacentTiles(currentTile, maze));
 		rotateTo(currentTile, targetMazeTile);
 		moveTo(targetMazeTile);
+	*/
 	}
 
 	private void rotateTo(Tile currentTile, Tile targetMazeTile) {
