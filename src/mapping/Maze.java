@@ -240,11 +240,11 @@ public class Maze {
 				Coordinate tempPos = tempDest.getTopologicalPosition();
 				if (direction.equals(MazeSolvingRobot.getCARDINALS()[0]) && tempPos.getX() == WIDTH - 1)
 					break;
-				if (direction.equals(MazeSolvingRobot.getCARDINALS()[1]) && tempPos.getX() == HEIGHT - 1)
+				if (direction.equals(MazeSolvingRobot.getCARDINALS()[1]) && tempPos.getY() == HEIGHT - 1)
 					break;
 				if (direction.equals(MazeSolvingRobot.getCARDINALS()[2]) && tempPos.getX() == 0)
 					break;
-				if (direction.equals(MazeSolvingRobot.getCARDINALS()[3]) && tempPos.getX() == 0)
+				if (direction.equals(MazeSolvingRobot.getCARDINALS()[3]) && tempPos.getY() == 0)
 					break;
 				tempDest = getMazeObject(travelByBearing(tempDest.getTopologicalPosition(), direction));				
 			}
