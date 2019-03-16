@@ -23,7 +23,9 @@ public class Coordinate {
     }
     
     public boolean equals(Coordinate peer) {
-    	if (y != peer.getY() || x != peer.getX())
+    	if (y != peer.getY())
+    		return false;
+    	if (x != peer.getX())
     		return false;
     	return true;
     }

@@ -90,16 +90,16 @@ public abstract class MazeObject {
     		return false;
     	if (width != peer.getWidth())
     		return false;
-    	if (!(visited ^ peer.isVisited())) 
+    	if (visited != peer.isVisited())
     		return false;
-    	if (!(visited ^ peer.isTraversable()))
+    	if (traversable != peer.isTraversable())
     		return false; 
     	if (!topoPos.equals(peer.getTopologicalPosition()))
     		return false;
-    	if (centre.equals(peer.getCentre()))
-    		return false;  
-    	if (neighbours.equals(peer.getNeighbours()))
-    		return false;    	   	
+    	if (!centre.equals(peer.getCentre()))
+    		return false;
+    	if (!neighbours.equals(peer.getNeighbours()))
+    		return false; 	   	
     	return true;
     }
 
