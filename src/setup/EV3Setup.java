@@ -6,6 +6,7 @@ import lejos.hardware.Keys;
 import lejos.hardware.ev3.EV3;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -33,6 +34,8 @@ public class EV3Setup {
 	private static EV3IRSensor ir;
 
 	private static EV3 ev3Brick;
+	
+	private static EV3MediumRegulatedMotor irMotor;
 
 	public EV3Setup() {
 		// Brick setup
@@ -131,6 +134,22 @@ public class EV3Setup {
 		//   ^new OutsideMaze(), 
 	}
 
+	private static EV3MediumRegulatedMotor irMotorInit()
+	{
+		EV3MediumRegulatedMotor irMotor = new EV3MediumRegulatedMotor(MotorPort.C);
+		irMotor.setSpeed(20);
+		return irMotor;
+	}
+	
+	public static EV3MediumRegulatedMotor getirMotor()
+	{
+		if (irMotor == null)
+		{
+			irMotor = irMotorInit();
+		}
+		return irMotor;
+	}
+	
 	private static MovePilot pilotInit() {
 		// Motor setup
 		EV3LargeRegulatedMotor motor1 = new EV3LargeRegulatedMotor(MotorPort.A);

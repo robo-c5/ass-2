@@ -148,10 +148,17 @@ public class MazeSolvingRobot extends EV3Setup {
 		throw new Exception("Bearing not found in list of Cardinal directions");
 	}
 
-	public static void rotateTo(Bearing target) {
+	public static void rotateRobotTo(Bearing target) {
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
 		getPilot().rotate(angleDifference);
 		setBearing(target);
+	}
+	
+	public static float[] gatherIRreadings() {
+		getirMotor().rotateTo(-90);
+		getirMotor().rotateTo(90);
+		getirMotor().rotateTo(0);
+		return null;
 	}
 	
 	public static void moveTo(Coordinate topologicalDestination) {

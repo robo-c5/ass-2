@@ -40,6 +40,12 @@ public class CheckNeighbours implements Behavior {
 	public void action() {
 		if (doOnce)
 			return;
+		doOnce = true;
+		MazeSolvingRobot.gatherIRreadings();
+		if (true)
+			return;
+		if (doOnce)
+			return;
 		doOnce = true;		
 		Maze maze = MazeSolvingRobot.getMaze();
 		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
