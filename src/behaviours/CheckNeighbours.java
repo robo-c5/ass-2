@@ -40,20 +40,7 @@ public class CheckNeighbours implements Behavior {
 	public void action() {
 		if (doOnce)
 			return;
-		doOnce = true;
-		Maze maze = MazeSolvingRobot.getMaze();
-		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
-		Tile x = (Tile) maze.getMazeObject(maze.getCoordinate(1, 3));
-		rotateTo(currentTile, x);
-		moveTo(x);
-		
-		
-		if (true)
-			return;
-		/*
-		if (doOnce)
-			return;
-		doOnce = true;
+		doOnce = true;		
 		Maze maze = MazeSolvingRobot.getMaze();
 		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
 
@@ -64,7 +51,6 @@ public class CheckNeighbours implements Behavior {
 		Tile targetMazeTile = findNextMove(getAdjacentTiles(currentTile, maze));
 		rotateTo(currentTile, targetMazeTile);
 		moveTo(targetMazeTile);
-	*/
 	}
 
 	private void rotateTo(Tile currentTile, Tile targetMazeTile) {
