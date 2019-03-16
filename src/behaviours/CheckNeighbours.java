@@ -13,7 +13,7 @@ public class CheckNeighbours implements Behavior {
 
 	private boolean suppressed = false;
 
-	private final int DETECT_WALL_DISTANCE = 20;
+	private final int DETECT_WALL_DISTANCE = 30;
 
 	@Override
 	public boolean takeControl() {
@@ -26,7 +26,11 @@ public class CheckNeighbours implements Behavior {
 	}
 
 	private boolean detectWall() {
-		return (MazeSolvingRobot.getIRSample() < DETECT_WALL_DISTANCE);
+		// LCD.clear();
+		// Delay.msDelay(5000);
+		double x = MazeSolvingRobot.getIRSample();
+		// LCD.drawString(Double.toString(x), 0, 5);
+		return (x < DETECT_WALL_DISTANCE);
 	}
 
 	/*
@@ -64,6 +68,7 @@ public class CheckNeighbours implements Behavior {
 		for (MazeObject adjacent : currentTile.getNeighbours()) {
 			if (!adjacent.isVisited()) {
 				MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent)); // rotateto face the edge
+				Delay.msDelay(50);
 				if (detectWall()) {
 					adjacent.setNoGo();
 				} else {
