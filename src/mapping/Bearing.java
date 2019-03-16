@@ -1,7 +1,12 @@
 package mapping;
 
-public class Bearing {
-    private static final int ANGULAR_OFFSET = 90;
+import java.io.*;
+
+public class Bearing implements Serializable {
+	
+	private static final long serialVersionUID = 03L;
+	
+	private static final int ANGULAR_OFFSET = 90;
     private static final int MAX_DEGREES = 360;
     private int intRep;
     //with respect to the x-axis

@@ -1,8 +1,12 @@
 package mapping;
 
+import lejos.robotics.navigation.Waypoint;
 import lejos.robotics.pathfinding.Node;
+import java.io.*;
 
-public class Tile extends MazeObject {
+public class Tile extends MazeObject implements Serializable {
+	
+	private static final long serialVersionUID = 0202L;
 
     private Node node;
 
@@ -28,5 +32,17 @@ public class Tile extends MazeObject {
     
     private void setNode(int x, int y) {
     	node = new Node(x, y);
+    }
+    
+    public boolean isWaypointWithin(Waypoint wp) {
+    	int maxX = centre.getX() + width/2;
+    	int minX = centre.getX() - width/2;
+    	int maxY = centre.getY() + height/2;
+    	int minY = centre.getY() - height/2 ;
+    	if (minX > wp.getX() || wp.getX() > maxX) 
+    		return false;
+    	if (minY > wp.getY() || wp.getY() > maxY)
+    		return false;
+    	return true;
     }
 }

@@ -4,6 +4,8 @@ import lejos.hardware.BrickFinder;
 import lejos.hardware.ev3.EV3;
 import lejos.hardware.lcd.GraphicsLCD;
 
+//Testing how fillRect works by drawing a few filled rectangles. We found that rectangles are drawn from left-to-right, then top-to-bottom.
+
 public class TestFillRect {
 
     public static void main(String args[]) {

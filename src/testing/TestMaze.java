@@ -10,6 +10,8 @@ import mapping.MazeObject;
 import mapping.Tile;
 import setup.MazeSolvingRobot;
 
+//This class uses the String Representation of a Maze and its components to draw out the maze on the command line, and provide information which helps ensure the 
+//maze is intialised correctly;
 public class TestMaze {
    private static final int CM_PER_PIXEL = DrawMaze.getCmPerPixel();
 

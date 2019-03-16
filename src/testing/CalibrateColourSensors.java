@@ -9,6 +9,9 @@ import lejos.hardware.BrickFinder;
 import lejos.hardware.Keys;
 import lejos.hardware.ev3.EV3;
 
+//The colour sensor on the EV3 is terrible. Rather than use the color ids we would prefer to look at the colours we're supposed to be detecting.
+//Then get a rough boundary of RGB values for them.
+
 public class CalibrateColourSensors {
 
 	public static void main(String[] args) throws InterruptedException {

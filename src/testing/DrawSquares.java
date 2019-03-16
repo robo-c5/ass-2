@@ -10,6 +10,11 @@ import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
 
+//If the Wheelbase for the Chassis for MovePilot wasn't calibrated properly, then the robot will not turn the amount you tell it to.
+//Also the wheels slip and slide on surfaces. After enough turns the robot will run into a wall.
+//In this class we attempt to reduce this error as much as possible by calibrating the Wheelbase before we implement other measures.
+//Procedure is: have robot draw squares, then if turns too much decrease Wheelbase, if too little increase (by about 5% a time).
+
 public class DrawSquares {
 	
 	public static void main(String args[]) {

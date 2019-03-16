@@ -1,5 +1,10 @@
 package mapping;
-public abstract class Edge extends MazeObject {
+
+import java.io.*;
+
+public abstract class Edge extends MazeObject implements Serializable {
+	
+	private static final long serialVersionUID = 0201L;
 
     //test field
     protected boolean isBoundary;

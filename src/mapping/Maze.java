@@ -1,14 +1,14 @@
 package mapping;
 
 import java.lang.Math;
+import java.io.*;
 import java.util.Stack;
 
-import lejos.hardware.Sound;
-import lejos.hardware.lcd.LCD;
-import lejos.utility.Delay;
 import setup.MazeSolvingRobot;
 
-public class Maze {
+public class Maze implements Serializable {
+	
+	private static final long serialVersionUID = 01L;
 
 	private static final int WIDTH = 19;
 	private static final int HEIGHT = 13;

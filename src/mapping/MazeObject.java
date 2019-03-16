@@ -1,6 +1,10 @@
 package mapping;
 
-public abstract class MazeObject {
+import java.io.*;
+
+public abstract class MazeObject implements Serializable {
+	
+	private static final long serialVersionUID = 02L;
 
     protected MazeObject[] neighbours = new MazeObject[4];
     protected boolean visited;

@@ -1,6 +1,13 @@
 package mapping;
 
-public class Coordinate {
+import java.io.*;
+
+import lejos.robotics.navigation.Waypoint;
+
+public class Coordinate implements Serializable {
+	
+	private static final long serialVersionUID = 04L; 
+	
     private int y;
     private int x;
 
@@ -12,6 +19,11 @@ public class Coordinate {
         this.x = x;
 
         stringRep = "(" + y + ", " + x + ")";
+    }
+    
+    public Coordinate(Waypoint wp) {
+    	this.y = (int) wp.y;
+    	this.x = (int) wp.x;
     }
 
     public int getY() {

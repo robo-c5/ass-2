@@ -7,8 +7,7 @@ import lejos.robotics.pathfinding.NavigationMesh;
 import lejos.robotics.pathfinding.Node;
 import setup.MazeSolvingRobot;
 
-public class TileGrid implements NavigationMesh
-{
+public class TileGrid implements NavigationMesh {
 	private ArrayList<Node> nodeSet = new ArrayList<Node>();
 	
 	public TileGrid(ArrayList<Tile> tileSet) {

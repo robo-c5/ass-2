@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import mapping.*;
 
+
+//This class tests whether the getBearing method works as intended. In the end the root cause of issues was missing a few NOT (or !) statements.
+
 public class TestGetBearing {
 	
 	public static void main(String args[]) {

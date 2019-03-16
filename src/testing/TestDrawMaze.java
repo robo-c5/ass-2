@@ -6,6 +6,8 @@ import lejos.hardware.lcd.GraphicsLCD;
 import mapping.DrawMaze;
 import mapping.Maze;
 
+//Test the conversion of the Maze data object into pixels on the EV3 LCD screen. This class takes an empty maze so should only draw the boundary walls.
+
 public class TestDrawMaze {
 
     public static void main(String args[]) {
