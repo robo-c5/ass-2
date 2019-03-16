@@ -1,5 +1,6 @@
 package behaviours;
 
+import lejos.hardware.Sound;
 import lejos.robotics.subsumption.Behavior;
 import setup.EV3Setup;
 import setup.MazeSolvingRobot;
@@ -19,10 +20,10 @@ public class EndArbitrator implements Behavior {
 
 	@Override
 	public void action() {
-		MazeSolvingRobot.getColourSensor().close();
-		MazeSolvingRobot.getIRSensor().close();
-		MazeSolvingRobot.getNav().stop();
 		System.exit(0);
+		//MazeSolvingRobot.getColourSensor().close(); // all this closing should be done, but it causes errors
+		//MazeSolvingRobot.getIRSensor().close();
+		//MazeSolvingRobot.getNav().stop();
 	}
 	
 }

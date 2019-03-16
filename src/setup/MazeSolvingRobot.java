@@ -2,6 +2,9 @@ package setup;
 
 import java.util.Arrays;
 import java.util.Stack;
+
+import lejos.hardware.Sound;
+import lejos.utility.Delay;
 import mapping.*;
 
 public class MazeSolvingRobot extends EV3Setup {
@@ -154,11 +157,15 @@ public class MazeSolvingRobot extends EV3Setup {
 		setBearing(target);
 	}
 	
-	public static float[] gatherIRreadings() {
-		getirMotor().rotateTo(-90);
-		getirMotor().rotateTo(90);
+	
+	public static float rotateAndScan(Bearing givenBearing) {
+		getirMotor().rotateTo(givenBearing.getAngle());
+		return getIRSample();
+	}
+
+	public static void resetMedMotor()
+	{
 		getirMotor().rotateTo(0);
-		return null;
 	}
 	
 	public static void moveTo(Coordinate topologicalDestination) {
@@ -167,5 +174,5 @@ public class MazeSolvingRobot extends EV3Setup {
 		getNav().goTo(metricDestination.getX(), metricDestination.getY());
 		setTopoPosition(topologicalDestination);
 	}
-
+	
 }

@@ -23,7 +23,7 @@ public class RedTile implements Behavior {
 	@Override
 	public void action() {
 		try {
-			MazeSolvingRobot.rotateTo(MazeSolvingRobot.getOpposite(MazeSolvingRobot.getBearing()));
+			MazeSolvingRobot.rotateRobotTo(MazeSolvingRobot.getOpposite(MazeSolvingRobot.getBearing()));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}		
