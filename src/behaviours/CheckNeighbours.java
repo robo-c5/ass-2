@@ -13,6 +13,8 @@ public class CheckNeighbours implements Behavior {
 
 	private boolean suppressed = false;
 
+	private boolean doNotInterrupt = false;
+
 	private final int DETECT_WALL_DISTANCE = 30;
 
 	@Override
@@ -34,51 +36,33 @@ public class CheckNeighbours implements Behavior {
 	 * if wall their or not, then turn to check all non visited neighbours similarly
 	 * going clockwise
 	 */
-	boolean doOnce = false;
 
 	@Override
 	public void action() {
-		if (doOnce)
-			return;
-		doOnce = true;
-		Maze maze = MazeSolvingRobot.getMaze();
-		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
-		Tile x = (Tile) maze.getMazeObject(maze.getCoordinate(1, 3));
-		rotateTo(currentTile, x);
-		moveTo(x);
-		
-		
-		if (true)
-			return;
-		/*
-		if (doOnce)
-			return;
-		doOnce = true;
-		Maze maze = MazeSolvingRobot.getMaze();
-		Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
-
-		try {
+		if (!doNotInterrupt) {
+			doNotInterrupt = true;
+			Maze maze = MazeSolvingRobot.getMaze();
+			Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
 			checkAdjacentEdges(currentTile);
-		} catch (Exception e) {
+			Tile targetMazeTile = findNextMove(getAdjacentTiles(currentTile, maze));
+			rotateTo(currentTile, targetMazeTile);
+			MazeSolvingRobot.getPilot().travel(40);
+			doNotInterrupt = false;
 		}
-		Tile targetMazeTile = findNextMove(getAdjacentTiles(currentTile, maze));
-		rotateTo(currentTile, targetMazeTile);
-		moveTo(targetMazeTile);
-	*/
 	}
 
 	private void rotateTo(Tile currentTile, Tile targetMazeTile) {
 		try {
-			MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, targetMazeTile));
+			MazeSolvingRobot.rotateRobotTo(MazeSolvingRobot.getMaze().getBearing(currentTile, targetMazeTile));
 		} catch (Exception e) {
 		}
 	}
 
-	private void checkAdjacentEdges(Tile currentTile) throws Exception {
+	private void checkAdjacentEdges(Tile currentTile) {
+		LCD.clear();
 		for (MazeObject adjacent : currentTile.getNeighbours()) {
 			if (!adjacent.isVisited()) {
-				MazeSolvingRobot.rotateTo(Maze.getBearing(currentTile, adjacent)); // rotateto face the edge
-				Delay.msDelay(50);
+				MazeSolvingRobot.rotateAndScan(MazeSolvingRobot.getMaze().getBearing(currentTile, adjacent));
 				if (detectWall()) {
 					adjacent.setNoGo();
 				} else {
@@ -86,6 +70,7 @@ public class CheckNeighbours implements Behavior {
 				}
 			}
 		}
+		MazeSolvingRobot.resetMedMotor();
 	}
 
 	// look at all possible adjacent tiles, choose the first one that is available

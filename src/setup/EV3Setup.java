@@ -3,9 +3,11 @@ package setup;
 import behaviours.*;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Keys;
+import lejos.hardware.Sound;
 import lejos.hardware.ev3.EV3;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -23,9 +25,9 @@ import lejos.robotics.subsumption.Behavior;
 public class EV3Setup {
 
 	private static MovePilot pilot;
-	
+
 	private static PoseProvider poseP;
-	
+
 	private static Navigator navPilot;
 
 	private static EV3ColorSensor cs;
@@ -34,9 +36,13 @@ public class EV3Setup {
 
 	private static EV3 ev3Brick;
 
+	private static EV3MediumRegulatedMotor irMotor;
+
 	public EV3Setup() {
 		// Brick setup
 		ev3Brick = (EV3) BrickFinder.getLocal();
+		setIRSensor(irSensorInit());
+		setColourSensor(colourSensorInit());
 		// Wait for input
 		waitForAnyPress(ev3Brick.getKeys());
 	}
@@ -54,12 +60,13 @@ public class EV3Setup {
 			setPilot(pilotInit());
 		return pilot;
 	}
+
 	public static Navigator getNav() {
 		if (navPilot == null)
 			setNav(pilot);
 		return navPilot;
 	}
-	
+
 	public static void setNav(MovePilot pilot) {
 		poseP = new OdometryPoseProvider(pilot);
 		navPilot = new Navigator(pilot, poseP);
@@ -126,9 +133,22 @@ public class EV3Setup {
 
 	public static void startArbitrator() {
 		// add behaviours to, and then start, Arbitrator
-		new Arbitrator(new Behavior[] {new CheckNeighbours(),
+		new Arbitrator(new Behavior[] { new CheckNeighbours(),
 				new EndArbitrator() }).go();
-		//   ^new OutsideMaze(), 
+		// ^new OutsideMaze(),
+	}
+
+	private static EV3MediumRegulatedMotor irMotorInit() {
+		EV3MediumRegulatedMotor irMotor = new EV3MediumRegulatedMotor(MotorPort.C);
+		irMotor.setSpeed(360);
+		return irMotor;
+	}
+
+	public static EV3MediumRegulatedMotor getirMotor() {
+		if (irMotor == null) {
+			irMotor = irMotorInit();
+		}
+		return irMotor;
 	}
 
 	private static MovePilot pilotInit() {

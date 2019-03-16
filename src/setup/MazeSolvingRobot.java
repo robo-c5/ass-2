@@ -2,6 +2,9 @@ package setup;
 
 import java.util.Arrays;
 import java.util.Stack;
+
+import lejos.hardware.Sound;
+import lejos.utility.Delay;
 import mapping.*;
 
 public class MazeSolvingRobot extends EV3Setup {
@@ -148,10 +151,21 @@ public class MazeSolvingRobot extends EV3Setup {
 		throw new Exception("Bearing not found in list of Cardinal directions");
 	}
 
-	public static void rotateTo(Bearing target) {
+	public static void rotateRobotTo(Bearing target) {
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
 		getPilot().rotate(angleDifference);
 		setBearing(target);
+	}
+	
+	
+	public static float rotateAndScan(Bearing givenBearing) {
+		getirMotor().rotateTo(givenBearing.getAngle());
+		return getIRSample();
+	}
+
+	public static void resetMedMotor()
+	{
+		getirMotor().rotateTo(0);
 	}
 	
 	public static void moveTo(Coordinate topologicalDestination) {
@@ -160,5 +174,5 @@ public class MazeSolvingRobot extends EV3Setup {
 		getNav().goTo(metricDestination.getX(), metricDestination.getY());
 		setTopoPosition(topologicalDestination);
 	}
-
+	
 }
