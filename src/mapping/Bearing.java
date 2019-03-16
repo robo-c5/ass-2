@@ -27,4 +27,12 @@ public class Bearing {
     public int getAngle() {
         return angle;
     }
+    
+    public boolean equals (Bearing peer) {
+    	if (intRep != peer.getIntRep())
+    		return false;
+    	if (angle != peer.getAngle())
+    		return false;
+    	return true;
+    }
 }

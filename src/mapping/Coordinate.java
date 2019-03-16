@@ -1,24 +1,31 @@
 package mapping;
 
 public class Coordinate {
-    private int[] coords = new int[2];
+    private int y;
+    private int x;
 
     //test field
     private String stringRep;
 
     public Coordinate(int y, int x){
-        coords[0] = y;
-        coords[1] = x;
+        this.y= y;
+        this.x = x;
 
         stringRep = "(" + y + ", " + x + ")";
     }
 
     public int getY() {
-        return coords[0];
+        return y;
     }
 
     public int getX() {
-        return coords[1];
+        return x;
+    }
+    
+    public boolean equals(Coordinate peer) {
+    	if (y != peer.getY() || x != peer.getX())
+    		return false;
+    	return true;
     }
 
     //test method

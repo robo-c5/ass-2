@@ -33,7 +33,7 @@ public class OutsideMaze implements Behavior {
     public void action() {
     }
 
-    private boolean isOutsideMaze(Coordinate currentPosition) {
+    public static boolean isOutsideMaze(Coordinate currentPosition) {
         return (currentPosition.getX() < 0 || currentPosition.getX() >= Maze.getWIDTH()
                 || currentPosition.getY() < 0 || currentPosition .getY() >= Maze.getHEIGHT());
     }

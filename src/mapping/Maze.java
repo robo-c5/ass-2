@@ -228,16 +228,30 @@ public class Maze {
 		return HEIGHT;
 	}
 
-	public static Bearing getBearing(MazeObject origin, MazeObject neighbour) {	
+	public Bearing getBearing(MazeObject origin, MazeObject destination) {	
 		for (Bearing direction : MazeSolvingRobot.getCARDINALS()) {
-			if (origin.getAdjacent(direction) == neighbour)
-				return direction;
+			MazeObject tempDest = origin;
+			while (true) {
+				System.out.println("tempDest is currently at: " + tempDest.getTopologicalPosition().toString());
+				
+				if (tempDest.equals(destination))
+					return direction;
+				
+				Coordinate tempPos = tempDest.getTopologicalPosition();
+				if (direction.equals(MazeSolvingRobot.getCARDINALS()[0]) && tempPos.getX() == WIDTH - 1)
+					break;
+				if (direction.equals(MazeSolvingRobot.getCARDINALS()[1]) && tempPos.getX() == HEIGHT - 1)
+					break;
+				if (direction.equals(MazeSolvingRobot.getCARDINALS()[2]) && tempPos.getX() == 0)
+					break;
+				if (direction.equals(MazeSolvingRobot.getCARDINALS()[3]) && tempPos.getX() == 0)
+					break;
+				tempDest = getMazeObject(travelByBearing(tempDest.getTopologicalPosition(), direction));				
+			}
 		}
 		return null;
 	}
-
 	// test method
-	@Override
 	public String toString() {
 		return stringRep;
 	}

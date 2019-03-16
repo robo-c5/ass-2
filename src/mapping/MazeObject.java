@@ -84,6 +84,24 @@ public abstract class MazeObject {
     	traversable = false;
     	visited = true;
     }
+    
+    public boolean equals(MazeObject peer) {
+    	if (height != peer.getHeight())
+    		return false;
+    	if (width != peer.getWidth())
+    		return false;
+    	if (!(visited ^ peer.isVisited())) 
+    		return false;
+    	if (!(visited ^ peer.isTraversable()))
+    		return false; 
+    	if (!topoPos.equals(peer.getTopologicalPosition()))
+    		return false;
+    	if (centre.equals(peer.getCentre()))
+    		return false;  
+    	if (neighbours.equals(peer.getNeighbours()))
+    		return false;    	   	
+    	return true;
+    }
 
     //testing method
     @Override
