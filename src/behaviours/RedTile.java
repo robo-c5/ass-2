@@ -1,14 +1,12 @@
 package behaviours;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 
 import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.*;
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
-
+import pathfinding.AStarSearch;
 import setup.*;
 
 public class RedTile implements Behavior {
@@ -36,24 +34,14 @@ public class RedTile implements Behavior {
 		}		
 		MazeSolvingRobot.moveTo(MazeSolvingRobot.getTopoPosition());
 		
-	/*
-		Coordinate currentMetricPos = MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoPosition()).getCentre();
-		float x = currentMetricPos.getX();
-		float y = currentMetricPos.getY();
-		Pose start = new Pose(x, y, MazeSolvingRobot.getBearing().getAngle());
-		Waypoint goal = new Waypoint(0,0);		
-		AstarSearchAlgorithm searchAlg = new AstarSearchAlgorithm();
-		TileGrid gridMesh = convertMaze();
-		NodePathFinder npf = new NodePathFinder (searchAlg, gridMesh);
-		try {
-			Path path = npf.findRoute(start, goal);
-			Queue<Tile> route = parsePath(path);
-		} catch (DestinationUnreachableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Stack<Tile> shortestPath = AStarSearch.ShortestPathToOrigin();
 		
-		*/
+		//MazeSolvingRobot.followPath(shortestPath);
+		
+		//set EndArbitrator takeControl condition
+		
+		DrawMaze.drawMaze(MazeSolvingRobot.getMaze());
+		
 	}
 	
 	private boolean isRed(float[] sample) {
@@ -66,35 +54,4 @@ public class RedTile implements Behavior {
 		}
 		return false;
 	}
-	
-	/*
-	private static TileGrid convertMaze() {
-		Maze mazeMap = MazeSolvingRobot.getMaze();
-		ArrayList<Tile> tempTileSet = new ArrayList<Tile>();
-		for (int y = 1; y <= Maze.getHEIGHT()-1; y++) {
-			for (int x = 1; x < Maze.getWIDTH()-1; x++) {
-				Tile tile = (Tile) mazeMap.getMazeObject(mazeMap.getCoordinate(y, x));
-				if (tile.isTraversable()) 
-					tempTileSet.add(tile);	
-			}
-		}		
-		return new TileGrid(tempTileSet);
-	}
-	
-	private static Queue<Tile> parsePath(Path path) {
-		Queue<Tile> route = new LinkedList<Tile>();
-		for (Waypoint wp : path) {
-			for (int y = 1; y < Maze.getHEIGHT()-1; y+=2) {
-				for (int x = 1; x < Maze.getWIDTH()-1; y+=2) {
-					Coordinate tilePos = MazeSolvingRobot.getMaze().getCoordinate(y, x);
-					Tile tile = (Tile) MazeSolvingRobot.getMaze().getMazeObject(tilePos);
-					if (tile.isWaypointWithin(wp)) {
-						route.add(tile);						
-					}
-				}
-			}
-		}
-		return route;
-	}
-	*/
 }

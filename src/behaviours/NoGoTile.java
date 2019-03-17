@@ -21,13 +21,11 @@ public class NoGoTile implements Behavior {
 	@Override
 	public void action() {
 		Coordinate currentPosition = MazeSolvingRobot.getTopoPosition();
-		Maze maze = MazeSolvingRobot.getMaze();
 		Tile destinationTile = (Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoDestination());
 		destinationTile.setNoGo();
 		MazeSolvingRobot.moveTo(currentPosition);
 	}
 
-	
 	private boolean isGreen(float[] sample) {
 		if (0.070 < sample[0] && sample[0] < 0.078 ) {
 			if (0.153 < sample[1] && sample[1] < 0.170) {
@@ -38,5 +36,4 @@ public class NoGoTile implements Behavior {
 		}
 		return false;
 	}
-
 }

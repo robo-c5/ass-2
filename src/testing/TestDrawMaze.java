@@ -14,7 +14,7 @@ public class TestDrawMaze {
         EV3 ev3Brick = (EV3) BrickFinder.getLocal();
         GraphicsLCD gLCD = BrickFinder.getLocal().getGraphicsLCD();
         Maze testMaze = new Maze();
-        DrawMaze.drawMaze(testMaze, gLCD);
+        DrawMaze.drawMaze(testMaze);
         ev3Brick.getKeys().waitForAnyPress();
     }
 }

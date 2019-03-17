@@ -1,12 +1,14 @@
 package mapping;
 
+import lejos.hardware.BrickFinder;
 import lejos.hardware.lcd.GraphicsLCD;
 
 public class DrawMaze {
 	private static final int CM_PER_PIXEL = 3;
 	// might be hard to see a wall at the edge of lcd screen
 
-	public static void drawMaze(Maze grid, GraphicsLCD gScreen) {
+	public static void drawMaze(Maze grid) {
+		GraphicsLCD gScreen = BrickFinder.getLocal().getGraphicsLCD();
 		gScreen.clear();
 		int currentX;
 		int currentY = gScreen.getHeight();
