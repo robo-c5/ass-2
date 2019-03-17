@@ -8,19 +8,20 @@ import setup.MazeSolvingRobot;
 
 public class AStarSearch
 {
-	private static State start;
+	private static State origin;
 	private static State goal;
 	private static State currentState;
 	private static ArrayList<State> frontier = new ArrayList<State>();
 	private static ArrayList<State> visited = new ArrayList<State>();
 	
-	public static Stack<Tile> ShortestPathToOrigin() {
-		start = new State((Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoPosition()));
-		goal = new State((Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getOrigin()));
+	public static Stack<Tile> ShortestPath(Tile start, Tile finish) {
+		origin = new State(start);
+		origin.setGCost(0);
+		goal = new State(finish);
 		
-		currentState = start;		
+		currentState = origin;		
 		Stack<Tile> shortestPath = new Stack<Tile>();
-		addToFrontier(start);
+		addToFrontier(origin);
 		
 		while(!currentState.isGoal()) {
 			currentState = getLowestCost();
@@ -134,7 +135,7 @@ public class AStarSearch
 		}
 		
 		private boolean isStart() {
-			return tile.equals(start.getTile());
+			return tile.equals(origin.getTile());
 		}
 		
 		private State getParent() {

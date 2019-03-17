@@ -17,3 +17,27 @@ may be able to get rid of boundary walls entirely and just use a rectangle as a 
 perhaps add a Visitable flag to Tiles so that don't have to check every tile in case where Tile is entirely enclosed by walls.
 
 A star search we make don't use lejos
+
+
+use colour sensors on grid lines?
+
+don't need same jre on pc and ev3
+
+gui wise swing or javafx or awt
+small and straightforward - no resolution scaling or nothing
+
+prolly 800 by 600 maze:
+
+two methods:
+
+update maze object & redraw it
+robot position & heading - directed arrow
+
+
+Robot wise - maybe put send off maze once complete a move
+send off position when complete a move
+send off heading when complete a rotation
+
+
+pc server 2 threads max prolly - drawing & communication
+

@@ -34,7 +34,9 @@ public class RedTile implements Behavior {
 		}		
 		MazeSolvingRobot.moveTo(MazeSolvingRobot.getTopoPosition());
 		
-		Stack<Tile> shortestPath = AStarSearch.ShortestPathToOrigin();
+		Tile start = (Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoPosition());
+		Tile end = (Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getOrigin());
+		Stack<Tile> shortestPath = AStarSearch.ShortestPath(start, end);
 		
 		//MazeSolvingRobot.followPath(shortestPath);
 		
