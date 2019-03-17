@@ -10,10 +10,10 @@ Issue in Maze - when looking for tiles adjacent to a given tile, returned tile i
 not sure if this is because getNearestTile has two .getAdjacent() calls on one object? Anyway calling it a day here
 
 discuss the above tomorrow - remember to use TestMaze to check anything relating to intialisation of Maze
-discuss Staticness - give RunMazeSolver a static MazeSolvingRobot field + a static getRobot() method?
-check on TileGrid
 setup EV3-PC communication so can debug
 may be able to go back to turning 90 degrees if calibrate wheelbase properly
 may be able to get rid of boundary walls entirely and just use a rectangle as a bounding rectangle (many leJOS classes use this). Then 0,0 would be the starting Tile which would be nice.
 
 perhaps add a Visitable flag to Tiles so that don't have to check every tile in case where Tile is entirely enclosed by walls.
+
+A star search we make don't use lejos

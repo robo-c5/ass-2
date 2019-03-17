@@ -8,11 +8,13 @@ import lejos.robotics.navigation.*;
 import lejos.robotics.pathfinding.*;
 import lejos.robotics.subsumption.Behavior;
 import mapping.*;
-import navigation.*;
 
 import setup.*;
 
 public class RedTile implements Behavior {
+	
+	//The tile at (1,1) is the starting tile which we navigate back to
+	
 
 	@Override
 	public boolean takeControl() {
@@ -33,6 +35,8 @@ public class RedTile implements Behavior {
 			e1.printStackTrace();
 		}		
 		MazeSolvingRobot.moveTo(MazeSolvingRobot.getTopoPosition());
+		
+	/*
 		Coordinate currentMetricPos = MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoPosition()).getCentre();
 		float x = currentMetricPos.getX();
 		float y = currentMetricPos.getY();
@@ -49,7 +53,7 @@ public class RedTile implements Behavior {
 			e.printStackTrace();
 		}
 		
-		
+		*/
 	}
 	
 	private boolean isRed(float[] sample) {
@@ -63,6 +67,7 @@ public class RedTile implements Behavior {
 		return false;
 	}
 	
+	/*
 	private static TileGrid convertMaze() {
 		Maze mazeMap = MazeSolvingRobot.getMaze();
 		ArrayList<Tile> tempTileSet = new ArrayList<Tile>();
@@ -91,6 +96,5 @@ public class RedTile implements Behavior {
 		}
 		return route;
 	}
-	
-	
+	*/
 }

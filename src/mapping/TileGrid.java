@@ -15,7 +15,7 @@ public class TileGrid implements NavigationMesh {
 				addNode(tile.getNode(), 0);
 		}		
 		for (Tile tile: tileSet) {
-			for (Tile neighbour : MazeSolvingRobot.getMaze().getAdjacentTiles(tile)) {
+			for (Tile neighbour : MazeSolvingRobot.getMaze().getNearbyReachableTiles(tile)) {
 				connect(tile.getNode(), neighbour.getNode());
 			}
 		}			

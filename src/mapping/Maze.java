@@ -162,7 +162,7 @@ public class Maze implements Serializable {
 		return objectGrid[pos.getY()][pos.getX()];
 	}
 
-	public Tile[] getAdjacentTiles(Tile currentTile) {
+	public Tile[] getNearbyReachableTiles(Tile currentTile) {
 		Tile[] adjacentTiles = new Tile[4];
 		for (Bearing dir : MazeSolvingRobot.getCARDINALS()) {
 			Tile nearestTile = getNearestTile(currentTile, dir);

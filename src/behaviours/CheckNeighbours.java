@@ -44,7 +44,7 @@ public class CheckNeighbours implements Behavior {
 			Maze maze = MazeSolvingRobot.getMaze();
 			Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
 			checkAdjacentEdges(currentTile);
-			Tile targetMazeTile = findNextMove(getAdjacentTiles(currentTile, maze));
+			Tile targetMazeTile = findNextMove(getNearbyReachableTiles(currentTile, maze));
 			rotateTo(currentTile, targetMazeTile);
 			MazeSolvingRobot.getPilot().travel(40);
 			doNotInterrupt = false;
@@ -98,9 +98,9 @@ public class CheckNeighbours implements Behavior {
 		}
 	}
 
-	private Tile[] getAdjacentTiles(Tile currentTile, Maze maze) {
+	private Tile[] getNearbyReachableTiles(Tile currentTile, Maze maze) {
 		try {
-			return (maze.getAdjacentTiles(currentTile));
+			return (maze.getNearbyReachableTiles(currentTile));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
