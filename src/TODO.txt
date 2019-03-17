@@ -41,3 +41,5 @@ send off heading when complete a rotation
 
 pc server 2 threads max prolly - drawing & communication
 
+look at gui update stuff - remember to delete PlatformRunLaterOnlineExample before submission
+

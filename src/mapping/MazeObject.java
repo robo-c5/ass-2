@@ -46,7 +46,7 @@ public abstract class MazeObject implements Serializable {
     	centre = new Coordinate(y, x);
     }
    
-    //ordered with respect to initial bearing (x-axis +ve direction) and direction of postive turn
+    //ordered with respect to initial bearing (x-axis +ve direction) and direction of positive turn
     public Coordinate[] getCorners() {
     	int startX = centre.getX() - width/2;
     	int startY = centre.getY() - height/2;
