@@ -47,6 +47,8 @@ public class MazeSolvingRobot extends EV3Setup {
 	private static Coordinate topoDestination;
 	
 	private static Stack<Tile> navPath; // a list of the visited tiles, in order, get popped off during backtracking
+	
+	private static boolean end;
 
 	public MazeSolvingRobot() {
 		setMaze();
@@ -166,6 +168,14 @@ public class MazeSolvingRobot extends EV3Setup {
 	public static void resetMedMotor()
 	{
 		getirMotor().rotateTo(0);
+	}
+	
+	public static boolean getEnd() {
+		return end;
+	}
+	
+	public static void end() {
+		end = true;
 	}
 	
 	public static void moveTo(Coordinate topologicalDestination) {

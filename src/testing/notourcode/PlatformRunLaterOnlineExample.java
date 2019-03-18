@@ -1,4 +1,4 @@
-package testing;
+package testing.notourcode;
 	
 import javafx.application.Application;
 import javafx.application.Platform;

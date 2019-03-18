@@ -10,7 +10,7 @@ public class EndArbitrator implements Behavior {
 
 	@Override
 	public boolean takeControl() {
-		return EV3Setup.escapePressed();
+		return EV3Setup.escapePressed() || MazeSolvingRobot.getEnd();
 	}
 
 	@Override

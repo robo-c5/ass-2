@@ -38,10 +38,11 @@ public class RedTile implements Behavior {
 		Tile end = (Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getOrigin());
 		Stack<Tile> shortestPath = AStarSearch.ShortestPath(start, end);
 		
-		//MazeSolvingRobot.followPath(shortestPath);
+		while (!shortestPath.isEmpty()) {
+			MazeSolvingRobot.moveTo(shortestPath.pop().getCentre());
+		}
 		
-		//set EndArbitrator takeControl condition
-		
+		MazeSolvingRobot.end();		
 		DrawMaze.drawMaze(MazeSolvingRobot.getMaze());
 		
 	}

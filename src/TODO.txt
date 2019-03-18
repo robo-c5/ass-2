@@ -4,14 +4,14 @@ T - might be good idea to detect when you've crossed double black, and then trav
 T - couple of behaviours causing errors with null pointers, will debug next time
 T - make sure tiles are marked as visited when the robot has stepped on the tile, and also add this tile to the navpath at same time
 
-Calibrate Wheelbase - have it draw squares, then if turns too much decrease wheelbase, if too little increase (by about 5% a time)
+Calibrate Wheelbase - have it draw squares, then if turns too much decrease Wheelbase, if too little increase (by about 5% a time)
 
 Issue in Maze - when looking for tiles adjacent to a given tile, returned tile is one too far over- e.g. getNearestTile returns (65, 25) instead of (45, 25), when given (25, 25)
 not sure if this is because getNearestTile has two .getAdjacent() calls on one object? Anyway calling it a day here
 
 discuss the above tomorrow - remember to use TestMaze to check anything relating to intialisation of Maze
 setup EV3-PC communication so can debug
-may be able to go back to turning 90 degrees if calibrate wheelbase properly
+may be able to go back to turning 90 degrees if calibrate Wheelbase properly
 may be able to get rid of boundary walls entirely and just use a rectangle as a bounding rectangle (many leJOS classes use this). Then 0,0 would be the starting Tile which would be nice.
 
 perhaps add a Visitable flag to Tiles so that don't have to check every tile in case where Tile is entirely enclosed by walls.
