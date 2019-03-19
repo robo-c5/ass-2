@@ -36,19 +36,23 @@ public class AStarSearch
 		return shortestPath;
 	}
 	
-	//don't add to frontier if corresponding state is already in frontier, or if in list of already visited states, with a smaller or equal gCost
+	//since the maze mapping may not be complete when we hit the red tile, only consider tiles we have already visited & are traversable (not green)
+	//don't add to frontier if corresponding state is already in frontier or if in visited with lower gCost
+	//if find an equivilant state in visited set with higher gCost then proposed, remove old from visited & add new to frontier
 	private static void addToFrontier(State state) {
-		if (frontier.contains(state) ) {
-			return;
-		}
-		State equivState = equivilantVisitedState(state);
-		if (equivState != null) {
-			if (equivState.getGCost() <= state.getGCost()) {
+		if (state.getTile().isVisited() && state.getTile().isTraversable()) {
+			if (frontier.contains(state) ) {
 				return;
 			}
-			frontier.remove(equivState);
+			State equivState = equivilantVisitedState(state);
+			if (equivState != null) {
+				if (equivState.getGCost() <= state.getGCost()) {
+					return;
+				}
+				visited.remove(equivState);
+			}
+			frontier.add(state);
 		}
-		frontier.add(state);
 	}
 	
 	private static State equivilantVisitedState(State state) {

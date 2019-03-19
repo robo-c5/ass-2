@@ -1,4 +1,4 @@
-package server;
+package testing.server;
 
 import java.io.*;
 import java.net.*;
@@ -12,12 +12,13 @@ import javafx.stage.Stage;
 
 public class LocalHostChatClientGUI extends Application{
 	
-	static Text message = new Text();
+	static String nextMessage;
+	static Text message = new Text("No message yet");
 	static String ip = "localhost";
 	static Socket sock;
-	static String debug;
 
 	public static void main(String[] args) throws IOException {
+		sock = new Socket(ip, LocalHostChatServer.port);
 		launch(args);
 	}
 
@@ -28,12 +29,12 @@ public class LocalHostChatClientGUI extends Application{
     	final int WINDOW_WIDTH = 400;
     	
     	Text debugMessage = new Text();
-    	debugMessage.setText(debug);
+    	debugMessage.setText("CONNECTED");
     	debugMessage.setX(50);
 		debugMessage.setY(50);
     	
-    	message.setX(100);
-		message.setY(200);
+    	message.setX(150);
+		message.setY(100);
     	Group messages = new Group();
     	messages.getChildren().addAll(message, debugMessage);  
     	
@@ -47,7 +48,7 @@ public class LocalHostChatClientGUI extends Application{
 
                     @Override
                     public void run() {
-                        getNewMessage();
+                        updateMessage();
                     }
                 };
 
@@ -56,12 +57,22 @@ public class LocalHostChatClientGUI extends Application{
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                     }
-
+                    getNewMessage();
                     Platform.runLater(updater);
                     if (message.getText().equals("exit")) {
                     	break;
                     }
                 }
+                try
+				{
+					sock.close();
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                System.exit(0);
             }
 
         });
@@ -76,19 +87,17 @@ public class LocalHostChatClientGUI extends Application{
 	
 	private static void getNewMessage() {
 		try {
-			sock = new Socket(ip, LocalHostChatServer.port);
-			
+						
 			InputStream in = sock.getInputStream();
 			DataInputStream dIn = new DataInputStream(in);
-	        message.setText(dIn.readUTF());
-	        System.out.println(message.getText());
+	        nextMessage = dIn.readUTF();
+	        System.out.println(nextMessage);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} finally {
-			try {
-				sock.close();
-			} catch (IOException ioe) {
-			}			
 		}
     }
+	
+	private static void updateMessage() {
+		message.setText(nextMessage);
+	}
 }
