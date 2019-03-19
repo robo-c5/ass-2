@@ -15,10 +15,11 @@ import lejos.robotics.navigation.Navigator;
 import lejos.utility.Delay;
 import mapping.*;
 
-public class TestNavigator {
+public class TestNavigator
+{
 
-	
-	public static void main(String args[]) {
+	public static void main(String args[])
+	{
 		EV3 ev3Brick = (EV3) BrickFinder.getLocal();
 		Keys keys = ev3Brick.getKeys();
 		// Motor setup
@@ -34,15 +35,14 @@ public class TestNavigator {
 
 		// Pilot setup
 		MovePilot pilot = new MovePilot(chassis);
-		OdometryPoseProvider poseP = new OdometryPoseProvider(pilot);		
+		OdometryPoseProvider poseP = new OdometryPoseProvider(pilot);
 		Navigator nav = new Navigator(pilot, poseP);
 		Maze testMaze = new Maze();
-		
+
 		Tile goal1 = (Tile) testMaze.getMazeObject(testMaze.getCoordinate(11, 1));
 		Tile goal2 = (Tile) testMaze.getMazeObject(testMaze.getCoordinate(11, 3));
 		Tile goal3 = (Tile) testMaze.getMazeObject(testMaze.getCoordinate(5, 3));
-		
-		
+
 		keys.waitForAnyPress();
 		Coordinate metricDestination = goal1.getCentre();
 		nav.goTo(metricDestination.getX(), metricDestination.getY());

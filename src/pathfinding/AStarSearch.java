@@ -8,45 +8,53 @@ import setup.MazeSolvingRobot;
 
 public class AStarSearch
 {
-	private static State origin;
-	private static State goal;
-	private static State currentState;
-	private static ArrayList<State> frontier = new ArrayList<State>();
-	private static ArrayList<State> visited = new ArrayList<State>();
-	
-	public static Stack<Tile> ShortestPath(Tile start, Tile finish) {
+	private static State			origin;
+	private static State			goal;
+	private static State			currentState;
+	private static ArrayList<State>	frontier	= new ArrayList<State>();
+	private static ArrayList<State>	visited		= new ArrayList<State>();
+
+	public static Stack<Tile> ShortestPath(Tile start, Tile finish)
+	{
 		origin = new State(start);
 		origin.setGCost(0);
 		goal = new State(finish);
-		
-		currentState = origin;		
+
+		currentState = origin;
 		Stack<Tile> shortestPath = new Stack<Tile>();
 		addToFrontier(origin);
-		
-		while(!currentState.isGoal()) {
+
+		while (!currentState.isGoal())
+		{
 			currentState = getLowestCost();
 			visit(currentState);
 		}
-		
-		while(!currentState.isStart()) {
+
+		while (!currentState.isStart())
+		{
 			shortestPath.add(currentState.getTile());
 			currentState = currentState.getParent();
 		}
-		
+
 		return shortestPath;
 	}
-	
+
 	//since the maze mapping may not be complete when we hit the red tile, only consider tiles we have already visited & are traversable (not green)
 	//don't add to frontier if corresponding state is already in frontier or if in visited with lower gCost
 	//if find an equivilant state in visited set with higher gCost then proposed, remove old from visited & add new to frontier
-	private static void addToFrontier(State state) {
-		if (state.getTile().isVisited() && state.getTile().isTraversable()) {
-			if (frontier.contains(state) ) {
+	private static void addToFrontier(State state)
+	{
+		if (state.getTile().isVisited() && state.getTile().isTraversable())
+		{
+			if (frontier.contains(state))
+			{
 				return;
 			}
 			State equivState = equivilantVisitedState(state);
-			if (equivState != null) {
-				if (equivState.getGCost() <= state.getGCost()) {
+			if (equivState != null)
+			{
+				if (equivState.getGCost() <= state.getGCost())
+				{
 					return;
 				}
 				visited.remove(equivState);
@@ -54,43 +62,54 @@ public class AStarSearch
 			frontier.add(state);
 		}
 	}
-	
-	private static State equivilantVisitedState(State state) {
-		for (State visitedState : visited) {
-			if (visitedState.getTile().equals(state.getTile())) {
+
+	private static State equivilantVisitedState(State state)
+	{
+		for (State visitedState : visited)
+		{
+			if (visitedState.getTile().equals(state.getTile()))
+			{
 				return visitedState;
 			}
 		}
 		return null;
 	}
-	
+
 	//decides which state to observe next
-	private static State getLowestCost() {
+	private static State getLowestCost()
+	{
 		State currentBest = frontier.get(0);
-		if (frontier.size() > 1) {
-			for (int i = 1; i < frontier.size(); i++) {
+		if (frontier.size() > 1)
+		{
+			for (int i = 1; i < frontier.size(); i++)
+			{
 				State tempState = frontier.get(i);
-				if (tempState.getFCost() < currentBest.getFCost()) {
+				if (tempState.getFCost() < currentBest.getFCost())
+				{
 					currentBest = tempState;
 				}
 			}
 		}
-		return currentBest;		
+		return currentBest;
 	}
-	
-	private static void visit(State state) {
+
+	private static void visit(State state)
+	{
 		findChildren(state);
-		for (State child : state.getChildren()) {			
+		for (State child : state.getChildren())
+		{
 			addToFrontier(child);
 		}
 		visited.add(state);
 		frontier.remove(state);
 	}
 
-	private static void findChildren(State state) {
+	private static void findChildren(State state)
+	{
 		Tile[] nearbyReachableTiles = MazeSolvingRobot.getMaze().getNearbyReachableTiles(state.getTile());
 		ArrayList<State> children = new ArrayList<State>();
-		for (Tile tile : nearbyReachableTiles) {
+		for (Tile tile : nearbyReachableTiles)
+		{
 			State child = new State(tile);
 			child.setGCost(state.getGCost() + 1);
 			child.setParent(state);
@@ -98,68 +117,81 @@ public class AStarSearch
 		}
 		state.setChildren(children);
 	}
-	
+
 	//may want to create state object
-	static class State {
-		Tile tile;
-		double hCost;
-		double gCost;
-		ArrayList<State> children;
-		State parent;
-		
-		private State(Tile tile) {
+	static class State
+	{
+		Tile				tile;
+		double				hCost;
+		double				gCost;
+		ArrayList<State>	children;
+		State				parent;
+
+		private State(Tile tile)
+		{
 			this.tile = tile;
 			hCost = calcHCost();
 		}
-		
+
 		//heuristic is euclidean distance from state Tile centre to goal Tile centre
-		private double calcHCost() {
+		private double calcHCost()
+		{
 			int x1 = tile.getCentre().getX();
 			int y1 = tile.getCentre().getY();
 			int x2 = goal.getTile().getCentre().getX();
 			int y2 = goal.getTile().getCentre().getY();
-			
-			return Math.sqrt((x1-x2)*(x1-x2)+ (y1-y2)*(y1-y2));
+
+			return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 		}
-		
-		private double getGCost() {
+
+		private double getGCost()
+		{
 			return gCost;
 		}
-		
-		private void setGCost(double cost) {
+
+		private void setGCost(double cost)
+		{
 			gCost = cost;
 		}
-		
-		private double getFCost() {
+
+		private double getFCost()
+		{
 			return hCost + gCost;
-		}		
-		
-		private boolean isGoal() {
-			return tile.equals(goal.getTile());	
 		}
-		
-		private boolean isStart() {
+
+		private boolean isGoal()
+		{
+			return tile.equals(goal.getTile());
+		}
+
+		private boolean isStart()
+		{
 			return tile.equals(origin.getTile());
 		}
-		
-		private State getParent() {
+
+		private State getParent()
+		{
 			return parent;
 		}
-		
-		private void setParent(State parent) {
+
+		private void setParent(State parent)
+		{
 			this.parent = parent;
 		}
-		
-		private ArrayList<State> getChildren() {
+
+		private ArrayList<State> getChildren()
+		{
 			return children;
 		}
-		
-		private void setChildren(ArrayList<State> successors) {
+
+		private void setChildren(ArrayList<State> successors)
+		{
 			children = successors;
 		}
-		
-		private Tile getTile() {
+
+		private Tile getTile()
+		{
 			return tile;
-		}	
+		}
 	}
 }

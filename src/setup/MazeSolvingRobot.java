@@ -7,57 +7,75 @@ import lejos.hardware.Sound;
 import lejos.utility.Delay;
 import mapping.*;
 
-public class MazeSolvingRobot extends EV3Setup {
+public class MazeSolvingRobot extends EV3Setup
+{
 
 	// move cardinals + getter to somewhere a bit more global so can use in
-	private static final Bearing EAST = new Bearing(0) {
-		@Override
-		public String toString() {
-			return "East";
-		}
-	};
-	private static final Bearing NORTH = new Bearing(1) {
-		@Override
-		public String toString() {
-			return "North";
-		}
-	};
-	private static final Bearing WEST = new Bearing(2) {
-		@Override
-		public String toString() {
-			return "West";
-		}
-	};
-	private static final Bearing SOUTH = new Bearing(3) {
-		@Override
-		public String toString() {
-			return "South";
-		}
-	};	
-	private static final Bearing[] CARDINALS = { EAST, NORTH, WEST, SOUTH };
-	private static final Coordinate INITIAL_ORIGIN = getMaze().getCoordinate(1, 1);
+	private static final Bearing	EAST			= new Bearing(0)
+													{
+														private static final long serialVersionUID = 2805808181918454266L;
+
+														@Override
+														public String toString()
+														{
+															return "East";
+														}
+													};
+	private static final Bearing	NORTH			= new Bearing(1)
+													{
+														private static final long serialVersionUID = -5102790217240141415L;
+
+														@Override
+														public String toString()
+														{
+															return "North";
+														}
+													};
+	private static final Bearing	WEST			= new Bearing(2)
+													{
+														private static final long serialVersionUID = 1846638573309292989L;
+
+														@Override
+														public String toString()
+														{
+															return "West";
+														}
+													};
+	private static final Bearing	SOUTH			= new Bearing(3)
+													{
+														private static final long serialVersionUID = -8171737250803624310L;
+
+														@Override
+														public String toString()
+														{
+															return "South";
+														}
+													};
+	private static final Bearing[]	CARDINALS		= { EAST, NORTH, WEST, SOUTH };
+	private static final Coordinate	INITIAL_ORIGIN	= getMaze().getCoordinate(1, 1);
 	//private static final Rectangle BOUNDARIES = [-15, -15, 380, 380];
 
-	private static Bearing bearing;
+	private static Bearing			bearing;
 
-	private static Coordinate topoPosition;
+	private static Coordinate		topoPosition;
 
-	private static Maze maze;
-	
-	private static Coordinate topoDestination;
-	
-	private static Stack<Tile> navPath; // a list of the visited tiles, in order, get popped off during backtracking
-	
-	private static boolean end;
+	private static Maze				maze;
 
-	public MazeSolvingRobot() {
+	private static Coordinate		topoDestination;
+
+	private static Stack<Tile>		navPath;																				// a list of the visited tiles, in order, get popped off during backtracking
+
+	private static boolean			end;
+
+	public MazeSolvingRobot()
+	{
 		setMaze();
 		//starting pose should be in centre of startTile (topo (1,1)), pointing to the right (think when)
 		setTopoPosition(getMaze().getCoordinate(INITIAL_ORIGIN.getY(), INITIAL_ORIGIN.getX()));
 		setBearing(0);
 		startArbitrator();
 	}
-	
+
 	public static Stack<Tile> getNavPath()
 	{
 		if (navPath == null)
@@ -66,7 +84,7 @@ public class MazeSolvingRobot extends EV3Setup {
 		}
 		return navPath;
 	}
-	
+
 	public static void addToNavPath(Tile tile)
 	{
 		getNavPath().push(tile);
@@ -76,41 +94,50 @@ public class MazeSolvingRobot extends EV3Setup {
 	{
 		getNavPath().pop();
 	}
-	
+
 	public static Tile pollNavPath()
 	{
 		return getNavPath().peek();
 	}
-	
-	public static Maze getMaze() {
-		if (maze == null) {
+
+	public static Maze getMaze()
+	{
+		if (maze == null)
+		{
 			setMaze();
 		}
 		return maze;
 	}
 
-	public static void setMaze() {
+	public static void setMaze()
+	{
 		maze = new Maze();
 	}
 
-	public static Bearing[] getCARDINALS() {
+	public static Bearing[] getCARDINALS()
+	{
 		return CARDINALS;
 	}
 
-	public static Bearing getBearing() {
-		if (bearing == null) {
+	public static Bearing getBearing()
+	{
+		if (bearing == null)
+		{
 			setBearing(0);
 		}
 		return bearing;
 	}
 
-	private static void setBearing(int index) {
+	private static void setBearing(int index)
+	{
 		if (index >= 0 && index < CARDINALS.length)
 			bearing = CARDINALS[index];
 	}
-	
-	private static void setBearing(Bearing direction) {
-		if (Arrays.asList(CARDINALS).contains(direction)) {
+
+	private static void setBearing(Bearing direction)
+	{
+		if (Arrays.asList(CARDINALS).contains(direction))
+		{
 			bearing = direction;
 		}
 	}
@@ -123,44 +150,52 @@ public class MazeSolvingRobot extends EV3Setup {
 		}
 		return topoDestination;
 	}
-	
+
 	private static void setTopoDestination(Coordinate givenDestination)
 	{
 		topoDestination = givenDestination;
 	}
 
-	public static Coordinate getTopoPosition() {
-		if (topoPosition == null) {
+	public static Coordinate getTopoPosition()
+	{
+		if (topoPosition == null)
+		{
 			setTopoPosition(getMaze().getCoordinate(0, 0)); // probably should throw some kind of error here as position should not be null
 		}
 		return topoPosition;
 	}
-	
-	public static Coordinate getOrigin() {
+
+	public static Coordinate getOrigin()
+	{
 		return INITIAL_ORIGIN;
 	}
 
-	public static void setTopoPosition(Coordinate topoLocation) {
+	public static void setTopoPosition(Coordinate topoLocation)
+	{
 		topoPosition = getMaze().getCoordinate(topoLocation.getY(), topoLocation.getX());
 	}
-	
-	public static Bearing getOpposite(Bearing direction) throws Exception {
-		for (int i = 0; i < MazeSolvingRobot.getCARDINALS().length; i++) {
-			if (direction == MazeSolvingRobot.getCARDINALS()[i]) {
+
+	public static Bearing getOpposite(Bearing direction) throws Exception
+	{
+		for (int i = 0; i < MazeSolvingRobot.getCARDINALS().length; i++)
+		{
+			if (direction == MazeSolvingRobot.getCARDINALS()[i])
+			{
 				return MazeSolvingRobot.getCARDINALS()[(i + MazeSolvingRobot.getCARDINALS().length / 2) % 4];
 			}
 		}
 		throw new Exception("Bearing not found in list of Cardinal directions");
 	}
 
-	public static void rotateRobotTo(Bearing target) {
+	public static void rotateRobotTo(Bearing target)
+	{
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
 		getPilot().rotate(angleDifference);
 		setBearing(target);
 	}
-	
-	
-	public static float rotateAndScan(Bearing givenBearing) {
+
+	public static float rotateAndScan(Bearing givenBearing)
+	{
 		getirMotor().rotateTo(givenBearing.getAngle());
 		return getIRSample();
 	}
@@ -169,20 +204,23 @@ public class MazeSolvingRobot extends EV3Setup {
 	{
 		getirMotor().rotateTo(0);
 	}
-	
-	public static boolean getEnd() {
+
+	public static boolean getEnd()
+	{
 		return end;
 	}
-	
-	public static void end() {
+
+	public static void end()
+	{
 		end = true;
 	}
-	
-	public static void moveTo(Coordinate topologicalDestination) {
+
+	public static void moveTo(Coordinate topologicalDestination)
+	{
 		setTopoDestination(topologicalDestination);
 		Coordinate metricDestination = getMaze().getMazeObject(topologicalDestination).getCentre();
 		getNav().goTo(metricDestination.getX(), metricDestination.getY());
 		setTopoPosition(topologicalDestination);
 	}
-	
+
 }

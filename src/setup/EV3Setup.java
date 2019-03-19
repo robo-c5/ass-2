@@ -22,23 +22,25 @@ import lejos.robotics.navigation.Navigator;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
-public class EV3Setup {
+public class EV3Setup
+{
 
-	private static MovePilot pilot;
+	private static MovePilot				pilot;
 
-	private static PoseProvider poseP;
+	private static PoseProvider				poseP;
 
-	private static Navigator navPilot;
+	private static Navigator				navPilot;
 
-	private static EV3ColorSensor cs;
+	private static EV3ColorSensor			cs;
 
-	private static EV3IRSensor ir;
+	private static EV3IRSensor				ir;
 
-	private static EV3 ev3Brick;
+	private static EV3						ev3Brick;
 
-	private static EV3MediumRegulatedMotor irMotor;
+	private static EV3MediumRegulatedMotor	irMotor;
 
-	public EV3Setup() {
+	public EV3Setup()
+	{
 		// Brick setup
 		ev3Brick = (EV3) BrickFinder.getLocal();
 		setIRSensor(irSensorInit());
@@ -47,37 +49,44 @@ public class EV3Setup {
 		waitForAnyPress(ev3Brick.getKeys());
 	}
 
-	public static boolean escapePressed() {
+	public static boolean escapePressed()
+	{
 		return ev3Brick.getKeys().getButtons() == Keys.ID_ESCAPE;
 	}
 
-	private static void setPilot(MovePilot givenPilot) {
+	private static void setPilot(MovePilot givenPilot)
+	{
 		pilot = givenPilot;
 	}
 
-	public static MovePilot getPilot() {
+	public static MovePilot getPilot()
+	{
 		if (pilot == null)
 			setPilot(pilotInit());
 		return pilot;
 	}
 
-	public static Navigator getNav() {
+	public static Navigator getNav()
+	{
 		if (navPilot == null)
 			setNav(pilot);
 		return navPilot;
 	}
 
-	public static void setNav(MovePilot pilot) {
+	public static void setNav(MovePilot pilot)
+	{
 		poseP = new OdometryPoseProvider(pilot);
 		navPilot = new Navigator(pilot, poseP);
 	}
 
 	// colour sensor getter and setter
-	private static void setColourSensor(EV3ColorSensor givencs) {
+	private static void setColourSensor(EV3ColorSensor givencs)
+	{
 		cs = givencs;
 	}
 
-	public static EV3ColorSensor getColourSensor() {
+	public static EV3ColorSensor getColourSensor()
+	{
 		if (cs == null)
 			setColourSensor(colourSensorInit());
 		return cs;
@@ -85,11 +94,13 @@ public class EV3Setup {
 	//
 
 	// ir sensor getter and setter
-	private static void setIRSensor(EV3IRSensor givenir) {
+	private static void setIRSensor(EV3IRSensor givenir)
+	{
 		ir = givenir;
 	}
 
-	public static EV3IRSensor getIRSensor() {
+	public static EV3IRSensor getIRSensor()
+	{
 		if (ir == null)
 			setIRSensor(irSensorInit());
 		return ir;
@@ -97,14 +108,16 @@ public class EV3Setup {
 	//
 
 	// get colour and ir samples
-	public static float[] getColourSample() {
+	public static float[] getColourSample()
+	{
 		SensorMode sm = getColourSensor().getRGBMode();
 		float[] sample = new float[sm.sampleSize()];
 		sm.fetchSample(sample, 0);
 		return sample;
 	}
 
-	public static float getIRSample() {
+	public static float getIRSample()
+	{
 		SensorMode sm = getIRSensor().getDistanceMode();
 		float[] sample = new float[sm.sampleSize()];
 		sm.fetchSample(sample, 0);
@@ -112,7 +125,8 @@ public class EV3Setup {
 	}
 	//
 
-	private static void waitForAnyPress(Keys keys) {
+	private static void waitForAnyPress(Keys keys)
+	{
 		LCD.clear();
 		LCD.drawString("EV3Setup.java-", 0, 5);
 		LCD.drawString("Press any key...", 0, 6);
@@ -121,37 +135,43 @@ public class EV3Setup {
 	}
 
 	// init
-	private static EV3IRSensor irSensorInit() {
+	private static EV3IRSensor irSensorInit()
+	{
 		EV3IRSensor irSensor;
 		irSensor = new EV3IRSensor(SensorPort.S1);
 		return irSensor;
 	}
 
-	private static EV3ColorSensor colourSensorInit() {
+	private static EV3ColorSensor colourSensorInit()
+	{
 		return new EV3ColorSensor(SensorPort.S2);
 	}
 
-	public static void startArbitrator() {
+	public static void startArbitrator()
+	{
 		// add behaviours to, and then start, Arbitrator
-		new Arbitrator(new Behavior[] { new CheckNeighbours(),
-				new EndArbitrator() }).go();
+		new Arbitrator(new Behavior[] { new CheckNeighbours(), new EndArbitrator() }).go();
 		// ^new OutsideMaze(),
 	}
 
-	private static EV3MediumRegulatedMotor irMotorInit() {
+	private static EV3MediumRegulatedMotor irMotorInit()
+	{
 		EV3MediumRegulatedMotor irMotor = new EV3MediumRegulatedMotor(MotorPort.C);
 		irMotor.setSpeed(360);
 		return irMotor;
 	}
 
-	public static EV3MediumRegulatedMotor getirMotor() {
-		if (irMotor == null) {
+	public static EV3MediumRegulatedMotor getirMotor()
+	{
+		if (irMotor == null)
+		{
 			irMotor = irMotorInit();
 		}
 		return irMotor;
 	}
 
-	private static MovePilot pilotInit() {
+	private static MovePilot pilotInit()
+	{
 		// Motor setup
 		EV3LargeRegulatedMotor motor1 = new EV3LargeRegulatedMotor(MotorPort.A);
 		EV3LargeRegulatedMotor motor2 = new EV3LargeRegulatedMotor(MotorPort.B);

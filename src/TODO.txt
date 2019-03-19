@@ -11,7 +11,6 @@ perhaps add a Visitable flag to Tiles so that don't have to check every tile in 
 
 use colour sensors on grid lines?
 
-
 two methods:
 
 update maze object & redraw it
@@ -25,6 +24,5 @@ send off heading when complete a rotation
 pc server 2 threads max prolly - drawing & communication
 
 look at gui update stuff - remember to delete stuff that ain't ours before submission
-^ ask people how to get client server update a value running in a separate thread to gui draw something using that value
-- might be because need to use tasks instead?
+figure out how to send multiple objects over socket & draw on gui
 

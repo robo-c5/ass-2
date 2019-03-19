@@ -15,9 +15,11 @@ import lejos.robotics.navigation.MovePilot;
 //In this class we attempt to reduce this error as much as possible by calibrating the Wheelbase before we implement other measures.
 //Procedure is: have robot draw squares, then if turns too much decrease Wheelbase, if too little increase (by about 5% a time).
 
-public class DrawSquares {
-	
-	public static void main(String args[]) {
+public class DrawSquares
+{
+
+	public static void main(String args[])
+	{
 		EV3 ev3Brick = (EV3) BrickFinder.getLocal();
 		Keys keys = ev3Brick.getKeys();
 		// Motor setup
@@ -39,27 +41,29 @@ public class DrawSquares {
 		pilot.setAngularSpeed(40.0f);
 		pilot.setLinearAcceleration(2.5f);
 		pilot.setAngularAcceleration(20f);
-		
+
 		keys.waitForAnyPress();
 		pilot.rotate(90);
 
-		
 		if (true)
 			return;
-		
+
 		keys.waitForAnyPress();
-		while(keys.getButtons() != Keys.ID_ESCAPE) {
+		while (keys.getButtons() != Keys.ID_ESCAPE)
+		{
 			pilot.travel(40);
-			
-			if(keys.getButtons() == Keys.ID_ESCAPE) {
+
+			if (keys.getButtons() == Keys.ID_ESCAPE)
+			{
 				break;
 			}
-			
+
 			pilot.rotate(90);
-			
-			if(keys.getButtons() == Keys.ID_ESCAPE) {
+
+			if (keys.getButtons() == Keys.ID_ESCAPE)
+			{
 				break;
-			}			
+			}
 		}
 		pilot.stop();
 	}

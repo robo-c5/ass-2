@@ -3,11 +3,13 @@ package mapping;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.lcd.GraphicsLCD;
 
-public class DrawMaze {
+public class DrawMaze
+{
 	private static final int CM_PER_PIXEL = 3;
 	// might be hard to see a wall at the edge of lcd screen
 
-	public static void drawMaze(Maze grid) {
+	public static void drawMaze(Maze grid)
+	{
 		GraphicsLCD gScreen = BrickFinder.getLocal().getGraphicsLCD();
 		gScreen.clear();
 		int currentX;
@@ -15,9 +17,11 @@ public class DrawMaze {
 		int pixelHeight = 0;
 		int pixelWidth;
 		int startY;
-		for (int y = 0; y < Maze.getHEIGHT(); y++) {
+		for (int y = 0; y < Maze.getHEIGHT(); y++)
+		{
 			currentX = 0;
-			for (MazeObject testObject : grid.getRow(y)) {
+			for (MazeObject testObject : grid.getRow(y))
+			{
 				pixelWidth = testObject.getWidth() / CM_PER_PIXEL;
 				pixelHeight = testObject.getHeight() / CM_PER_PIXEL;
 				startY = currentY - pixelHeight;
@@ -32,7 +36,8 @@ public class DrawMaze {
 		}
 	}
 
-	public static int getCmPerPixel() {
+	public static int getCmPerPixel()
+	{
 		return CM_PER_PIXEL;
 	}
 
