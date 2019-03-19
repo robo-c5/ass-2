@@ -147,22 +147,8 @@ public class TestServer
 
 	public static void pushStatus(OutputStream out) throws IOException
 	{
-		EV3StatsMessage maze = new EV3StatsMessage(testMaze, EV3StatsMessage.MAZE);
-		EV3StatsMessage topoPos = new EV3StatsMessage(testPos, EV3StatsMessage.POSITION);
-		EV3StatsMessage heading = new EV3StatsMessage(testDirection, EV3StatsMessage.HEADING);
-		EV3StatsMessage end = new EV3StatsMessage(deadEnd, EV3StatsMessage.END);
-
+		Object[] stats = {testMaze, testPos, testDirection, deadEnd};
 		ObjectOutputStream objectOutput = new ObjectOutputStream(out);
-		objectOutput.writeObject(maze);
-
-		objectOutput = new ObjectOutputStream(out);
-		objectOutput.writeObject(topoPos);
-
-		objectOutput = new ObjectOutputStream(out);
-		objectOutput.writeObject(heading);
-
-		objectOutput = new ObjectOutputStream(out);
-		objectOutput.writeObject(end);
-
+		objectOutput.writeObject(stats);
 	}
 }

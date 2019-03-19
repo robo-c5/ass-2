@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class LocalHostChatServer
 {
-	public static final int port = 1234;
+	public static final int port = 7657;
 
 	public static void main(String[] args) throws IOException
 	{
