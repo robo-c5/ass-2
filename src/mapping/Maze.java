@@ -4,6 +4,8 @@ import java.lang.Math;
 import java.io.*;
 import java.util.Stack;
 
+import lejos.hardware.lcd.LCD;
+import lejos.utility.Delay;
 import setup.MazeSolvingRobot;
 
 public class Maze implements Serializable
@@ -185,7 +187,7 @@ public class Maze implements Serializable
 					{
 					}
 				}
-			}
+			} 
 		}
 	}
 

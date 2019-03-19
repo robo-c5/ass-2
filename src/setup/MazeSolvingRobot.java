@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Stack;
 
 import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import mapping.*;
 
@@ -128,7 +129,7 @@ public class MazeSolvingRobot extends EV3Setup
 		return bearing;
 	}
 
-	private static void setBearing(int index)
+	public static void setBearing(int index)
 	{
 		if (index >= 0 && index < CARDINALS.length)
 			bearing = CARDINALS[index];
@@ -196,7 +197,8 @@ public class MazeSolvingRobot extends EV3Setup
 
 	public static float rotateAndScan(Bearing givenBearing)
 	{
-		getirMotor().rotateTo(givenBearing.getAngle());
+		int angleDifference = Bearing.minimiseAngle(givenBearing.getAngle() - getBearing().getAngle());
+		getirMotor().rotateTo(-angleDifference);
 		return getIRSample();
 	}
 

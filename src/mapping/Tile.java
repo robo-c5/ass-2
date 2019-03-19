@@ -1,6 +1,8 @@
 package mapping;
 
 import lejos.robotics.navigation.Waypoint;
+import setup.MazeSolvingRobot;
+
 import java.io.*;
 
 public class Tile extends MazeObject implements Serializable
@@ -37,4 +39,12 @@ public class Tile extends MazeObject implements Serializable
 			return false;
 		return true;
 	}
+	
+	@Override
+	public void setVisited()
+	{
+		MazeSolvingRobot.addToNavPath(this);
+		visited = true;
+	}
+	
 }
