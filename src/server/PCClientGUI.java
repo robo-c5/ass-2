@@ -120,16 +120,11 @@ public class PCClientGUI extends Application
 
 			for (int i = 0; i < 4; i++)
 			{
-				EV3StatsMessage msg = (EV3StatsMessage) objectInput.readObject();
-
-				if (msg.getType().equals(EV3StatsMessage.MAZE))
-					maze = (Maze) msg.getInfo();
-				else if (msg.getType().equals(EV3StatsMessage.POSITION))
-					topoPos = (Coordinate) msg.getInfo();
-				else if (msg.getType().equals(EV3StatsMessage.HEADING))
-					direction = (Bearing) msg.getInfo();
-				else if (msg.getType().equals(EV3StatsMessage.END))
-					end = (boolean) msg.getInfo();
+				Object[] stats = (Object[]) objectInput.readObject();
+				maze = (Maze) stats[0];
+				topoPos = (Coordinate) stats[1];
+				direction = (Bearing) stats[2];
+				end = (boolean) stats[3];
 			}
 		}
 		catch (ClassNotFoundException cnfe)
