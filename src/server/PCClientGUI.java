@@ -4,32 +4,38 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
+import javafx.application.*;
+import javafx.application.Platform;
+import javafx.scene.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.*;
+import javafx.stage.Stage;
 import mapping.*;
-import setup.MazeSolvingRobot;
-import testing.Group;
-import testing.Rectangle;
-import testing.Scene;
-import testing.Stage;
-import testing.Text;
 
-public class PCClient extends Application {
+public class PCClientGUI extends Application {
 	
-	private static boolean run = true;
+	private static String ip = "localhost";
+	private static Socket sock; 
+	
+	private static final int height = 700;
+	private static final int width = 760;
+	private static final int offset = 10;
+	
 	private static Maze maze;
 	private static Coordinate topoPos;
-	private static Bearing heading;
-	private static String ip = "10.0.1.1"; // BT
-	private static Socket sock = new Socket(ip, EV3Server.port);
+	private static Bearing direction;
+	private static Text roboPos = new Text();	
+	private static Text heading = new Text();
+	private static ArrayList<Rectangle> walls = new ArrayList<Rectangle>();
+	
 
 	public static void main(String[] args) throws IOException {		
+		sock = new Socket(ip, TestServer.port);
 		launch(args);		
 	}
 	
 	@Override
     public void start(Stage primaryStage) throws Exception {
-    	final int height = 700;
-    	final int width = 760;
-    	final int offset = 10;
     	
     	getRobotStats();
     	
@@ -49,14 +55,19 @@ public class PCClient extends Application {
 
                     @Override
                     public void run() {
-                        getRobotStats();
+                    	try {
+	                        getRobotStats();
+	                        drawInfo();
+                    	} catch (IOException ioe) {
+                    		
+                    	}
                     }
                 };
 
                 while (true) {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
+                    } catch (InterruptedException ie) {
                     }
 
                     // UI update is run on the Application thread
@@ -76,22 +87,20 @@ public class PCClient extends Application {
 			ObjectInputStream objectInput = new ObjectInputStream(in);
 			EV3StatsMessage msg = (EV3StatsMessage) objectInput.readObject();
 			
-			
-			if (msg.getType().equals(EV3Server.MAZE))
+			if (msg.getType().equals(EV3StatsMessage.MAZE))
 				maze = (Maze) msg.getInfo();
-			else if (msg.getType().equals(EV3Server.POSITION))
+			else if (msg.getType().equals(EV3StatsMessage.POSITION))
 				topoPos = (Coordinate) msg.getInfo();
-			else if (msg.getType().equals(EV3Server.HEADING))
-				heading = (Bearing) msg.getInfo();
+			else if (msg.getType().equals(EV3StatsMessage.HEADING))
+				direction = (Bearing) msg.getInfo();
 			} catch (ClassNotFoundException cnfe) {
 				cnfe.printStackTrace();
-				run = false;
 			}
 		
 		
     }
 	
-	private static void drawInfo() throws Exception {
+	private static void drawInfo() {
 		final int PIXEL_PER_CM = 2;
     	Text roboPos = new Text();		
     	roboPos.setText("Robot Topological Postion: " + topoPos.toString());
@@ -99,14 +108,11 @@ public class PCClient extends Application {
 		roboPos.setY(50);		
 		roboPos.setFont(Font.font("null", FontWeight.BOLD, 36));
 		
-		Text heading = new Text();
 		
-		heading.setText("Robot heading: " + heading.toString());
+		heading.setText("Robot heading: " + direction.toString());
 		heading.setX(100);
 		heading.setY(100);	
 		heading.setFont(Font.font("null", FontWeight.BOLD, 36));
-		  	
-    	ArrayList<Rectangle> walls = new ArrayList<Rectangle>();
     	
     	//reuses code from DrawMaze since similarly Rectangles start from their NW corner
     	int currentX;
@@ -129,8 +135,6 @@ public class PCClient extends Application {
 				currentX += pixelWidth;
 			}
 			currentY -= pixelHeight;
-		}
-		
-		
+		}		
 	}
 }

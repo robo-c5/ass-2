@@ -4,8 +4,13 @@ import mapping.*;
 
 public class EV3StatsMessage {
 	
+	public static final String MAZE = "Maze";
+	public static final String POSITION = "Coordinate";
+	public static final String HEADING = "Bearing";
+	
 	private Object info;
 	private String type;
+	
 	
 	public EV3StatsMessage(Object info, String type) {
 		this.info = info;
