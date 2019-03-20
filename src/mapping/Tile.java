@@ -44,6 +44,7 @@ public class Tile extends MazeObject implements Serializable
 	public void setVisited()
 	{
 		MazeSolvingRobot.addToNavPath(this);
+		MazeSolvingRobot.incrementVisitedTileCount();
 		visited = true;
 	}
 	

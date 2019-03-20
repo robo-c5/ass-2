@@ -64,9 +64,15 @@ public class MazeSolvingRobot extends EV3Setup
 
 	private static Coordinate		topoDestination;
 
-	private static Stack<Tile>		navPath;																				// a list of the visited tiles, in order, get popped off during backtracking
+	private static Stack<Tile>		navPath;	// a list of the visited tiles, in order, get popped off during backtracking
+	
+	private static boolean redFound = false;
+	
+	private static int visitedTileCount = 0;
 
 	private static boolean			end;
+	
+	private static Tile endTile;
 
 	public MazeSolvingRobot()
 	{
@@ -223,6 +229,27 @@ public class MazeSolvingRobot extends EV3Setup
 		Coordinate metricDestination = getMaze().getMazeObject(topologicalDestination).getCentre();
 		getNav().goTo(metricDestination.getX(), metricDestination.getY());
 		setTopoPosition(topologicalDestination);
+	}
+	
+	public static boolean isRedFound() {
+		return redFound;
+	}
+	
+	public static int getVisitedTileCount() {
+		return visitedTileCount;
+	}
+	
+	public static void incrementVisitedTileCount() {
+		visitedTileCount++;
+	}
+	
+	public static Tile getEndTile() {
+		return endTile;
+	}
+	
+	public static void setEndTile(Tile end) {
+		endTile = end;
+		redFound = true;
 	}
 
 }
