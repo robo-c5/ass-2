@@ -2,6 +2,9 @@ package mapping;
 
 import java.io.*;
 
+import lejos.hardware.lcd.LCD;
+import lejos.utility.Delay;
+
 public abstract class MazeObject implements Serializable
 {
 

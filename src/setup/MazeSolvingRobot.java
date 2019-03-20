@@ -1,5 +1,9 @@
 package setup;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Arrays;
 import java.util.Stack;
 
@@ -7,6 +11,7 @@ import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import mapping.*;
+import server.EV3Server;
 
 public class MazeSolvingRobot extends EV3Setup
 {
@@ -73,6 +78,8 @@ public class MazeSolvingRobot extends EV3Setup
 	private static boolean			end;
 	
 	private static Tile endTile;
+	
+	private static final int TILE_SIZE = 40;
 
 	public MazeSolvingRobot()
 	{
@@ -199,6 +206,10 @@ public class MazeSolvingRobot extends EV3Setup
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
 		getPilot().rotate(angleDifference);
 		setBearing(target);
+		try {
+			robotStateChanged();
+		} catch (IOException e) {
+		}
 	}
 
 	public static float rotateAndScan(Bearing givenBearing)
@@ -229,6 +240,15 @@ public class MazeSolvingRobot extends EV3Setup
 		Coordinate metricDestination = getMaze().getMazeObject(topologicalDestination).getCentre();
 		getNav().goTo(metricDestination.getX(), metricDestination.getY());
 		setTopoPosition(topologicalDestination);
+		try {
+			robotStateChanged();
+		} catch (IOException e) {
+		}
+	}
+	
+	public static void moveByATile()
+	{
+		getPilot().travel(TILE_SIZE);
 	}
 	
 	public static boolean isRedFound() {
@@ -252,4 +272,19 @@ public class MazeSolvingRobot extends EV3Setup
 		redFound = true;
 	}
 
+	
+	// called every time the robot moves/rotates, to update maze visualisation
+	private static void robotStateChanged() throws IOException
+	{
+		//pushStats();
+	}
+	
+	private static void pushStats() throws IOException
+	{
+		ServerSocket server = new ServerSocket(EV3Server.port);
+		Socket client = server.accept();
+		OutputStream out = client.getOutputStream();
+		EV3Server.pushStats(out);
+	}
+	
 }

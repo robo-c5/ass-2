@@ -43,14 +43,12 @@ public class CheckNeighbours implements Behavior {
 			doNotInterrupt = true;
 			Maze maze = MazeSolvingRobot.getMaze();
 			Tile currentTile = (Tile) maze.getMazeObject(MazeSolvingRobot.getTopoPosition());
+			currentTile.setVisited(); // set the current tile visited before you leave it, otherwise there are issues backtracking
 			checkAdjacentEdges(currentTile);
 			Tile targetMazeTile = findNextMove(getNearbyReachableTiles(currentTile, maze));
 			rotateTo(currentTile, targetMazeTile);
-			MazeSolvingRobot.getPilot().travel(40);
-			// Sound.setVolume(5);
-			// Sound.beep();
+			MazeSolvingRobot.moveByATile();
 			MazeSolvingRobot.setTopoPosition(targetMazeTile.getTopologicalPosition());
-			currentTile.setVisited();
 			doNotInterrupt = false;
 			LCD.clear();
 		}
@@ -65,18 +63,19 @@ public class CheckNeighbours implements Behavior {
 		for (MazeObject adjacent : currentTile.getNeighbours()) {
 			if (!adjacent.isVisited()) {
 				Delay.msDelay(50);
-				//LCD.clear();
-				//LCD.drawString(adjacent.getTopologicalPosition().toString(), 0, 4);
-				//LCD.drawString("" + MazeSolvingRobot.getMaze().getBearing(currentTile, adjacent), 0, 3);
+				// LCD.clear();
+				// LCD.drawString(adjacent.getTopologicalPosition().toString(), 0, 4);
+				// LCD.drawString("" + MazeSolvingRobot.getMaze().getBearing(currentTile,
+				// adjacent), 0, 3);
 				MazeSolvingRobot.rotateAndScan(MazeSolvingRobot.getMaze().getBearing(currentTile, adjacent));
 				if (detectWall()) {
-					//Sound.setVolume(5);
-					//Sound.beep();
+					// Sound.setVolume(5);
+					// Sound.beep();
 					adjacent.setNoGo();
 				} else {
 					adjacent.setVisited();
 				}
-				//Delay.msDelay(3000);
+				// Delay.msDelay(3000);
 			}
 		}
 		MazeSolvingRobot.resetMedMotor();
@@ -85,13 +84,26 @@ public class CheckNeighbours implements Behavior {
 	// look at all possible adjacent tiles, choose the first one that is available
 	// to be moved to, if none, backtrack
 	private Tile findNextMove(Tile[] adjacentTiles) {
-		for (Tile adjacent : adjacentTiles) {
-			// if the neighbour is unvisited + not a wall. green tile
-			if (adjacent != null && adjacent.isTraversable() && !adjacent.isVisited()) {
-				return adjacent;
+		if (!isGreen(MazeSolvingRobot.getColourSample())) {
+			for (Tile adjacent : adjacentTiles) {
+				if (adjacent != null && adjacent.isTraversable() && !adjacent.isVisited()) {
+					return adjacent;
+				}
 			}
 		}
-		return backTrack(); 
+		return backTrack();
+	}
+
+	private boolean isGreen(float[] sample) {
+		Delay.msDelay(50);
+		if (0.01 < sample[0] && sample[0] < 0.03) {
+			if (0.045 < sample[1] && sample[1] < 0.07) {
+				if (0.022 < sample[2] && sample[2] < 0.05) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private Tile backTrack() {
@@ -99,6 +111,7 @@ public class CheckNeighbours implements Behavior {
 		if (MazeSolvingRobot.getNavPath().size() > 0) {
 			return MazeSolvingRobot.pollNavPath(); // then set the new targetTile as the top element of
 													// the navPath
+
 		} else // if the navpath is empty at this point, this means you have got back to the
 				// start of the maze without reaching the destination point, so not sure what
 				// should happen here

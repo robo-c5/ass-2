@@ -111,6 +111,7 @@ public class EV3Setup
 	public static float[] getColourSample()
 	{
 		SensorMode sm = getColourSensor().getRGBMode();
+		//SensorMode sm = getColourSensor().getColorIDMode();
 		float[] sample = new float[sm.sampleSize()];
 		sm.fetchSample(sample, 0);
 		return sample;
@@ -187,10 +188,10 @@ public class EV3Setup
 		MovePilot pilot = new MovePilot(chassis);
 
 		// Speed setup
-		pilot.setLinearSpeed(2.5f); // 7.5 is way too fast
-		pilot.setAngularSpeed(20f);
-		pilot.setLinearAcceleration(2.5f);
-		pilot.setAngularAcceleration(20f);
+		pilot.setLinearSpeed(200f); // 7.5 is way too fast
+		pilot.setAngularSpeed(200f);
+		pilot.setLinearAcceleration(200f);
+		pilot.setAngularAcceleration(200f);
 
 		return pilot;
 	}
