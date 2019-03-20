@@ -20,9 +20,14 @@ Robot wise - maybe put send off maze once complete a move
 send off position when complete a move
 send off heading when complete a rotation
 
+or just once a second
+
 
 pc server 2 threads max prolly - drawing & communication
 
 look at gui update stuff - remember to delete stuff that ain't ours before submission
-figure out how to send multiple objects over socket & draw on gui
+
+EV3Server : pushing stats should run on a separate thread
+
+general idea: use RobotStats for pushing and receiving stats ONCE
 

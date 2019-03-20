@@ -2,38 +2,41 @@ package server;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
 
-import javafx.application.*;
+import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.*;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
-import mapping.*;
+
+import mapping.Bearing;
+import mapping.Coordinate;
+import mapping.Maze;
+import mapping.MazeObject;
 
 public class PCClientGUI extends Application
 {
+	private static String		ip				= "localhost";
+	private static Socket		sock;
 
-	private static String				ip		= "localhost";
-	private static Socket				sock;
+	private static Maze			maze;
+	private static Coordinate	position;
+	private static Bearing		direction;
 
-	private static final int			height	= 700;
-	private static final int			width	= 760;
-	private static final int			offset	= 10;
+	private static Text			heading			= new Text("No direction yet");
+	private static Text			roboPos			= new Text("No position yet");
+	private static Group		walls			= new Group();
 
-	private static Maze					maze;
-	private static Coordinate			topoPos;
-	private static Bearing				direction;
-
-	private static Text					roboPos	= new Text("Not initialised");
-	private static Text					heading	= new Text("Not initialised");
-	private static ArrayList<Rectangle>	walls	= new ArrayList<Rectangle>();
-	private static boolean				end		= false;
+	private static final int	WINDOW_HEIGHT	= 700;
+	private static final int	WINDOW_WIDTH	= 760;
+	private static final int	EDGE_OFFSET		= 10;
+	private static final int	PIXEL_PER_CM	= 2;
 
 	public static void main(String[] args) throws IOException
 	{
-		sock = new Socket(ip, TestServer.port);
+		sock = new Socket(ip, EV3Server.port);
 		launch(args);
 	}
 
@@ -41,9 +44,10 @@ public class PCClientGUI extends Application
 	public void start(Stage primaryStage) throws Exception
 	{
 
-		getRobotStats();
-
-		Group mazeRep = new Group();
+		Text debugMessage = new Text();
+		debugMessage.setText("CONNECTED");
+		debugMessage.setX(EDGE_OFFSET);
+		debugMessage.setY(EDGE_OFFSET);
 
 		roboPos.setX(100);
 		roboPos.setY(50);
@@ -53,12 +57,10 @@ public class PCClientGUI extends Application
 		heading.setY(100);
 		heading.setFont(Font.font("null", FontWeight.BOLD, 36));
 
-		drawWalls(maze);
+		Group messages = new Group();
+		messages.getChildren().addAll(walls, roboPos, heading, debugMessage);
 
-		mazeRep.getChildren().addAll(walls);
-		mazeRep.getChildren().addAll(roboPos, heading);
-
-		Scene scene = new Scene(mazeRep, width, height);
+		Scene scene = new Scene(messages, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		Thread thread = new Thread(new Runnable()
 		{
@@ -72,33 +74,20 @@ public class PCClientGUI extends Application
 					@Override
 					public void run()
 					{
-						updateRobotStats();
+						updateMessage();
 					}
 				};
-
-				while (!end)
+				while (true)
 				{
 					try
 					{
 						Thread.sleep(1000);
 					}
-					catch (InterruptedException ie)
+					catch (InterruptedException ex)
 					{
-						ie.printStackTrace();
 					}
 					getRobotStats();
-
 					Platform.runLater(updater);
-
-				}
-				try
-				{
-					sock.close();
-				}
-				catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 
@@ -106,7 +95,7 @@ public class PCClientGUI extends Application
 		thread.setDaemon(true);
 		thread.start();
 
-		primaryStage.setTitle("Testing drawing of Maze + text above");
+		primaryStage.setTitle("Testing client-server communication displayed on a gui");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -117,47 +106,37 @@ public class PCClientGUI extends Application
 		{
 			InputStream in = sock.getInputStream();
 			ObjectInputStream objectInput = new ObjectInputStream(in);
-
-			for (int i = 0; i < 4; i++)
-			{
-				Object[] stats = (Object[]) objectInput.readObject();
-				maze = (Maze) stats[0];
-				topoPos = (Coordinate) stats[1];
-				direction = (Bearing) stats[2];
-				end = (boolean) stats[3];
-			}
-		}
-		catch (ClassNotFoundException cnfe)
-		{
-			cnfe.printStackTrace();
+			maze = (Maze) objectInput.readObject();
+			position = (Coordinate) objectInput.readObject();
+			direction = (Bearing) objectInput.readObject();
 		}
 		catch (IOException ioe)
 		{
 			ioe.printStackTrace();
 		}
+		catch (ClassNotFoundException cfe)
+		{
+			cfe.printStackTrace();
+		}
 	}
 
-	private static void updateRobotStats()
+	private static void updateMessage()
 	{
-		drawWalls(maze);
-		roboPos.setText("Robot Topological Postion: " + topoPos.toString());
-		heading.setText("Robot heading: " + direction.toString());
+		findWalls(maze);
+		roboPos.setText("Robot position: " + position.toString());
+		heading.setText("Robot bearing: " + direction.toString());
 	}
 
-	private static void drawWalls(Maze testMaze)
+	private static void findWalls(Maze testMaze)
 	{
-		final int PIXEL_PER_CM = 2;
-
-		walls.clear();
-		//reuses code from DrawMaze since similarly Rectangles start from their NW corner
 		int currentX;
-		int currentY = height - offset;
+		int currentY = WINDOW_HEIGHT - EDGE_OFFSET;
 		int pixelHeight = 0;
 		int pixelWidth;
 		int startY;
 		for (int y = 0; y < Maze.getHEIGHT(); y++)
 		{
-			currentX = offset;
+			currentX = EDGE_OFFSET;
 			for (MazeObject testObject : testMaze.getRow(y))
 			{
 				pixelWidth = testObject.getWidth() * PIXEL_PER_CM;
@@ -168,7 +147,7 @@ public class PCClientGUI extends Application
 					wall.setFill(javafx.scene.paint.Color.BLACK);
 				else
 					wall.setFill(javafx.scene.paint.Color.WHITE);
-				walls.add(wall);
+				walls.getChildren().add(wall);
 				currentX += pixelWidth;
 			}
 			currentY -= pixelHeight;

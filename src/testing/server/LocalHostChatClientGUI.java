@@ -85,7 +85,6 @@ public class LocalHostChatClientGUI extends Application
 				}
 				System.exit(0);
 			}
-
 		});
 		thread.setDaemon(true);
 		thread.start();
