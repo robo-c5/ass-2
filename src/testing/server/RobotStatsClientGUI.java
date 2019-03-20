@@ -8,7 +8,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.text.Text;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 import mapping.Bearing;
@@ -16,7 +17,7 @@ import mapping.Coordinate;
 import mapping.Maze;
 import mapping.MazeObject;
 import setup.MazeSolvingRobot;
-import testing.Rectangle;
+
 
 public class RobotStatsClientGUI extends Application {
 	static String ip = "localhost";
@@ -58,8 +59,8 @@ public class RobotStatsClientGUI extends Application {
 		heading.setFont(Font.font("null", FontWeight.BOLD, 36));
 
 		Group messages = new Group();
-		mazeRep.getChildren().addAll(walls);
-		mazeRep.getChildren().addAll(roboPos, heading, debugMessage);
+		messages.getChildren().addAll(walls);
+		messages.getChildren().addAll(roboPos, heading, debugMessage);
 
 		Scene scene = new Scene(messages, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -83,12 +84,6 @@ public class RobotStatsClientGUI extends Application {
 					getRobotStats();
 					Platform.runLater(updater);
 				}
-				try {
-					sock.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				System.exit(0);
 			}
 
 		});
