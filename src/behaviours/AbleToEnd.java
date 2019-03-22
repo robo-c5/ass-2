@@ -34,45 +34,26 @@ public class AbleToEnd implements Behavior {
 		
 		Collections.reverse(pathToRed);
 		
-		LCD.clear();
-		int i = 0;
-		for (Tile nextMove : pathToRed) {
-			LCD.drawString(nextMove.getTopologicalPosition().toString(), 3, 3 + i);
-			i++;
-		}
-		
-		// followPath(pathToRed);
-		
-		BrickFinder.getLocal().getKeys().waitForAnyPress();
+		followPath(pathToRed);
 		
 		ArrayList<Tile> redToStart = pathToRed;
 		Collections.reverse(redToStart);
 		
-		LCD.clear();		
-		i = 0;
-		for (Tile nextMove : redToStart) {
-			LCD.drawString(nextMove.getTopologicalPosition().toString(), 3, 3 + i);
-			i++;
-		}
+		followPath(redToStart);
+
+		MazeSolvingRobot.drawStats();
 		
-		// followPath(redToStart);		
-
 		BrickFinder.getLocal().getKeys().waitForAnyPress();
-
-		Sound.beep();
-		Delay.msDelay(50);
-		Sound.beep();
-		Delay.msDelay(50);
-		Sound.beep();
-		Delay.msDelay(50);
-		Sound.beep();
-		Delay.msDelay(50);
-		Sound.beep();
-		Delay.msDelay(50);
-		Sound.beep();
-		Delay.msDelay(50);
-		Sound.beep();
-		Delay.msDelay(50);
 		System.exit(0);
+	}
+	
+	public static void followPath(ArrayList<Tile> path) {
+		for (int i = 0; i < path.size()-1; i++) {
+			Tile currentTile = path.get(i);
+			Tile targetMazeTile = path.get(i+1);
+			
+			CheckNeighbours.rotateTo(currentTile, targetMazeTile);
+			MazeSolvingRobot.moveByATile();
+		}
 	}
 }

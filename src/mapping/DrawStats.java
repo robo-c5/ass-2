@@ -11,6 +11,7 @@ public class DrawStats
 
 	public static void drawMaze(Maze grid)
 	{
+		fillIntersections(grid);
 		GraphicsLCD gScreen = BrickFinder.getLocal().getGraphicsLCD();
 		gScreen.clear();
 		int currentX;
@@ -38,10 +39,23 @@ public class DrawStats
 	}
 	
 	public static void drawStats(Coordinate position, Bearing heading) {
-		LCD.drawString(position.toString(), 8, 3);
-		LCD.drawString(heading.toString(), 8, 4);
+		LCD.drawString(position.toString(), 4, 0);
+		LCD.drawString(heading.toString(), 4, 1);
 	}
 
+	public static void fillIntersections(Maze maze) {
+		for (int y = 0; y < Maze.getHEIGHT(); y++) {
+			for (MazeObject mO: maze.getRow(y)) {
+				if (Maze.isIntersection(mO.getTopologicalPosition())) {
+					for (MazeObject neighbour : mO.getNeighbours()) {
+						if (!neighbour.isTraversable())
+							mO.setNoGo();
+					}
+				}
+			}
+		}
+	}
+	
 	public static int getCmPerPixel()
 	{
 		return CM_PER_PIXEL;

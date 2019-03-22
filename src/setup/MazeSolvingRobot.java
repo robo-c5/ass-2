@@ -142,10 +142,6 @@ public class MazeSolvingRobot extends EV3Setup {
 		return topoDestination;
 	}
 
-	private static void setTopoDestination(Coordinate givenDestination) {
-		topoDestination = givenDestination;
-	}
-
 	public static Coordinate getTopoPosition() {
 		if (topoPosition == null) {
 			setTopoPosition(getMaze().getCoordinate(0, 0)); // probably should throw some kind of error here as position
@@ -175,6 +171,7 @@ public class MazeSolvingRobot extends EV3Setup {
 		int angleDifference = Bearing.minimiseAngle(target.getAngle() - getBearing().getAngle());
 		getPilot().rotate(angleDifference);
 		setBearing(target);
+		drawStats();
 	}
 
 	public static float rotateAndScan(Bearing givenBearing) {
@@ -195,17 +192,9 @@ public class MazeSolvingRobot extends EV3Setup {
 		end = true;
 	}
 
-	public static void moveTo(Coordinate topologicalDestination) {
-		setTopoDestination(topologicalDestination);
-		Coordinate metricDestination = getMaze().getMazeObject(topologicalDestination).getCentre();
-		getNav().goTo(metricDestination.getX(), metricDestination.getY());
-		setTopoPosition(topologicalDestination);
-		DrawStats.drawMaze(getMaze());
-		//DrawStats.drawStats(position, heading);
-	}
-
 	public static void moveByATile() {
 		getPilot().travel(TILE_SIZE);
+		drawStats();
 	}
 
 	public static boolean isRedFound() {
@@ -227,6 +216,11 @@ public class MazeSolvingRobot extends EV3Setup {
 	public static void setEndTile(Coordinate end) {
 		endTile = (Tile) getMaze().getMazeObject(end);
 		redFound = true;
+	}
+	
+	public static void drawStats() {
+		DrawStats.drawMaze(getMaze());
+		DrawStats.drawStats(topoPosition, bearing);
 	}
 
 }

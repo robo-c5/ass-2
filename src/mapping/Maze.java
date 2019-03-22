@@ -77,19 +77,19 @@ public class Maze implements Serializable {
 
 	}
 
-	public boolean isIntersection(Coordinate pos) {
+	public static boolean isIntersection(Coordinate pos) {
 		return (pos.getY() % 2 == 0 && pos.getX() % 2 == 0);
 	}
 
-	public boolean isHorizontalEdge(Coordinate pos) {
+	public static boolean isHorizontalEdge(Coordinate pos) {
 		return (pos.getY() % 2 == 0 && pos.getX() % 2 == 1);
 	}
 
-	public boolean isVerticalEdge(Coordinate pos) {
+	public static boolean isVerticalEdge(Coordinate pos) {
 		return (pos.getY() % 2 == 1 && pos.getX() % 2 == 0);
 	}
 
-	public boolean isTile(Coordinate pos) {
+	public static boolean isTile(Coordinate pos) {
 		return (pos.getY() % 2 == 1 && pos.getX() % 2 == 1);
 	}
 

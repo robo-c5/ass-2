@@ -47,7 +47,7 @@ public class CheckNeighbours implements Behavior {
 			currentTile.setVisited(); // set the current tile visited before you leave it, otherwise there are issues
 										// backtracking
 			checkAdjacentEdges(currentTile);
-			Tile targetMazeTile = findNextMove(getNearbyReachableTiles(currentTile, maze));
+			Tile targetMazeTile = findNextMove(currentTile, getNearbyReachableTiles(currentTile, maze));
 			if (targetMazeTile == null) // if no next tile can be found, this means we have backtracked back to the start, so can now end
 			{
 				setEnd();
@@ -70,7 +70,7 @@ public class CheckNeighbours implements Behavior {
 
 	}
 
-	private void rotateTo(Tile currentTile, Tile targetMazeTile) {
+	public static void rotateTo(Tile currentTile, Tile targetMazeTile) {
 		Bearing targetBearing = (MazeSolvingRobot.getMaze().getBearing(currentTile, targetMazeTile)); // offSetBearing
 		MazeSolvingRobot.rotateRobotTo(targetBearing);
 	}
@@ -92,25 +92,20 @@ public class CheckNeighbours implements Behavior {
 
 	// look at all possible adjacent tiles, choose the first one that is available
 	// to be moved to, if none, backtrack
-	private Tile findNextMove(Tile[] adjacentTiles) {
+	private Tile findNextMove(Tile currentTile, Tile[] adjacentTiles) {
 		if (!isGreen(MazeSolvingRobot.getColourSample())) {
 			for (Tile adjacent : adjacentTiles) {
 				if (adjacent != null && adjacent.isTraversable() && !adjacent.isVisited()) {
 					return adjacent;
 				}
 			}
+		} else {
+			currentTile.setNoGo();
 		}
 		return backTrack();
 	}
 
 	private boolean isRed(float[] sample, Tile currentTile) {
-		////TESTING REMOVE THIS
-		//if (currentTile.getTopologicalPosition().equals(new Coordinate(1, 3)))
-		//{
-		//	MazeSolvingRobot.setEndTile(currentTile.getTopologicalPosition());
-		//	return true;
-		//}
-		////
 		
 		if (0.05 < sample[0] && sample[0] < 0.35) {
 			if (0.015 < sample[1] && sample[1] < 0.07) {
