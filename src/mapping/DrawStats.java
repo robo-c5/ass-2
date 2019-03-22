@@ -2,8 +2,9 @@ package mapping;
 
 import lejos.hardware.BrickFinder;
 import lejos.hardware.lcd.GraphicsLCD;
+import lejos.hardware.lcd.LCD;
 
-public class DrawMaze
+public class DrawStats
 {
 	private static final int CM_PER_PIXEL = 3;
 	// might be hard to see a wall at the edge of lcd screen
@@ -35,10 +36,17 @@ public class DrawMaze
 			currentY -= (pixelHeight + 0);
 		}
 	}
+	
+	public static void drawStats(Coordinate position, Bearing heading) {
+		LCD.drawString(position.toString(), 8, 3);
+		LCD.drawString(heading.toString(), 8, 4);
+	}
 
 	public static int getCmPerPixel()
 	{
 		return CM_PER_PIXEL;
 	}
+	
+	
 
 }

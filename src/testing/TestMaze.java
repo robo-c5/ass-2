@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import mapping.Bearing;
 import mapping.Coordinate;
-import mapping.DrawMaze;
+import mapping.DrawStats;
 import mapping.Edge;
 import mapping.Maze;
 import mapping.MazeObject;
@@ -15,7 +15,7 @@ import setup.MazeSolvingRobot;
 //maze is intialised correctly;
 public class TestMaze
 {
-	private static final int CM_PER_PIXEL = DrawMaze.getCmPerPixel();
+	private static final int CM_PER_PIXEL = DrawStats.getCmPerPixel();
 
 	public static void main(String[] args)
 	{

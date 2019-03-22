@@ -151,7 +151,7 @@ public class EV3Setup
 	public static void startArbitrator()
 	{
 		// add behaviours to, and then start, Arbitrator
-		new Arbitrator(new Behavior[] { new CheckNeighbours(), new EndArbitrator() }).go();
+		new Arbitrator(new Behavior[] { new CheckNeighbours(), new AbleToEnd() }).go();// new EndArbitrator() }).go();
 		// ^new OutsideMaze(),
 	}
 
@@ -188,8 +188,8 @@ public class EV3Setup
 		MovePilot pilot = new MovePilot(chassis);
 
 		// Speed setup
-		pilot.setLinearSpeed(200f); // 7.5 is way too fast
-		pilot.setAngularSpeed(200f);
+		pilot.setLinearSpeed(10f);//200f); // 7.5 is way too fast
+		pilot.setAngularSpeed(40f);//200f);
 		pilot.setLinearAcceleration(200f);
 		pilot.setAngularAcceleration(200f);
 

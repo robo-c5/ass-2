@@ -40,6 +40,7 @@ public class Tile extends MazeObject implements Serializable {
 	public void setVisited() {
 		if (!visited) { // only add to navpath if this is the first time the tile has been seen
 			MazeSolvingRobot.addToNavPath(this);
+			MazeSolvingRobot.getMaze().tileVisited(this);; // also only bother removing from unvisited list if not already done so
 		}
 		MazeSolvingRobot.incrementVisitedTileCount();
 		visited = true;

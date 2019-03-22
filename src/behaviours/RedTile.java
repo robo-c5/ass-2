@@ -25,8 +25,8 @@ public class RedTile implements Behavior
 	@Override
 	public void action()
 	{
-		MazeSolvingRobot.moveTo(MazeSolvingRobot.getTopoDestination());
-		MazeSolvingRobot.setEndTile((Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoDestination())); 
+		//MazeSolvingRobot.moveTo(MazeSolvingRobot.getTopoDestination());
+	//	MazeSolvingRobot.setEndTile((Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoDestination())); 
 	}
 
 	private boolean isRed(float[] sample)

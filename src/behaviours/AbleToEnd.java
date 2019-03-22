@@ -1,8 +1,11 @@
 package behaviours;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Collections;
 
+import lejos.hardware.BrickFinder;
 import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import mapping.Coordinate;
@@ -10,51 +13,66 @@ import mapping.Tile;
 import pathfinding.AStarSearch;
 import setup.MazeSolvingRobot;
 
-public class AbleToEnd implements Behavior
-{
-	private static final int TILE_TOTAL_NUM = 6*9;
-	//currently doing just traverse whole maze
-	private static final int TILE_VISITED_THRESHOLD = TILE_TOTAL_NUM * 1;
+public class AbleToEnd implements Behavior {
 
 	@Override
-	public boolean takeControl()
-	{
-		return (MazeSolvingRobot.getVisitedTileCount() >=  TILE_VISITED_THRESHOLD) && MazeSolvingRobot.isRedFound();
+	public boolean takeControl() {
+		return MazeSolvingRobot.getEnd();
 	}
 
-
 	@Override
-	public void suppress() {}
-	
-	@Override
-	public void action()
-	{
-		Tile currentTile = (Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoPosition());
-		Tile startTile = (Tile) MazeSolvingRobot.getMaze().getMazeObject(new Coordinate(1,1));
-		Stack<Tile> path = AStarSearch.ShortestPath(currentTile, MazeSolvingRobot.getEndTile()); // first navigate back to the red tile
-		followPath(path);
-		path = AStarSearch.ShortestPath(currentTile, startTile); // then go back to the start
-		followPath(path);
-		Sound.beep();
-		Delay.msDelay(10);
-		Sound.beep();
-		Delay.msDelay(10);
-		Sound.beep();
-		//play some meme shit
-		//send off Maze to server boi all quick
-		//close things and then system.exit(0)
+	public void suppress() {
 	}
 
-	private void followPath(Stack<Tile> path)
-	{
-		while (!path.isEmpty())
-		{
-			MazeSolvingRobot.moveTo(path.pop().getTopologicalPosition());
+	@Override
+	public void action() {
+		Tile startTile = (Tile) MazeSolvingRobot.getMaze().getMazeObject(MazeSolvingRobot.getTopoPosition());
+
+		Tile redTile = MazeSolvingRobot.getEndTile();
+
+		ArrayList<Tile> pathToRed = AStarSearch.ShortestPath(startTile, redTile);
+		
+		Collections.reverse(pathToRed);
+		
+		LCD.clear();
+		int i = 0;
+		for (Tile nextMove : pathToRed) {
+			LCD.drawString(nextMove.getTopologicalPosition().toString(), 3, 3 + i);
+			i++;
 		}
-		Sound.beep();
-		Delay.msDelay(10);
-		Sound.beep();
-		Delay.msDelay(1000);
-	}
+		
+		// followPath(pathToRed);
+		
+		BrickFinder.getLocal().getKeys().waitForAnyPress();
+		
+		ArrayList<Tile> redToStart = pathToRed;
+		Collections.reverse(redToStart);
+		
+		LCD.clear();		
+		i = 0;
+		for (Tile nextMove : redToStart) {
+			LCD.drawString(nextMove.getTopologicalPosition().toString(), 3, 3 + i);
+			i++;
+		}
+		
+		// followPath(redToStart);		
 
+		BrickFinder.getLocal().getKeys().waitForAnyPress();
+
+		Sound.beep();
+		Delay.msDelay(50);
+		Sound.beep();
+		Delay.msDelay(50);
+		Sound.beep();
+		Delay.msDelay(50);
+		Sound.beep();
+		Delay.msDelay(50);
+		Sound.beep();
+		Delay.msDelay(50);
+		Sound.beep();
+		Delay.msDelay(50);
+		Sound.beep();
+		Delay.msDelay(50);
+		System.exit(0);
+	}
 }
