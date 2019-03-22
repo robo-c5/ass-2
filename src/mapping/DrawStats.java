@@ -48,8 +48,10 @@ public class DrawStats
 			for (MazeObject mO: maze.getRow(y)) {
 				if (Maze.isIntersection(mO.getTopologicalPosition())) {
 					for (MazeObject neighbour : mO.getNeighbours()) {
-						if (!neighbour.isTraversable())
-							mO.setNoGo();
+						if (neighbour != null) {
+							if (!neighbour.isTraversable())
+								mO.setNoGo();	
+						}
 					}
 				}
 			}
